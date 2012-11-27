@@ -1,56 +1,57 @@
 
-Orchard provides a blogging engine that makes it easy to add a blog to your web site.
-This topic describes how to create a blog for your site and then add a new blog post.
+Orchard ofrece un sistema de blogging que hace que sea más fácil de agregar un blog a tu sitio web.
+En esta sección se trata cómo crear un blog para tu sitio y agregar un nuevo post.
 
-# Creating a New Blog
+# Crear un nuevo Blog
 
-In the Admin Panel under **Blogs**, click **Create New Blog**.
-The **Create New Blog** settings are displayed, as shown in the following image.
+En el Panel de Administración debajo de **Blogs**, haz clic sobre **Create New Blog**. Se mostrará
+el formulario de con las opciones de configuración, tal y como muestra la siguiente imagen.
 
 ![](../Upload/screenshots_675/blog_create_675.png)
 
-Using the **Create New Blog** settings, you can do the following:
+Desde el formulario **Create New Blog**, puedes hacer lo siguiente:
 
-* Give your new blog a title. 
-* Add a permalink to the blog.
-* Set the blog as the home page for the web site.
-* Add a description that will appear at the top of the blog when published.
-* Add content tags for the blog as a whole.
-* Indicate whether to show the blog on the main menu.
-* Assign an owner for the blog.
+* Asignar un título al nuevo blog. 
+* Añadir un permalink (enlace permanente) al blog.
+* Hacer que el blog sea la página por defecto del sitio.
+* Añadir una descripción que aparecerá encima del blog cuando se publique.
+* Añadir tag para el blog en general.
+* Indicar si se quiere mostrar el blog en el menú principal.
+* Asignar un propietario al blog.
 
-For more information about permalinks, content tags, or the **Show on main menu** checkbox,
-see [Adding Pages to Your Site](Adding-Pages-to-Your-Site).
+Para más información sobre permalink, tags, o el checkbox (caja seleccionable) **Show on main menu**
+ver [Adding Pages to Your Site](Adding-Pages-to-Your-Site).
 
-After selecting the settings for your blog, click **Add** to add the new blog to your site.
+Después de seleccionar los ajustes para el blog, haga clic en  **Add** para añadir el nuevo blog a su sitio.
 
-# Creating a New Blog Post
 
-As soon as the blog is added to your site, you can add blog posts.
-As the following image shows, click **New Post** to add a blog post.
+# Crear un nuevo post
+
+
+El añadir el blog a nuestro sitio nos permite crear tag.
+Tal y como muestra la imagen siguiente, haga clic en **New Post** para agregar un post.
 
 ![](../Upload/screenshots_675/blog_new_post_675.png)
 
-The **Create New Blog Post** settings are displayed, as shown in the following image.
+El formulario **Create New Blog Post** se mostrará en pantalla, como se ve en la siguiente imagen.
 
 ![](../Upload/screenshots_675/blog_new_post_2_675.png)
 
-Using the **Create New Blog Post** settings, you can do the following:
+Con el formulario **Create New Blog Post**, puedes hacer lo siguiente:
 
-* Give your new blog post a title.
-* Add a permalink for the blog post.
-* Set the blog post as the home page for the web site.
-* Add content using the rich-text editor.
-* Add content tags.
-* Allow comments from users to be posted to the blog post.
-* Assign an owner for the blog post.
-* Save and publish the blog post to the site.
+* Asignar un título al post .
+* Añadir un permalink (link permanente) al post.
+* Convertir el post en la página de inicio del sitio.
+* Añadir contenido usando un editor de texto con funciones avanzadas.
+* Añadir tags a los posts.
+* Permitir comentarios de los usuarios en el post.
+* Asignar un autor del post.
+* Guardar y publicar el post en su sitio.
 
-For more information about using the text editor or saving and publishing the blog post,
-see [Adding Pages to Your Site](Adding-Pages-to-Your-Site).
+Para obtener más información sobre cómo utilizar el editor de texto o guardar y publicar posts,
+ver [Adding Pages to Your Site](Adding-Pages-to-Your-Site).
 
-After you have created a new blog and published it to your site, your blog will look similar to the following image.
-
+Después de haber creado un nuevo blog y publicarlo en tu sitio, tu blog debe parecerse al de la imagen siguiente.
 ![](../Upload/screenshots_675/playground_blog_675.png)
 
 

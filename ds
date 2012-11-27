@@ -1,0 +1,13 @@
+[1mdiff --git a/Documentation/Adding-a-Blog-to-Your-Site.markdown b/Documentation/Adding-a-Blog-to-Your-Site.markdown[m
+[1mindex 7f9f076..c91e89e 100644[m
+[1m--- a/Documentation/Adding-a-Blog-to-Your-Site.markdown[m
+[1m+++ b/Documentation/Adding-a-Blog-to-Your-Site.markdown[m
+[36m@@ -1,6 +1,5 @@[m
+[31m-[m
+[31m-Orchard provides a blogging engine that makes it easy to add a blog to your web site.[m
+[31m-This topic describes how to create a blog for your site and then add a new blog post.[m
+[32m+[m[32mOrchard ofrece un sistema de blogging que hace que más fácil de agregar un blog a tu sitio web.[m
+[32m+[m[32mEn este tema se trata cómo crear un blog para tu sitio y agregar un nuevo post.[m
+ [m
+ # Creating a New Blog[m
+ [m
