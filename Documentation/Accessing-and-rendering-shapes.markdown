@@ -1,7 +1,7 @@
 Una _shape_ (silueta o figura) es un modelo dinámico de datos
 You can think of shapes as the blobs of data that get handed to templates for rendering.
-La función de una shape es reemplazar los modelos de vista estáticos de ASP.NET MVC usando
-un modelo que puede actualizarse en tiempo de ejecución&#151;esto es, usando una shape dinámica.
+La función de un shape es reemplazar los modelos de vista estáticos de ASP.NET MVC usando
+un modelo que puede actualizarse en tiempo de ejecución&#151;esto es, usando un shape dinámica.
 
 This article introduces the concept of shapes and explains how to work with them.
 It's intended for module and theme developers who have at least a basic understanding of Orchard modules.
