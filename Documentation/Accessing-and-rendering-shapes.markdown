@@ -1,60 +1,60 @@
-Una _shape_ (silueta o figura) es un modelo dinámico de datos
-You can think of shapes as the blobs of data that get handed to templates for rendering.
+Un _shape_ (silueta o figura) es un modelo dinámico de datos
+Pues pensar en los shapes como en contenedores de datos que son manipulados por plantillas para el renderizado.
 La función de un shape es reemplazar los modelos de vista estáticos de ASP.NET MVC usando
-un modelo que puede actualizarse en tiempo de ejecución&#151;esto es, usando un shape dinámica.
+un modelo que puede actualizarse en tiempo de ejecución&#151;esto es, usando un shape dinámico.
 
-This article introduces the concept of shapes and explains how to work with them.
-It's intended for module and theme developers who have at least a basic understanding of Orchard modules.
-For information about creating modules, see [Building a Hello World Module](Building-a-hello-world-module).
-For information about dynamic objects, see [Creating and Using Dynamic Objects](http://msdn.microsoft.com/en-us/library/ee461504.aspx).
+Este artículo introduce el concepto de shapes y explica cómo trabajar con él.
+Está pensado para desarrolladores de módulos y temas (theme) quienes poseen, al menos, un conocimiento básico de módulos de Orchard.
+Para información sobre crear módulos, echa un vistazo a [Construyendo un módulo Hola Mundo](Building-a-hello-world-module).
+Para información sobre objetos dinámicos, mira [Creando y usando objetos dinámicos, fuente MSDN Library](http://msdn.microsoft.com/en-us/library/ee461504.aspx).
 
-# Introducing Shapes
+> **Nota**`
+`A lo largo del artículo se usa indistintamente las palabras plantilla y tema para referirse al mismo concepto en inglés theme y nunca al concepto pattern.
 
-Shapes are dynamic data models that use shape templates to make the data visible to the user in the way you want.
-Shape templates are fragments of markup for rendering shapes.
-Examples of shapes include menus, menu items, content items, documents, and messages.
+# Introducción a Shapes
 
-A shape is a data model object that derives from the `Orchard.DisplayManagement.Shapes.Shape` class.
-The `Shape` class is never instantiated. Instead, shapes are created at run time by a shape factory.
-The default shape factory is `Orchard.DisplayManagement.Implementation.DefaultShapeFactory`.
-The shapes created by the shape factory are dynamic objects.
+Los shapes son modelos de datos dinámicos que usan plantillas de shape para hacer los datos visibles para su uso de la forma que quieras.
+Las plantillas de shapes son fragmentos de etiquetado (markup) para renderizar shapes.
+Algunos ejemplos de shapes incluyen menús, items de menú, items de contenido, documentos y mensajes.
 
-> **Note**`
-`Dynamic objects are new to the .NET Framework 4.
-As a dynamic object, a shape exposes its members at run time instead of at compile time.
-By contrast, an ASP.NET MVC model object is a static object that's defined at compile time.
+Un shape es un objeto modelo de datos que deriva de la clase `Orchard.DisplayManagement.Shapes.Shape`.
+La clase `Shape` nunca es instanciada. En su lugar, los shapes son creados en tiempo de ejecución por un shape factory.
+La shape factory por defecto es `Orchard.DisplayManagement.Implementation.DefaultShapeFactory`.
+Los shapes creados por la shape factory son objetos dinámicos
 
-Information about the shape is contained in the `ShapeMetadata` property of the shape itself.
-This information includes the shape's type, display type, position, prefix, wrappers, alternates,
-child content, and a `WasExecuted` Boolean value.
+> **Nota**`
+`Los objetos dinámicos son nuevos de .NET Framework 4.
+Como objeto dinámico, un shape expone sus miembros en tiempo de ejecución en lugar de tiempo de compilación.
+Esto contrasta con el objeto model de ASP.NET MVC que es un objeto estático definido en tiempo de compilación.
 
-You can access the shape's metadata as shown in the following example:
+La información sobre el shape se encuentra en la propiedad `ShapeMetadata` del propio shape.
+Esta información inlucye el tipo de shape, la forma en que será mostrado, la posición, el prefix, los wrappers, alternates
+el contenido de objetos hijo (child content) y un valor boleano `WasExecuted`.
+
+Puedes acceder a los metadatos de un shape como se muestra en el siguiente ejemplo:
     
     var shapeType = shapeName.Metadata.Type;
 
-After the shape object is created, the shape is rendered with the help of a shape template.
-A shape template is a piece of HTML markup (partial view) that is responsible for displaying the shape.
-Alternatively, you can use a shape attribute (`Orchard.DisplayManagement.ShapeAttribute`)
-that enables you to write code that creates and displays the shape without using a template.
+Después de que el objeto shape haya sido creado, el shape es renderizado con ayuda de una plantilla de shape (shape template).
+Una plantilla de shape es una porción de etiquetado HTML (vista parcial) que es responsable de mostrar el shape.
+Otra posibilidad es usar un atributo (`Orchard.DisplayManagement.ShapeAttribute`)
+que te permite escribir código que crea y muestra el shape sin usar una plantilla.
 
-# Creating Shapes
+# Creando Shapes
 
-For module developers, the most common need for shapes is to transport data from a driver to a template for rendering.
-A driver derives from the `Orchard.ContentManagement.Drivers.ContentPartDriver` class
-and typically overrides that class's `Display` and `Editor` methods.
-The `Display` and `Editor` methods return a `ContentShapeResult` object, which is analogous to
-the `ActionResult` object returned by action methods in ASP.NET MVC.
-The `ContentShape` method helps you create the shape and return it in a `ContentShapeResult` object.
+Para los desarrolladores de módulos, la necesidad más común a la hora de desarrollar shapes es cómo transportar los datos desde un driver a una plantilla para renderizarlo.
+Un driver deriva de la clase `Orchard.ContentManagement.Drivers.ContentPartDriver` y normalmente sobreescribe (overrides) los métodos `Display`y `Editor` de esa clase.
+Los métodos `Display` y `Editor` devuelven un objeto `ContentShapeResult`, el cual es análogo al objeto `ActionResult` devuelvo por los action method de ASP.NET MVC.
+El método `ContentShape` te ayuda a crear el shape y devolverlo dentro de un objeto `ContentShapeResult`.
 
-Although the `ContentShape` method is overloaded, the most typical use is to pass it two
-parameters&#151;the shape type and a dynamic function expression that defines the shape.
-The shape type names the shape and binds the shape to the template that will be used to render it.
-The naming conventions for shape types are discussed later in
-[Naming Shapes and Templates](Accessing-and-rendering-shapes#NamingShapesandTemplates).
+Aunque el método `ContentShape` está sobrecargado, el uso más común es pasarle dos
+parámetros&#151;el tipo de shape y una expresión con una función dinámica que define el shape.
+El tipo de shape nombra el sape y une el shape a la plantilla que debe usarse para renderizarlo.
+Las premisas para decidir los nombres (naming conventions or naming guidelines) son discutidas más adelante en "Decidiendo los nombres de Shapes y Plantillas"(Accessing-and-rendering-shapes#NamingShapesandTemplates).
 
-The function expression can be described best by using an example.
-The following example shows a driver's `Display` method that returns a shape result,
-which will be used to display a `Map` part.
+La expresión de función puede describirse mejor si usamos un ejemplo.
+El siguiente ejemplo muestra el modo `Display` de un driver que devuelve un resultado shape (shape result),
+el cual será usado para mostrar una parte `Map`.
 
     protected override DriverResult Display(
         MapPart part, string displayType, dynamic shapeHelper)
@@ -65,16 +65,18 @@ which will be used to display a `Map` part.
                                Latitude: part.Latitude));
     }
 
-The expression uses a dynamic object (`shapeHelper`) to define a `Parts_Map` shape and its attributes.
-The expression adds a `Longitude` property to the shape and sets it equal to the part's `Longitude` property.
-The expression also adds a `Latitude` property to the shape and sets it equal to the part's `Latitude` property.
-The `ContentShape` method creates the results object that is returned by the `Display` method.
+La expresión usa un objeto dinámico(`shapeHelper`) para definir un shape `Parts_Map`y sus atributos.
+La expresión añade la propiedad `Longitude` al shape y establece su contenido igual a la propiedad `Latitude` del part.
+La expresión también añade una propietad `Latitude` con el mismo valor que la propiedad `Latitude` del part.
+El método `ContentShape`crea un objeto resultado que es devuelto por el método `Display`.
 
-The following example shows the entire driver class that sends a shape result to a template either
-to be displayed or edited in a `Map` part. The `Display` method is used to display the map.
-The `Editor` method marked "GET" is used to display the shape result in editing view for user input.
-The `Editor` method marked "POST" is used to redisplay the editor view using the values provided by the user.
-These methods use different overloads of the `Editor` method.
+El próximo ejemplo muestra una clase driver completa que envía un shape result a una plantilla tanto para 
+ser mostrada como editada en una parte `Map`. El método `Display`es usado para mostrar el mapa.
+El métido `Editor`marcado con "GET" es usado para mostrar el shape result en una vista de edición para recoger las entradas de datos del usuario.
+El métido `Editor`marcado con "POST" es usado para actualizar la vista de edición usando los vatos proporcionados por el usuario.
+Estos métodos usan distintas sobrecargas del método `Editor`.
+
+
     
     using Maps.Models;
     using Orchard.ContentManagement;
@@ -113,27 +115,27 @@ These methods use different overloads of the `Editor` method.
         }
     }
 
-The `Editor` method marked "GET" uses the `ContentShape` method to create a shape for an editor template.
-In this case, the type name is `Parts_Map_Edit` and the `shapeHelper` object creates an `EditorTemplate` shape.
-This is a special shape that has a `TemplateName` property and a `Model` property.
-The `TemplateName` property takes a partial path to the template.
-In this case, `"Parts/Map"` causes Orchard to look for a template in your module at the following path: 
+El método `Editor`marcado "GET" usa el método `ContentShape` para crear un shape para una plantilla de edición.
+En este caso, el nombre del tipo es `Parts_Map_Edit`  y el objeto `shapeHelper` crea un shape del tipo `EditorTemplate`.
+Este es un shape especial que tiene una propiedad `TemplateName` y una propiedad `Model`.
+La propiedad `TemplateName` almacena una ruta parcial a la plantilla.
+Esta vez `"Parts/Map"` hace que Orchard busque una plantilla dentro de tu módulo que la siguiente ruta:
 
 _Views/EditorTemplates/Parts/Map.cshtml_
 
-The `Model` property takes the name of the part's model file, but without the file-name extension.
+La propiedad `Model` toma el nombre del archivo del modelo part, pero quitando la extensión de archivo.
 
-# Naming Shapes and Templates
+# Decidiendo los nombres de shapes y de los temas (themes)
 
-As noted, the name given to a shape type binds the shape to the template that will be used to render the shape.
-For example, suppose you create a part named `Map` that displays a map for the specified longitude and latitude.
-The name of the shape type might be `Parts_Map`. By convention, all part shapes begin with `Parts_` followed by the name of the part (in this case `Map`). Given this name (`Parts_Map`), Orchard looks for a template in your module at the following path: 
+Como habrás notado, el nombre dado a un tipo shape une el shape a la plantilla que será usada para renderizarlo.
+Por ejemplo, supongamos que creas un part llamado `Map`y que este muestra un mapa para unas longitud y latitud dadas.
+El nombre del tipo sape debería ser `Parts_Map. Por convención, todos los shape part empiezan con `Parts_`seguidos del nombre del part (en este caso `Map`). Proporcionando este nombre (`Parts_Map`), Orchard busca el tema en tu módulo a través de la siguiente ruta:
 
 _views/parts/Map.cshtml_
 
-The following table summarizes the conventions that are used to name shape types and templates.
+La siguiente tabla resume las convenciones usadas para llamar a los tipo shape y los temas.
 
-Applied To             | Shape Naming Convention                                           | Shape Type Example                                   | Template Example
+Aplicado a             | Convención de nombrado de Shape                                          | Tipo Shape Example                                   | Tema Example
 ---------------------- | ----------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------
 Content shapes         | Content\_\_\[ContentType\]                                        | Content\_\_BlogPost                                  | Content-BlogPost
 Content shapes         | Content\_\_\[Id\]                                                 | Content\_\_42                                        | Content-42
