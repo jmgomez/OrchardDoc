@@ -161,73 +161,75 @@ Widget                 | Widget\_\_\[ContentType\]                              
 Widget                 | Widget\_\_\[ZoneName\]                                            | Widget\_\_AsideSecond                                | Widget-AsideSecond
 Zone                   | Zone\_\_\[ZoneName\]                                              | Zone\_\_AsideSecond                                  | Zone-AsideSecond
 
-You should put your templates in the project according to the following rules:
+Puedes poner tus temas en el proyecto de acuerdo a las siguientes reglas:
 
-* Content item shape templates are in the _views/items_ folder.
-* `Parts_` shape templates are in the _views/parts_ folder.
-* `Fields_` shape templates are in the _views/fields_ folder.
-* The `EditorTemplate` shape templates are in the _views/EditorTemplates/_`template` name folder.  
-For example, an `EditorTemplate` with a template name of _Parts/Routable.RoutePart_ has its template
-at _views/EditorTemplates/Parts/Routable.RoutePart.cshtml_.
-* All other shape templates are in the _views_ folder.
+El contenido de cada item en las plantillas de shapes deben estar en el directorio _views/items_
+* Los temas de los shape `Parts_` deben estar en _views/parts_ .
+* Los temas de los shape `Fields_` deben estar en  _views/fields_ .
+* Las plantillas del shape `EditorTemplate` deben estar en _views/EditorTemplates/_`template`+nombre .
+Por ejemplo, un `EditorTemplate` con el nombre de tema _Parts/Routable.RoutePart_  tiene su tema en 
+_views/EditorTemplates/Parts/Routable.RoutePart.cshtml_.
+* Por último, todos los demás temas de shapes deben estar en la carpeta _views_ .
 
-> **Note**`  `The template extension can be any extension supported by an active view engine, such as _.cshtml_, _.vbhtml_, or _.ascx_.
+> **Nota**`  `La extensión de temas puede ser cualquier extensión soportada por cualquier view engine activo, como son _.cshtml_,_.vbhtml_ o _.ascx_.
 
-## From Template File Name to Shape Name
+## Desde nombre de archivo de un Tema hacia el nombre de un Shape
 
-More generally, the rules to map from a template file name to the corresponding shape name are the following:
+Las reglas para mapear desde el nombre de archivo de un tema a su correspondiente nombre de shape son las siguientes:
 
-* Dot (.) and backslash (\) change to underscore (_).
-Note that this does not mean that an _example.cshtml_ file in a _myviews_ subdirectory of _Views_
-is equivalent to a _myviews_example.chtml_ file in _Views_.
-The shape templates must still be in the expected directory (see above).
-* Hyphen (-) changes to a double underscore (\_\_).
+* El Punto (.) y la barra invertida han de cambiarse por el guión bajo (_).
+Ten en cuenta que esto no significa que un archivo _example.cshtml_ en un subdirectorio _myviews_ del directorio _Views
+sea equivalente a un archivo _myviews_example.cshtml en la carpeta _Views_.
+El tema de shape debería estar en el directorio esperado (consulta las reglas anteriores)
+* El guión (-) cambia al doble guión bajo (\_\_)
 
-For example, _Views/Hello.World.cshtml_ will be used to render a shape named `Hello_World`,
-and _Views/Hello.World-85.cshtml_ will be used to render a shape named `Hello_World__85`.
+Por ejemplo, _Views/Hello.World.cshtml_ será usado para renderizar un shape llamado `Hello_World`,
+y _Views/Hello.World-85.cshtml_ será usado para renderizar un shape llamado `Hello_World__85`.
 
-## Alternate Shape Rendering
+## Otra alternativa para renderizar Shapes
 
-As noted, an HTML widget in the `AsideSecond` zone (for example) could be rendered
-by a _widget.cshtml_ template, by a _widget-htmlwidget.cshtml_ template,
-or by a _widget-asidesecond.cshtml_ if they exist in the current theme.
-When various possibilities exist to render the same content,
-these are referred to as _alternates_ of the shape,
-and they enable rich template overriding scenarios.
+Como te habrás dado cuenta, un widget HTML en la zona `AsideSecond` (por ejemplo) podría renderizarse 
+por un tema _widget.cshtml_, por un tema _widget-htmlwidget.cshtml_ o por otro _widget-asidesecond.cshtml_
+si este existiera en el tema actual.
+Cuando existen varias posibilidades para renderizar el mismo contenido,
+esto hace referencia a las _alternates_ de un shape,
+lo cual permite una gran variedad de nuevos escenarios para sobreescribir temas.
 
-Alternates form a group that corresponds to the same shape if they differ only by a double-underscore suffix.
-For example, `Hello_World`, `Hello_World__85`, and `Hello_World__DarkBlue` are an alternate group
-for a `Hello_World` shape. `Hello_World_Summary`, conversely, does not belong to that group
-and would correspond to a `Hello_World_Shape` shape, not to a `Hello_World` shape.
-(Notice the difference between "\_\_" and "\_".)
+Las alternativas forman un grupo que corresponde al mismo shape si difieren sólo por un doble guión bajo al final.
+Por ejemplo, `Hello_World`, `Hello_World__85`, y `Hello_World__DarkBlue` son un grupo de alternativas para 
+un shape del tipo `Hello_World`. `Hello_World_Summary`, sin embargo, no pertenece a este grupo, y podría corresponder a un shape `Hello_World_Shape`, no a un shape `Hello_World`.
 
-## Which Alternate Will Be Rendered?
+## ¿Qué alternativa debería ser renderizada?
 
-Even if it has alternates, a shape is always created with the base name, such as `Hello_World`.
-Alternates give additional template name options to the theme developer beyond the default
-(such as _hello.world.cshtml_).
-The system will choose the most specialized template available among the alternates,
-so _hello.world-orange.cshtml_ will be preferred to _hello.world.cshtml_ if it exists.
+Aunque no tenga alternativas, un shape siempre es creado con su nombre base, por ejemplo `Hello_World`.
+Las anternativas ofrecen al desarrollador de temas opciones de nombres adicionales para sus temas más allá
+del nombre por defecto como en el ejemplo: _hello.world.cshtml_.
+El sistema escogerá entre las alternativas las plantillas más especializadas, de esta manera 
+si _hello.world-orange.cshtml_ existe tendrá preferencia sobre _hello.world.cshtml_.
 
-## Built-In Content Item Alternates
+## Items de contenido de alternativas incorporados
 
-The table above shows possible template names for content items.
-It should now be clear that the shape name is built from `Content`
-and the display type (for example `Content_Summary`).
+La tabla superior muestra los nombres posibles de temas para los items de contenido.
+Ahora debería estar claro que el nombre de un shape es construido a partir de `Content`
+y el tipo para mostrar el shape (por ejemplo `Content_Summary`).
 
-The system also automatically adds the content type and the content ID as alternates
-(for example `Content_Summary__Page` and `Content_Summary__42`).
+El sistema también añade automáticamente el tipo de contenido y el ID del contenido así como las alternativas
+(por ejemplo `Content_Summary__Page` y `Content_Summary__42`).
 
-For more information about how to use alternates, see [Alternates](Alternates).
+Para más información sobre el uso de las alternativas, mira [Alternates](Alternates).
 
-# Rendering Shapes Using Templates
+# Renderizar Shapes usando temas
 
 A shape template is a fragment of markup that is used to render the shape.
 The default view engine in Orchard is the Razor view engine.
 Therefore, shape templates use Razor syntax by default.
 For an introduction to Razor syntax, see [Template File Syntax Guide](Template-file-syntax-guide).
+Un tema de sepa es un fragmento de código etiquetado que es usado para renderizar el shape.
+El view engine por defecto en Orchard es Razor.
+De la misma manera, los temas de shapes usan la sintaxis de Razor por defecto.
+Para una introducción a la sintaxis de Razor echa un vistazo a [Template File Syntax Guide](Template-file-syntax-guide).
 
-The following example shows a template for displaying a `Map` part as an image. 
+El siguiente ejemplo nos muestra a un tema para renderizar una part `Map` como una imagen.
 
     <img alt="Location" border="1" src="http://maps.google.com/maps/api/staticmap? 
          &zoom=14
@@ -235,14 +237,14 @@ The following example shows a template for displaying a `Map` part as an image.
          &maptype=satellite&markers=color:blue|@Model.Latitude,@Model.Longitude
          &sensor=false" />
 
-This example shows an `img` element in which the `src` attribute contains a URL
-and a set of parameters passed as query-string values.
-In this query string, `@Model` represents the shape that was passed into the template.
-Therefore, `@Model.Latitude` is the `Latitude` property of the shape,
-and `@Model.Longitude` is the `Longitude` property of the shape.
+Este ejemplo muestra un elemento `img` en el cual el atributo `src` contiene una URL
+y un conjunto de parámetros pasados como valores querystring.
+En este querystring, `@Model` representa al shape que se pasó junto al tema.
+De la misma manera, `@Model.Latitude` es la propiedad  `Latitude` del shape, y
+ `Latitude` es la propiedad `Longitude` del shape.
 
-The following example shows the template for the editor.
-This template enables the user to enter values for the latitude and longitude.
+El próximo ejemplo muestra la plantilla para el editor.
+Esta plantilla permite al usuario introducir los valores de la latidud y la longitud.
     
     @model Maps.Models.MapPart
 
@@ -267,35 +269,36 @@ This template enables the user to enter values for the latitude and longitude.
     </fieldset>
 
 
-The `@Html.LabelFor` expressions create labels using the name of the shape properties.
-The `@Html.TextBoxFor` expressions create text boxes where users enter values for the shape properties.
-The `@Html.ValidationMessageFor` expressions create messages that are displayed if users enter an invalid value.
+La expresión `@Html.LabelFor` crea elementos label usando el nombre de las propiedades del shape.
+La expresión `@Html.TextBoxFor` crea elementos de caja de texto, los input type="text", donde los usuario introducen los valores para las propiedades del shape.
+La expresión `@Html.ValidationMessageFor` crea mensajes formateados que se muestran cuando el usuario ha introducido valores incorrectos.
 
 ## Wrappers
 
-Wrappers let you customize the rendering of a shape by adding markup around the shape.
-For example, _Document.cshtml_ is a wrapper for the `Layout` shape, because it specifies
-the markup code that  surrounds the `Layout` shape.
-For more information about the relationship between `Document` and `Layout`,
-see [Template File Syntax Guide](Template-file-syntax-guide).
+Los Wrappers te permiten personalizar la renderización de un shape añadiendo etiquetado alrededor del shape.
+Por ejemplo, _Document.cshtml_ es un wrapper para el shape `Layout`, porque este especifica
+el código de marcado que envuelve al shape `Layout`.
+Para más información sobre las relaciones entre `Document`y `Layout`,
+echa un vistazo a [Guía de sintaxis del archivo de tema](Template-file-syntax-guide).
 
-Typically, you add a wrapper file to the _Views_ folder of  your theme.
-For example, to add a wrapper for `Widget`, you add a _Widget.Wrapper.cshtml_ file to
-the _Views_ folder of your theme.
-If you enable the **Shape Tracing** feature, you'll see the available wrapper names for a shape.
-You can also specify a wrapper in the _placement.info_ file.
-For more information about how to specify  a wrapper,
-see [Understanding the placement.info File](Understanding-placement-info).
+Normalmente, añades un archivo wrapper a la carpeta _Views_ de tu theme.
+Por ejemplo, para añadir un wrapeer para `Widget`, añadirás un archivo _Widget.Wrapper.cshtml_
+a la carpeta _Views_ de tu tema.
+Si activas la funcionalidad **Shape Tracing**, verás los nombres disponibles para los wrapper de un shape.
+Puedes también especificar un wrapper en el archivo _placement.info_.
+Para más información de cómo especificar un wrapper,
+mira [Comprendiendo el archivo placement.info](Understanding-placement-info).
 
-# Creating a Shape Method
 
-Another way to create and render a shape is to create a method that both defines and renders the shape.
-The method must be marked with the `Shape` attribute (the `Orchard.DisplayManagement.ShapeAttribute` class).
-The method returns an `IHtmlString` object instead of using a template;
-the returned object contains the markup that renders the shape. 
+# Creando un método de Shape
 
-The following example shows the `DateTimeRelative` shape.
-This shape takes a `DateTime` value in the past and returns a string that relates the value to the current time.
+Otro modo de crear y renderizar un shape es crear un método que define y renderiza al mismo tiempo un shape.
+El método debe marcarse con el atributo `Shape` (la clase `Orchard.DisplayManagement.ShapeAttribute`).
+El método devuelve un objeto `IHtmlString` en lugar de usar un tema.
+El objeto devuelvo contiene el etiquetado que renderiza el shape.
+
+El siguiente ejemplo muestra el shape `DateTimeRelative`.
+Este shape toma un valor `DateTime` en el pasado y devuelve un string que relaciona el valor con el tiempo actual. 
     
     public class DateTimeShapes : IDependency {
         private readonly IClock _clock;
