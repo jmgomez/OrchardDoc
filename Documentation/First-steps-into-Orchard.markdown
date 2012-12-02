@@ -1,80 +1,111 @@
 
 
-The goal of this article is to ease you into Orchard. There are so many concepts to understand that I think it is necessary to give a high level view of the whole thing before digging in. So, this article starts with a common ground that any web user should understand and progressively deepens while introducing relevant technical terms.
 
-When you finish reading this, you should have a good enough understanding to start playing with Orchard (as a designer/developer) without getting confused by its high level architecture and its terminology. When introduced, each new term is put in bold so that you make sure to understand it before moving forward.
+El objetivo de este artículo es familiarizarte con Orchard. Hay tantos conceptos para entender que es necesario dar un vistazo general antes de entrar en profundidad. Por lo tanto, este artículo comienza con una base común que cualquier usuario debe entender y profundiza progresivamente al tiempo que introduce los términos técnicos pertinentes .
 
-This article also contains a lot of links to other pages with more specific explanation; so you can use it as a starting point. To answer some general questions about what Orchard is and where it comes from, read the [Frequently Asked Questions](frequently-asked-questions). For a more technical presentation, read [How Orchard works](How-Orchard-works).
+Cuando termines de leer esto, tendrás un conocimiento que te permitirá jugar con Orchard (como diseñador / desarrollador) sin confundirte por su arquitectura de alto nivel y su terminología. Cuando se introduce,  cada término nuevo se pone en negrita para darle enfásis y se asegure de entenderlo antes de continuar con la lectura.
+
+Este artículo contiene una gran cantidad de enlaces a otras páginas con explicación específica, de modo que puedes utilizarlo como punto de partida. Para responder a algunas preguntas generales sobre qué es Orchard, lee [Frequently Asked Questions](frequently-asked-questions). Para una presentación más técnica, [How Orchard works](How-Orchard-works).
 
 
-# Looking at Orchard as...
-The best way to introduce the basics of Orchard is to look at the roles that a user can have when access it: Normal user (aka reader/visitor/guest), administrator, designer and developer.
+# Orchard como...
+La mejor manera de introducir los conceptos básicos de Orchard, es echar un vistazo a lo que un usuario puede hacer con los roles: usuario normal (también conocido como lector / anónimo / invitado), administrador, diseñador y desarrollador.
 
-## User
-As a **user**, an Orchard website is just like any **website**: It starts with a front page, from which you can access other pages by following links. Depending on what the website is about, the content will vary (can be static pages, blog, wiki, e-commerce, etc.)
+## Usuario
+Como **usuario**, un sitio  Orchard es como cualquier otro **website**: Tiene una página de inicio, desde donde se puede acceder a otras páginas a través de enlaces. Dependiendo del tipo de sitio, el contenido puede variar (pueden ser páginas estáticas, blog, wiki, comercio electrónico, etc)
 
-Figure 1. Picture of a website with a tree of linked boxes: front end static page at the top, below: blog box (below: comments box), wiki box, etc.
+## Administrador
+El **administrador** tiene acceso a varias partes del sitio:
 
-## Administrator
-The **administrator** has access to a few more aspects of the website:
+1. Cuando está instalando Orchard  [installing Orchard](Installing-Orchard), verá la página de instalación. Este paso concluye en la creación de una base de datos donde se almacenan todos los contenidos y la configuración de la página web.
 
-1. When [installing Orchard](Installing-Orchard), he will see the Installation page. This step results in the creation of a database where all the content and settings of the website are stored.
-Figure 2. Screenshot of the setup page
-1. Of course, as a user, he can see the front-end as well
-2. He can open the **[dashboard](Getting-Around-the-Admin-Panel)** (aka control panel/back-end) for two reasons:
-    1. [Configure the website](Getting-Started): Edit settings around the behavior and look of the website (or install/disable/upgrade them)
-Figure 3. Screenshot of the settings page
-    1. [Edit the content](Getting-Started) of the website
-Figure 4. Screenshot of editing a blog post
-1. **[Command line](Using-the-command-line-interface)**: It is possible to script most admin stuff from the command line, making it easy to automate certain operations
-Figure 5. Screenshot of Orchard.exe running help command
+2. Por supuesto, como usuario, también puede ver el fornt-end.
+3. Puedes abrir el **[dashboard](Getting-Around-the-Admin-Panel)** (aka control panel/back-end) por dos razones:
+     1.. [Configure the website](Getting-Started):  editar la configuración y el aspecto de la página web (o instalar / activar / actualizar)
 
-## Designer
-The **designer** can modify the [look of the website](Previewing-and-applying-a-theme). He can edit the settings of an existing theme (if provided) or create one.
-A **[theme](Anatomy-of-a-theme)** is everything that plays in the visual representation of the website. It is sometimes called skin or template. It transforms the **content** (user-generated data) into HTML that can be displayed in a browser. Eg: When you write a blog post, the theme defines where and how to show the menu, title, body, comments, etc.
+     2. [Editar el contenido](Getting-Started) de la página web
+
+4.  **[Command line](Using-the-command-line-interface)**: Es posible hacer scripts de la mayoría de acciones de la administración desde la línea de comandos, por lo que es fácil de automatizar ciertas operaciones
+
+  
+## Diseñador
+
+El diseñador puede modificar [la apariencia de una pagina web](Previewing-and-applying-a-theme). Puede editar las configuraciones de un theme existente o crear uno. Un **[theme](Anatomy-of-a-theme)** es todo lo que interviene en la representación visual de la web. A veces se llama skin o la plantilla. Transforma el  **content** (datos generados por el usuario) en HTML que se puede visualizar en un navegador. Por ejemplo: cuando se escribe una entrada en el blog, el theme define dónde y cómo se muestran los menús, títulos, cuerpo, comentarios, etc
+
 
 Depending on how much customization is required, the designer may [edit some or all elements of the theme](Customizing-the-default-theme). These elements are of the following types:
 
-* Documents defining the **layout** and its zones: This is the overall representation of a page on the website (without any actual content). Eg: It says if the website should have one, two or three columns. So, a **zone** is a container that is part of the layout and ready to receive any content. Note that a flexible theme (like the one provided by Orchard) can adapt to hide empty zones. So, although Figure 6 shows a lot of zones, most of them will not be visible on actual pages because they aren't being used.
-Figure 6. Diagram of a theme with zones as boxes (Cf. The Theme Machine)
-* **Views**: Visual representation of a specific content. A view is typically a file with the extension .CSHTML or .ASPX. It provides the HTML code to use when displaying a specific type of content. So, a page with many contents (menu, blog post, comments, etc) will be created by using the composition of all the relevant individual views.
-Figure 7. Screenshot of a page with each content view highlighted
-* **Stylesheets**, **Javascript** and Media files: They are used to modify the look defined in the views. They are files like "Site.css", jQuery or the images for background, borders and icons
-* **[Widget](Managing-widgets)**: A web page typically presents one main content (like a blog post), but it often also has small pieces of information on the sides. Eg: a tag cloud, a list of recent posts, a twitter feed, etc
+Dependiendo de la cantidad de personalización es necesario, el diseñador puede [editar algunos o todos los elementos del tema](Customizing-the-default-theme). Estos elementos son de los tipos siguientes:
+
+*Los documentos que definen el **layout** y sus zonas: Esta es la representación general de una página en el sitio web (sin ningún contenido real). Por ejemplo: Se dice que si el sitio web debe tener una, dos o tres columnas. Así, una **zona** es un contenedor que forma parte del layout y está listo para recibir cualquier contenido. Tenga en cuenta que un theme flexible (como el proporcionado por Orchard) puede adaptarse para ocultar las zonas vacías.
+
+* **Views**: Es la representación visual de un contenido específico. Una vista es típicamente un archivo con la extensión CSHTML o ASPX. Proporciona el código HTML para utilizar cuando se muestra un tipo de contenido específico. Por lo tanto, una página con muchos contenidos (menú, post, comentarios, etc) se creó mediante la composición de todos los puntos de vista individuales pertinentes.
+
+* **Stylesheets**, **Javascript** y archivos Media: Se utilizan para modificar el aspecto definido en las vistas. Son archivos como "Site.css", jQuery o las imágenes de fondo, bordes y los iconos.
+
+* **[Widget](Managing-widgets)**: Una página web muestra típicamente un contenido principal (como un post), pero a menudo también tiene pequeños trozos de información a los lados. Por ejemplo: una nube de etiquetas, una lista de los últimos posts, un feed de Twitter, etc
+
+
 * Layers and the binding between content to specific zones: A **layer** is like the description of a group of pages. Once defined, you can tell where to put each content (or widget). Eg: A layer grouping all the blog posts can be defined, then we can make a Tag cloud widget appear on the side
-Figure 8. Diagram of a theme with its zones filled by various content 
 
-More advanced themes may also include some programming code to further customize the look.
+Layers (capas) y los bindings entre el contenido y zonas específicas: Un **Layer** es como una capa de un grupo de páginas. Una vez definido, puede decirle dónde poner cada contenido (o widget). Por ejemplo: Un layer puede agrupar todas las entradas del blog, entonces podemos hacer un widget que actue como nube de tags y que se situe a su lado.
 
-## Developer
-The **developer** has a complete insight of the architecture of Orchard and can extend it.
-Orchard is organized in modules. Each **module** provides a building block (aka add on/plugin) to the website with a high level distinct goal. For example, you can have:
+El tratamiento avanzado de themes puede incluir algún tipo de programación para personalizar aún más la vista.
 
-* **Extension** module: Adds some (low-level) **features** that will benefit the website. Eg: Ability to [search your content](Search-and-indexing) or to [use an external editor to write blog posts (like Live Writer)](Blogging-with-LiveWriter)
-* Content module: Adds everything (code and visual) required to view/edit some type of content (like blog posts)
-* Widget module: Adds a small visual content that can be displayed on the side of existing content modules (like a Tag cloud next to a blog)
-* Theme module: Changes the look of existing content modules (This is what the designer would typically create)
-* All the above: A module can have many extensions, content types, widgets and themes all in one package 
+## Desarrollador
+
+El **desarrollador** tiene una visión completa de la arquitectura de Orchard y puede extenderlo.
+Orchard está organizado en módulos. Cada **módulo** proporciona un bloque de construcción (también conocido como add on/ plugin) a la página web con un objetivo distinto. Por ejemplo, puede haber:
+
+
+* **Módulo de extensión** : Añade algunas característica (de bajo nivel) que benefica a la página web. pe: La capacidad de [buscar contenido](Search-and-indexing) o de [usar un editor externo, como liveWriter para editar los posts](Blogging-with-LiveWriter)
+* Content module (Módulo de contenido): Agrega todo lo necesario (a nivel de código y visual) para ver o editar los tipos de contenido que hay (como posts).
+* Módulo Widget : Añade un pequeño contenido visual para un mostrar a un lado de los módulos existentes de contenido existente (como un nube de tag a un blog).
+* Theme module: Cambia parte de la vista de un Theme (Esto es lo que, comúnmente, crearía un diseñador.)
+* Todo lo demás: Un módulo puede tener muchas extensiones, tipos de contenido, widgets y temas en un solo paquete.
 
 Orchard is designed to be highly extensible; this means that almost anything that you interact with can be extended, replaced or disabled.
 Out of the box, Orchard comes with a number of modules to provide a good user/administrator experience; but a designer/developer can change them or [create more](Building-a-hello-world-module). It is also possible to [share your modules](Packaging-and-sharing-a-module) with the Orchard community and to [install modules](Installing-and-upgrading-modules) developed by others.
 
-Orchard v0.8 comes with only one theme (called "[The Theme Machine](Anatomy-of-a-theme)"). However, it has enough zones to allow various arrangements. This is important because, by default, a site can only have one theme (unless you develop a module allowing more), so the theme must be flexible enough to allow pages to have different layouts. If you are not satisfied, you can copy it and add more zones.
+Orchard está diseñado para ser altamente extensible, lo que significa que casi cualquier cosa con la que se interectúe dentro de Orchard, se puede extender, reemplazar o desactivar.
+Por defecto, Orchard viene con una serie de módulos para proporcionar lo necesario a un usuario / administrador, pero un diseñador / desarrollador puede modificar o [crear más](Building-a-hello-world-module). También es posible [compartir  módulos](Packaging-and-sharing-a-module) con la comunidad de Orchard e [instalar módulos](Installing-and-upgrading-modules) desarrollados por otros.
 
-[The Orchard Gallery](Gallery-overview) contains a lot more themes and modules ready to install. Make sure to browse it to find out what extra features are available.
+Orchard v0.8 viene con un sólo theme (llamado "[The Theme Machine](Anatomy-of-a-theme)"). However, it has enough zones to allow various arrangements. This is important because, by default, a site can only have one theme (unless you develop a module allowing more), so the theme must be flexible enough to allow pages to have different layouts. If you are not satisfied, you can copy it and add more zones.
 
-# Content
-In order to fill your website, Orchard allows you to edit and display content. It comes with the ability to create pages and blog posts out of the box. But it also allows you to define your own content. This is important because you may want to have events or profiles or anything else that isn't supported out of the box. This section explains the various elements that plays into providing that capability.
+Sin embargo, tiene zonas suficientes para permitir diferentes posiciones/combinaciones. Esto es importante porque, de forma predeterminada, un sitio sólo puede tener un theme (a menos que desarrolle un módulo que permita más), por lo que el theme debe ser lo suficientemente flexible como para permitir  páginascon diferentes diseños. Si necesita más, puede copiar y añadir nuevas zonas.
 
-* Content: Data that is typically displayed on the front-end website. I use this term as a generic way of calling anything that is user-generated.
-* [Content Type &amp; Item](Creating-custom-content-types): A **content type** is like a dynamic class; it defines a structure of data for a specific type of content. That structure can be changed, even by the administrator. A **content item** is an instance of content type. So, BlogPost can be a content type, and when you write one, that one is a content item.
+
+[The Orchard Gallery](Gallery-overview) contiene más themes y módulos listos para instalar. Asegúrese de  saber qué características adicionales están disponibles.
+
+# Contenido
+
+Con el fin de completar su sitio web, Orchard le pepor defecto. Pero también le permite definir su propio contenido. Esto es importante porque es posible que desee tener eventos o perfiles o cualquier otra cosa que no sea compatible por defecto. En esta sección se explica esta capacidad.
+
+
+* Content: Los datos que normalmente se muestran en el front-end. Se usa este término como una forma genérica de llamar a cualquier cosa que esté generada por el usuario..
+
+* [Content Type &amp; Item](Creating-custom-content-types): Un **content type** (tipo de contenido) es como una clase dinámica; define una estructura de datos para un tipo específico de contenido. Esa estructura incluso puede ser cambiada por el administrador. Un **content item** (elemento de contenido) es una instancia del content type. Por lo tanto, BlogPost puede ser un tipo de contenido, pero la entrada en sí, es un content item.
+
 * **[Content Part](Writing-a-content-part)**: Because many content types share many aspects; these aspects can be created independently and reused in each content type. That's what a content part is. Eg: A blog post can have comments; a photo can also have comments; so, instead of implementing the "comments" feature twice, we can create it as a content part and reuse it for both content types.
+
+Debido a que muchos Content Type  tienen muchos aspectos en común, estos aspectos pueden ser creados de forma independiente y se reutiliza en cada Content Type. Precisamente esto, es un Content Part. Por ejemplo: Un blog puede tener comentarios, la foto también puede tener comentarios, así que, en lugar de implementar "Comentarios" dos veces, podemos crearlo como un Content Part y volver a utilizarlo para ambos tipos de contenido.
+
 * **[Content Field](Creating-a-custom-field-type)**: In the same spirit of reusability, we can have smaller types that must behave in a certain way. Eg: Most content types will need Date, phone number, email address, etc. They aren't simple properties since we can attach some behavior (like validation rules) but they aren't content parts either (too "small"). 
+
+Con el mismo espíritu de reutilización, podemos tener tipos más pequeños que deben comportarse de una determinada manera. Por ejemplo: La mayoría de los content type necesitarán fecha, número de teléfono, dirección de correo electrónico, etc. y no son propiedades simples ya que podemos unir un poco de comportamiento (como las reglas de validación), pero tampoco son content part (demasiado "pequeños").
+
 * **Record**: In order to be able to save a content type/part (in a SQL database), it needs to be "linked" to a record. It is a class with all the properties that should be saved. Eg: A Map part must save its coordinates (Latitude &amp; Longitude), so it will be linked to a record with these two properties; and Orchard will do the rest to load/save it. You will not have to deal with records unless you [develop your own module](Building-a-hello-world-module). But it is useful to understand this concept in case you encounter it.
+
+Con el fin de ser capaz de guardar un Content Type/Part (en una base de datos SQL), éste debe ser "unido" a un registro. Que es una clase con todas las propiedades que se deben guardar. Por ejemplo: Un Part Map debe guardar sus coordenadas (latitud y longitud), por lo que estará vinculado a un registro con estas dos propiedades, y Orchard hará el resto para cargar / guardar. No tendrás que lidiar con los registros a menos que [develop your own module](Building-a-hello-world-module). Pero la información presentada es útil para entender este concepto en caso de que se lo encuentre.
+
 
 Note that a content type can only have one of each kind of content parts. But it can have many fields of the same kind. The reason is in the semantic meaning of these concepts. For example, a blog post can only have one commenting aspect and it can have many dates (creation date, last update date, etc.).
 
-Since Orchard is an [open source project](frequently-asked-questions), feel free to [contribute](Contributing-patches) any feature/module you would like.
+Tenga en cuenta que un Content Type sólo puede tener uno de cada Content Part. Pero puede tener muchos Content Fields de la misma clase. La razón está en el significado semántico de estos conceptos. Por ejemplo, una entrada de blog sólo puede tener un tipo "comentario" pero sin embargo puede tener muchas fechas (fecha de creación, fecha de última actualización, etc.)
 
-# Conclusion
-We are going to stop here. At this point, you should have a good understanding of what is Orchard. Any article talking about [how to use it](MainPage) should be easier to understand. The next step is to get into a bit more details about modules, themes and the [low-level architecture of Orchard](How-Orchard-works). This would be useful when you start learning [how to extend Orchard](Building-a-hello-world-module).
+
+Orchard es un [proyecto open source](frequently-asked-questions), siéntete libre de [contribuir](Contributing-patches) con cualquier característica/módulo que quieras.
+
+# Conclusión
+
+Vamos a detenernos aquí. En este punto, usted debe tener una buena comprensión de lo que es Orchard. Cualquier artículo que habla sobre [cómo usarlo](MainPage) debería ser más fácil de entender. El siguiente paso es entrar en detalles un poco más en profundidad sobrelos módulos, temas, y [la arquitectura a bajo nivel de Orchard](How-Orchard-works). Esto es útil cuando empiezas a aprender[cómo extender Orchard](Building-a-hello-world-module).
