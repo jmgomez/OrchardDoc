@@ -1,4 +1,7 @@
-Building a Web CMS (Content Management System) is unlike building a regular web application: it is more like building an application container. When designing such a system, it is necessary to build extensibility as a first-class feature. This can be a challenge as the very open type of architecture that's necessary to allow for great extensibility may compromise the usability of the application: everything in the system needs to be composable with unknown future modules, including at the user interface level. Orchestrating all those little parts that don't know about each other into a coherent whole is what Orchard is all about.
+
+Crear un CMS (Content Management System o gestor de contenidos) es diferente a la construcción de una aplicación web normal: su arquitectura es más como la construcción de un contenedor de aplicaciones. Al diseñar tal sistema, es necesario construir pensando en la extensibilidad como una de las principales necesidades. Esto puede ser un reto ya que la extensibilidad se consigue vía una arquitectura abierta y esto, puede comprometer la usabilidad de la aplicación: todo lo que el sistema requiere será construido a base de módulos desconocido en el futuro, incluso a nivel de interfaz de usuario. Orquestar estas pequeñas partes desconocidas entre sí, es lo que trata de hacer Orchard.
+
+
 
 This document explains the architectural choices we made in Orchard and how they are solving that particular problem of getting both flexibility and a good user experience.
 
@@ -7,9 +10,9 @@ This document explains the architectural choices we made in Orchard and how they
 
 <table cellspacing="2" cellpadding="2" border="1" style="width:100%">
 <tr>
-<td colspan="4" align="center">Modules
+<td colspan="4" align="center">Modulos
 </tr><tr>
-<td colspan="4" align="center">Core
+<td colspan="4" align="center">Núcleo
 </tr><tr>
 <td colspan="4" align="center">Orchard Framework
 </tr><tr>
@@ -25,16 +28,20 @@ This document explains the architectural choices we made in Orchard and how they
 </tr>
 </table>
 
-# Orchard Foundations
+#Los cimientos de Orchard
 
 The Orchard CMS is built on existing frameworks and libraries. Here are a few of the most fundamental ones:
 
-- [ASP.NET MVC](http://www.asp.net/mvc): ASP.NET MVC is a modern Web development framework that encourages separation of concerns.
-- [NHibernate](http://nhforge.org/): NHibernate is an object-relational mapping tool. It handles the persistence of the Orchard content items to the database and considerably simplifies the data model by removing altogether the concern of persistence from module development. You can see examples of that by looking at the source code of any core content type, for example Pages.
-- [Autofac](http://code.google.com/p/autofac/): Autofac is an [IoC container](http://en.wikipedia.org/wiki/Inversion_of_control). Orchard makes heavy use of dependency injection. Creating an injectable Orchard dependency is as simple as writing a class that implements IDependency or a more specialized interface that itself derives from IDependency (a marker interface), and consuming the dependency is as simple as taking a constructor parameter of the right type. The scope and lifetime of the injected dependency will be managed by the Orchard framework. You can see examples of that by looking at the source code for IAuthorizationService, RolesBasedAuthorizationService and XmlRpcHandler.
-- [Castle Dynamic Proxy](http://www.castleproject.org/dynamicproxy/index.html): we use Castle for dynamic proxy generation.
+Orchard CMS se basa en en Frameworks y librerías preexistentes. Estas son algunas de las más importantes:
 
-The Orchard application and framework are built on top of these foundational frameworks as additional layers of abstraction. They are in many ways implementation details and no knowledge of NHibernate, Castle, or Autofac should be required to work with Orchard.
+- [ASP.NET MVC](http://www.asp.net/mvc): ASP.NET MVC es un framework de desarrollo web moderno, que fomenta la separación de compontentes.
+- [NHibernate](http://nhforge.org/): NHibernate es una herramienta de mapeo objeto-relacional. Se ocupa de la persistencia de los ContentItem de Orchard en la base de datos y simplifica considerablemente el modelo de datos mediante la eliminación por completo de la persistencia en el desarrollo de módulos. Puedes ver ejemplos de código en cualquier Content Type básico, como por ejemplo, Pages.
+
+- [Autofac](http://code.google.com/p/autofac/): Autofac es un [contenedor de inversión de control o loC](http://en.wikipedia.org/wiki/Inversion_of_control). Orchard hace un uso intensivo de inyección de dependencias. La creación de una dependencia inyectable en Orchard es tan simple como escribir una clase que implementa una interfaz IDependency o de una clase derivada de IDependency, y el consumo de la dependencia es tan simple como pasar un parámetro al constructor del tipo correcto. El ámbito y el ciclo de vida de la dependencia inyectada será gestionado por Orchard. Puedes ver ejemplos en el código fuente de IAuthorizationService, RolesBasedAuthorizationService y XmlRpcHandler.
+
+
+- [Castle Dynamic Proxy](http://www.castleproject.org/dynamicproxy/index.html): Castle se usa para la generación de dynamic proxy (proxy dinámico). Orchard se construyen en la parte superior de estos frameworks establecidas como capas adicionales de abstracción. Se encuentran en partes muy profundias en la arquitectura y no se necesita conocimiento de NHibernate, Castillo, o autofac para trabajar con Orchard.
+
 
 # Orchard Framework
 
