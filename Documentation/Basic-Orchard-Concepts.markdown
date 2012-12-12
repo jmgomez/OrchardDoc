@@ -1,34 +1,35 @@
 
-Orchard is a Web CMS, which essentially aims at helping you build web sites from existing pieces. Those pieces come in a few different sizes and shapes that need to be well understood if you're going to be productive with them. This article will go through those pieces and explain their names and behavior.
+Orchard es un sistema de gestión de contenidos basado en (Web CMS). Orchard tiene como principal objetivo ayudarte a construir sitios web a partir de piezas existentes. Estas piezas vienen en diferentes tamaños y formas que es necesario entender bien si pretendes llegar a ser productivo con ellas. En este artículo profundizaremos en estas piezas y explicaremos sus nombres y comportamientos.
 
+# Definiciones generales de CMS
 
-# General CMS definitions
+## Contenido
 
-## Content
+La 'C' en CMS significa "content" en inglés, obviamente contenido en español. De modo que parece razonable decir que el contenido es todo lo que CMS gestiona. Con más exactitud, el contenido es cualquier elemento de un sitio web que tiene información en sí mismo. Por ejemplo, una entrada de un blog, un comentario, un producto, también el menú de navegación o el logotipo de tu compañía. Todos ellos son piezas de contenido individuales y perfectamente identificables. Si estás pensando en este momento, que contenido es todo lo que hay en un sitio web, estás en lo cierto. Si estabas pensando que esto es algo difuso y poco claro, podrías estar en lo cierto, pero afortunadamente vamos a detallar las peculiaridades y diferencias entre los diferentes tipos de contenido en las próximas secciones.
 
-The 'C' in CMS means "content" so it would be fair to say that content is anything that the CMS manages. More precisely, content is everything in the site that has any information in it. For example, a blog post, a comment, a product and even the navigation menu or your company's logo are identifiable, individual pieces of content. If you were thinking at this moment that content is pretty much everything on the site you'd be right. If you were thinking that is pretty vague, you'd be right as well, but fortunately we will get a lot more specific and distinguish between different kinds of content in following sections.
+## Panel de administración, dashboard o back-end
 
-## Admin panel, Dashboard or back-end
-
-The admin panel (sometimes also called dashboard or back-end) is where you manage your site and its content. It is restricted to users who have the "Access admin panel" permission. This is the 'M' in CMS.
+El panel de administración es el apartado donde administras el sitio web y su contenido. El acceso y el uso a este está restringido, de modo que sólo los usuarios que tienen el permiso "Access admin panel" pueden tuilizarlo. El panel de administración es la 'M' en CMS.
 
 ![](../Attachments/Basic-Orchard-Concepts/Adminpanel.PNG)
 
 ## CMS
 
-And the 'S' in CMS is for "System", which is not as vague and meaningless as it seems. It's important that CMS manage content in a systematic way: it means that all content is managed homogeneously, which enables mutuality of resources.
+Y la 'S' en CMS significa "System" en inglés, sistema en español. Usar la palabra sistema no es tan difuso y sin sentido como parece. Es muy importante que un CMS gestione el contenido de una manera sistemática: esto significa que todo el contenido es administrado de forma homogénea, lo que permite compartir recursos.
 
 For example, you can manage blog posts, pages and products using common tools, and all of those can get comments, ratings or tagging from common modules. This gives you a more consistent experience and facilitates the creation of new types of content.
 
+Por ejemplo, puedes gestionar entradas en el blog, páginas y productos usando herramientas comunes para ambos, y todos ellos pueden disponer de comentarios, valoraciones o etiquetado gracias a módulos comunes a todos.
+
 ## Front-end
 
-The front-end is the part of the site that is accessible to regular and anonymous users. In other words, it's the public-facing part of your site: everything but the admin UI.
+El front-end, en español también conocido como página pública en contraste con el panel de administración que es de acceso restringido, es el apartado del sitio web sin restricciones de acceso y que acepta tanto usuarios anónimos como usuarios registrados. En otras palabras, es la cara pública de tu sitio web, todo excepto el panel de administración.
 
 ![](../Attachments/Basic-Orchard-Concepts/FrontEnd.PNG)
 
 ## Setup
 
-Setup is the process you must follow in order to get your web site to working condition (and no more than that, you still have work to do after it's done, such as creating content).
+Setup es el proceso que debes seguir para que tu sitio web empiece a funcionar (y nada más, todo el resto del trabajo se debe hacer después, como crear el contenido).
 
 ![](../Attachments/Basic-Orchard-Concepts/Setup.PNG)
 
