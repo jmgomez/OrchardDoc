@@ -29,29 +29,31 @@ El front-end, en español también conocido como página pública en contraste c
 
 ## Setup
 
-Setup es el proceso que debes seguir para que tu sitio web empiece a funcionar (y nada más, todo el resto del trabajo se debe hacer después, como crear el contenido).
+Setup es el proceso que debes seguir para que tu sitio web empiece a funcionar (y nada más, todo el resto del trabajo se debe hacer después, como por ejemplo crear el contenido).
 
 ![](../Attachments/Basic-Orchard-Concepts/Setup.PNG)
 
-# Orchard concepts
+# Conceptos de Orchar
 
 ## Content Item
 
-A content item is a single piece of content, often associated with a single URL (address) on the site. Examples of content items are pages, blog posts or products.
+Un content item, es una pequeña pieza de contenido, con frecuencia a sociada a una única dirección URL del sitio web. Algunos ejemplos de content items son páginas, entradas del blog o productos. 
 
-## Content type
+## Content type (tipo de contenido)
 
 Content items are instances of content types. Said differently, content types are classes of content items. We said in the previous section that examples of content items are pages, blog posts, and products. Those three examples also describe three content types: page, blog post and product. In other words what we call a blog post is just an item of type blog post.
+Los Content items son instancias de content types. Dicho de otra manera, content types son las clases de los content items. Hemos dicho en la sección anterior que ejemplos de content items son páginas, entradas de blog y productos. Estos tres ejemplso también describen tres content types: page, blog post y product. Es decir, a lo que llamamos entrada de blog es solo un item del tipo blog post.
 
 ## Content Part
 
-In Orchard, content types are built from smaller parts, that are conveniently called content parts. Content parts are atoms of content that are enough to build a specific coherent behavior and that can be reused across content types.
+En Orchard, los content types están construidos a partir de pequeñas partes, llamadas content parts. Las content parts son átomos de contenido que son suficientes para proporcionar un comportamiento específico y coherente y que pueden reusarse con otros content types.
 
 ![A blog post is made from parts.](../Attachments/Basic-Orchard-Concepts/ContentParts.PNG)
 
-For example, comments, tags or ratings are content parts because they define a specific behavior and can be reused by any content type. There is nothing in comments that is specific to a given content type such as blog posts. Comments can be equally useful on blog posts as they would be on pages or products.
+Por ejemplo, los comentarios, etiquetas y valoraciones son content parts porque definen comportamientos específicos y pueden reusarse por cualquier content type. No hay nada en el content part comentarios que lo hagan específico a un content type concreto como por ejemplo las entradas de blog. Los comentarios pueden ser igualmente útiles en entradas de blog como pueden serlo en las páginas del sitio o los productos.
 
 There can be only one of each part on any given content type.
+Sólo puede haber una tipología de content part en cada conten type dado. Por ejemplo, no pueden haber dos content part de la clase commments(comentarios) en el content type blog post.
 
 ## Content Field
 
