@@ -41,7 +41,6 @@ Un content item, es una pequeña pieza de contenido, con frecuencia a sociada a 
 
 ## Content type (tipo de contenido)
 
-Content items are instances of content types. Said differently, content types are classes of content items. We said in the previous section that examples of content items are pages, blog posts, and products. Those three examples also describe three content types: page, blog post and product. In other words what we call a blog post is just an item of type blog post.
 Los Content items son instancias de content types. Dicho de otra manera, content types son las clases de los content items. Hemos dicho en la sección anterior que ejemplos de content items son páginas, entradas de blog y productos. Estos tres ejemplso también describen tres content types: page, blog post y product. Es decir, a lo que llamamos entrada de blog es solo un item del tipo blog post.
 
 ## Content Part
@@ -52,18 +51,19 @@ En Orchard, los content types están construidos a partir de pequeñas partes, l
 
 Por ejemplo, los comentarios, etiquetas y valoraciones son content parts porque definen comportamientos específicos y pueden reusarse por cualquier content type. No hay nada en el content part comentarios que lo hagan específico a un content type concreto como por ejemplo las entradas de blog. Los comentarios pueden ser igualmente útiles en entradas de blog como pueden serlo en las páginas del sitio o los productos.
 
-There can be only one of each part on any given content type.
 Sólo puede haber una tipología de content part en cada conten type dado. Por ejemplo, no pueden haber dos content part de la clase commments(comentarios) en el content type blog post.
 
-## Content Field
+## Content Field (contenido campo)
 
 Content fields are pieces of information that can be added to a content type. Content fields have a name and a type and are specific to a content type. There can be several of each field type on any given content type.
 
-For example, a Product content type can have a text field representing its Sku, a numeric field representing its price, and another numeric field representing its weight. Each of these fields probably only makes sense on a product.
+Los Content fields son porciones de información que pueden ser añadidas a un content type. Los Content fields tienen un nombre y tipo que le son específicos para un content type.
 
-> Note: it would be possible to create a product part with three properties that would be roughly equivalent to this set of fields. This would have the advantage of making it possible to transform any content type into a product. Each approach is a valid choice and Orchard allows for both.
+Por ejemplo, un content type Producto puede tener un campo de texto representando su código de referencia (en inglés SKU), un campo numérico conteniendo su precio y otro campo numérico representando su peso. Cada uno de estos campos es posible que solo tengan sentido en el ámbito de un producto.
 
-## Module
+> Nota: Es posible crear un producto part con tres propiedades que podrían ser a groso modo equivalentes a este conjunto de campos mencionado. Esto tiene la ventaja de hacer posible que se pueda transformar cualquier tipo de contenido (content type) en un producto. Cualquier punto de vista elegido es una opción válida y Orchard las permite.
+
+## Module (Módulo)
 
 The various possible custom possible extensions that can be built for Orchard are typically built as modules. A module is a set of extensions for Orchard that are grouped under a single sub-folder of the Modules directory that can be found under the Orchard web site.
 
