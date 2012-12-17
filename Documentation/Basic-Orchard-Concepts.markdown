@@ -65,25 +65,25 @@ Por ejemplo, un content type Producto puede tener un campo de texto representand
 
 ## Module (Módulo)
 
-The various possible custom possible extensions that can be built for Orchard are typically built as modules. A module is a set of extensions for Orchard that are grouped under a single sub-folder of the Modules directory that can be found under the Orchard web site.
+Las posibles extensiones personalizadas que pueden construirse para Orchard, son construidas normalmente como módulos (modules). Un módulo es un conjunto de extensiones para Orchard que son agrupadas bajo una única sub-carpeta en el directorio Modules, que puede encontrarse en cualquier website desarrollado sobre Orchard.
 
-Optional modules for Orchard can be found in the Orchard Gallery (see the menu entry on top of this page).
+Los módulos opcionales para Orchard pueden encontrarse en Orchard Gallery, una galería de módulos disponibles para Orchard (echa un vistazo al enlace en el menú superior de esta página).
 
 ![The Module management screen](../Attachments/Basic-Orchard-Concepts/Modules.PNG)
 
-## Feature
+## Feature (Característica)
 
-A module can contain one or more features, which is a logical grouping of functionality that can be enabled or disabled individually. For example, a custom authentication module could have separate features for OpenID, FaceBook, LiveID, Twitter or Google authentication that can each be turned on or off.
+Un módulo puede contener una o más características, las cuales son una agrupación lógica de funcionalidades que pueden ser activadas o desactivadas individualmente. Por ejemplo, un módulo de autenticación personalizado puede tener características separadas para OpenID, FaceBook, LiveID, Twitter o Google las cuales pueden encenderse o apagarse.
 
-Features can depend on each other, whether they are in the same module or not.
+Las características pueden depender unas de otras, aunque estén o no estén en un mismo módulo.
 
 ![The feature management screen](../Attachments/Basic-Orchard-Concepts/Features.PNG)
 
-## Manifest
+## Manifest (Manifiesto)
 
-A manifest is a small text file that describes a module or a theme to the system.
+Un manifiesto es un archivo de texto de pequeño tamaño que escribe un módulo o tema para el sistema.
 
-Here is an example of a manifest:
+Este es un ejemplo de manifiesto:
 
     
     Name: Comments
@@ -101,9 +101,9 @@ Here is an example of a manifest:
             Category: Social
 
 
-# UI composition
+# UI composition (composición de interfaz de usuario)
 
-Orchard manages content that is composed from parts. It needs a mechanism that orchestrates the display while taking into account the composite nature of the content. This is why we talk about UI composition, as elementary bits and pieces of content need to be composed into a harmonious and consistent whole. Several concepts contribute to this UI composition.
+Orchard administra contenido que está compuesto por partes. Esto necesita de un mecanismo para orquestrar la forma de mostrarle cuando se tiene en cuenta la naturaleza de la composición del contenido. Esta es la razón por la que hablamos de UI composition, como unos bits y piezas elementales de contenido necesarias para ser compuestas dentro de un todo armonioso y consistente. Varios conceptos contribuyen a la UI composition.
 
 ## Theme
 
