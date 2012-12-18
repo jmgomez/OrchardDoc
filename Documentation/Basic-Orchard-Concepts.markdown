@@ -105,43 +105,47 @@ Este es un ejemplo de manifiesto:
 
 Orchard administra contenido que está compuesto por partes. Esto necesita de un mecanismo para orquestrar la forma de mostrarle cuando se tiene en cuenta la naturaleza de la composición del contenido. Esta es la razón por la que hablamos de UI composition, como unos bits y piezas elementales de contenido necesarias para ser compuestas dentro de un todo armonioso y consistente. Varios conceptos contribuyen a la UI composition.
 
-## Theme
+## Theme (Tema)
 
-When designing a web site, it is important to be able to modify the visual look of every single aspect of the site. Orchard provides a clean separation between the content management and the visual rendering of the content.
+Al diseñar un sitio web, es importante poder modificar el aspecto visual de cada detalle del sitio. Orchard ofrece una separación bien clara entre la administración del contenido y el renderizado visual del contenido.
 
-A theme is a packaged look and feel for an Orchard site. It can consist of any combination of style sheets, images, layouts, templates and even custom code. It is even possible to create a theme that inherits from another, which is very useful if you are trying to make only small modifications on an existing theme.
+Un tema (theme) es un diseño empaqueado para un sitio de Orchard. Consiste en una combinación de hojas de estilo, imágenes, maqueta o estructura, plantillas y también código personalizado. También es posible crear un tema que hereda de otro tema, lo cual es muy útil si pretendes hacer pequeñas modificaciones a un tema existente.
 
-![The same site can be displayed differently by switching themes.](../Attachments/Basic-Orchard-Concepts/ThemeComparison.png)
+![El mismo sitio puede mostrarse diferente cambiando entre temas](../Attachments/Basic-Orchard-Concepts/ThemeComparison.png)
 
-## Layout
+## Layout (maqueta, distribución, estructura)
 
 A layout is a file in a theme that defines the general organization of the pages of the site that use it. A layout typically defines a set of zones where contents or widgets can be inserted.
+Una maqueta es un archivo que forma parte de un theme y que define la distribución general del contenido de las páginas que la usan. Una maqueta normalmente define una serie de zonas donde se coloca el contenido o los widgets.
 
 ![The layout for the theme machine, with its various collapsible zones](../Attachments/Anatomy-of-a-theme/TheThemeMachineZoneScreenshot.PNG)
 
-## Template
+## Template (plantilla)
 
 Each content part, each field and each widget will need to be graphically represented in the front-end, transforming the data that it represents into a form that can be read by the users of the site. A template is the recipe that formats that data and transforms it into HTML for the browser to display. You can think of a template as plain HTML with well-defined "holes" where data gets inserted.
 
-Here is an example of a template that displays the title from the Route part:
+Cada content part, cada field y cada widget debe estar representado graficamente en el front-end (web pública), transformando la información a la que representa de forma que pueda ser leída e interpretada por los usuarios del sitio web. Una plantilla es una receta (recipe en inglés) que formatea los datos y los transforma en HTML para que los navegadores puedan mostrarlo.
+Puedes pensar en las plantillas como texto plano en HTML con "huecos" bien definidos en los que los datos son encajados.
+
+Aquí tienes un pequeño ejemplo de una plantilla que muestra el título de un Route part:
 
     
     <h1>@Model.Title</h1>
 
 
-## Shape
+## Shape (Figura)
 
-Before displaying something using a template, that something gets transformed into a shape, which is a very malleable object that contains all the information required in order to display it. Before getting rendered by templates, everything gets mapped into a tree of shapes that is a sort of abstract representation of the contents of the final page. The advantage of such trees of shapes is that any module can modify existing shapes or create new ones.
+Antes de mostrar algo usando una plantilla, ese algo debe ser transformado en un shape, el cual es un objeto maleable que contiene toda la información requerida para mostrarlo. Antes de ser renderizado por las plantillas, toda la información es mapeada en un árbol de shapes que es una especie de representación abstracta del contenido que aparecerá finalmente en la página. La ventaja de estos árboles de shapes es que cada módulo puede modificar shapes existentes o crear otros nuevos.
 
-The layout, zones, widgets and content parts all get represented as shapes as part of the rendering process.
+La maqueta, las zonas, los widgets y los content parts todos ellos son representados como shapes y al mismo tiempo como parte del proceso de renderizado.
 
-One could imagine for example a Gravatar module that would add avatar icon shapes to the comment shapes that were created by the comment module. In the same way, the layers from the widget module are adding widget shapes to the zone shapes of the layout shape.
+Uno puede imaginar por ejemplo un módulo de Gravatar que podría añadir un shape avatar al shape comentario que ha sido creado por el módulo comentarios. De la misma manera, las capas de un módulo widget son shapes widget añadidas a un shape zona que forma parte de un shape maqueta (layout shape).
 
-## Placement
+## Placement (disposición o colocación)
 
-When rendering the collections of parts and fields -or any other shapes- that compose a page or content item, Orchard needs to know in what order to do so. Placement.info files are XML files that describe rules that can be used to determine what shapes go into what zones and in what order. This enables not only the rendering of each shape to be customized, but also the order in which they get rendered.
+Cuando se renderiza una colección de parts y fields -o cualquier otro shape- que compone una página o un content item, Orchard necesita conocer en qué  orden hacerlo. Los archivos Placement.info son archivos XML que describen las reglas que deben usarse para definir qué shapes van dentro de qué zonas y en qué orden. Esto no permite solo renderizar cada shape que debe ser personalizado, si no que también el orden en el que van a ser renderizados.
 
-Here is an example of a placement file:
+Este es un ejemplo del archivo Placement.info:
 
     
     <Placement>
@@ -150,15 +154,15 @@ Here is an example of a placement file:
     </Placement>
 
 
-## Zone
+## Zone (Zona)
 
-Zones are specific parts of a layout that can be customized by inserting widgets. In some themes, zones are collapsible, which means that they disappear if they contain no active widget.
+Las zonas son partes específicas de la maqueta que pueden personalizarse insertando widgets en ellas. En algunos temas, las zonas pueden desplegarse y plegarse, lo cual significa que pueden desaparecer si no contienen ningún widget activo.
 
 ## Widget
 
-A widget is a small fragment of UI that can be added to some or all pages of the site. Examples of widgets are tag clouds, maps, archives, a search form, or recent blog posts.
+Un widget es un pequeño fragmente de interfaz de usuario (en inglés User Interfaze, UI), que puede agregarse a alguna o todas las páginas del sitio web. Ejemplos de widgets son la nube de palabras, los mapas, listado de entradas de blog, un formulario de búsqueda o el listado de las últimas entradas del blog.
 
-![A few widgets](../Attachments/Basic-Orchard-Concepts/Widget.PNG)
+![Algunos widgets](../Attachments/Basic-Orchard-Concepts/Widget.PNG)
 
 ## Layer
 
