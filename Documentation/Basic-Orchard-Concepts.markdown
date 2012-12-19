@@ -164,76 +164,76 @@ Un widget es un pequeño fragmente de interfaz de usuario (en inglés User Inter
 
 ![Algunos widgets](../Attachments/Basic-Orchard-Concepts/Widget.PNG)
 
-## Layer
+## Layer (Capa)
 
-A layer is a group of widgets (with their specific configuration, which includes their positioning -zone name and ordering-) that is activated by a specific rule.
+Una capa es un grupo de widgets (con su configuración específica que incluye su posición: el nombre de la zona y el orden) que es activado por una regla concreta.
 
-For example, the TheHomePage layer is activated by a rule that specifically selects the home page. The Default layer is always active no matter what page is displayed. The Authenticated layer is only active when users have identified themselves.
+Por ejemplo, la capa TheHomePage es activada por una regla que que selecciona específicamente la página de inicio. La capa por defecto está siempre activa sin importar qué página se muestra en el navegador. La capa Autenticado (Authenticated) sólo está activa cuando los usuarios se han loggeado correctamente.
 
-When more than one layer is active on any given page, all the widgets from all those layers get displayed at the same time. Orchard orders them based on their position string.
+Cuando más de una capa está activa en una página dada, todos los widgets de esas capas son mostrados al mismo tiempo. Orchard los ordena según su cadena de posición.
 
-# Security
+# Seguridad
 
-## Users and roles
+## Usuarios y roles
 
-In Orchard, users can be attributed roles, which can be seen as stereotypes of users. Permissions can then be attributed to roles in order to define who can do what on the site (more on this in the next section). Any user can have one or several roles.
+En Orchard, los usuarios pueden ser roles atribuídos, los cuales pueden ser vistos como estereotipos de usuarios. Los permisos pueden ser atribuidos a los roles para definir quién puede hacer qué en el sitio web (se profundizará más sobre esto en la próxima sección). Cualquier usuario pueden tener uno o más roles.
 
-Site owners can create their own roles but Orchard comes with built-in roles that should cover most sites' requirements:
+Los propietarios de un sitio web pueden crear sus propios roles, pero Orchard proporciona de inicio un conjunto de roles que deberían cubrir las necesidades de la mayoría de sitios web:
 
-* Administrator: have full control over the site's settings and contents.
-* Editor: does not create content but edit and publish content created by authors.
-* Moderator: validates user-created contents such as comments.
-* Author: writes and publishes his own content.
-* Contributor: writes content but does not necessarily have the rights to publish it.
-* Anonymous: an unknown user, someone who hasn't logged in.
-* Authenticated: any user who has logged in.
+* Administrator: tiene control absoluto sobre la configuración del sitio y el contenido.
+* Editor: no crea contenido pero edita y publica el contenido creado por los autores.
+* Moderator: valida el contenido creado por los usuarios, por ejemplo los comentarios.
+* Author: escribe y publica su propio contenido.
+* Contributor: escribe contenido y no necesariamente tiene derechos de publicación sobre éstos.
+* Anonymous: es un usuario anónimo que no tiene por qué estar registrado en la página.
+* Authenticated: cualquier usuario que se ha identificado con usuario y contraseña en el sitio web.
 
-Neither Anonymous nor Authenticated can be assigned to a user manually. Rather, they are determined dynamically at runtime.
+Ni Anonymous ni Authenticated pueden ser asignados a un usuario manualmente. Por el contrario, son asignados dinámicamente en tiempo de ejecución.
 
-## Privileges and Permissions
+## Privilegios y permisos
 
-All users don't have the same rights and privileges in Orchard: the site owner can choose who can create content, who can write or validate comments, etc. Rights and privileges are represented as permissions. In Orchard, permissions are granted to roles but are not explicitly denied. In other words if a user belongs to any role that has a given permission, he has that permission. To revoke a permission, you need to either remove a user with the role the permission has been granted to or you need to remove that permission for the whole role.
+No todos los usuarios tienen los mismos derechos y privilegios en Orchard: el propietario del sitio web puede elegir quien crea contenido, quien lo escribe o quien valida comentarios, etc. Los derechos y privilegios son representados como permisos. En Orchard, los permisos son asignados a roles pero no se especifica la denegación de permisos. Es decir, is un usuario tiene asignado un role y este role tiene un permiso dado, el usuario tiene ese permiso. Para revocar un permiso, necesitas eliminar al usuario del listado de usuarios con ese permiso o eliminar el permiso del role que tiene el usuario.
 
-Some permissions are "effectively granted". This means that they have not been explicitly granted, but that they have been implied by another permission. For example, if you grant the site owner permission, you are implicitly granting all the other permissions.
+Algunos permisos son "efectivamente garantizados". Esto quiere decir que esos permisos no han sido garantizados explícitamente, pero sin embargo esos permisos están implícitos en otro permiso. Por ejemplo, si garantizas el permiso de propietario web, estás garantizando de forma implícita todos los demás permisos existentes.
 
 ![](../Attachments/Basic-Orchard-Concepts/Permissions.PNG)
 
 Permissions, as well as their default settings for the built-in roles, are defined by modules. This means that if you build your own module, you can define specific permissions to accompany it.
 
-## Site owner
+## Site owner (propietario del sitio web)
 
-The site owner, sometimes also called "super user" is a special user that is defined at setup time and that has all the rights on the site. It can be changed from the settings admin screen if you have the permission to do so.
+El propietario del sitio web, en algunas ocasiones llamado súper usuario (super user en inglés) es un usuario especial que se define al configurar el sitio por primera vez y que tiene todos los derechos del sitio web. Puede cambiarse desde el panel de administración en el apartado de configuración si se tiene permisos para hacerlo.
 
-There is a permission called "Site Owners Permission" that grants the same right and that is granted by default to only members of the Administrator role. We advise never to grant that permission to any other role.
+Hay un permiso llamado "Site Owners Permission" (Permiso de propietario del sitio) que garantiza el mismo derecho que si hubiera sido asignado con la configuración inicial. Aconsejamos no garantizar nunca este permiso a ningún otro role distinto a administrador.
 
-# Development
 
-In this section we will describe concepts that are only required for module developers.
+# Desarrollo
+
+En esta sección vamos a describir los conceptos que solo son requeridos para desarrolladores de módulos.
 
 ## ASP.NET MVC
 
-ASP.NET MVC is the Web framework that Orchard is built on.
+ASP.NET MVC es la plataforma web sobre la que está construido Orchard.
 
 ## Handler
 
-A handler is similar to an MVC filter in that it contains code that will execute for specific events of the request life-cycle. They are typically used to set-up data repositories or to do additional operations when something gets loaded.
+Un handler es similar a un filtro MVC que contiene el código que ejecutará eventos específicos durante el ciclo de vida de una petición. Los handler son usados normalmente para establecer repositorios de datos o realizar operaciones adicionales al cargar algo.
 
 ## Driver
 
-Drivers are similar to MVC controllers, but they act at the level of a content part instead of at the level of the full request. They typically prepare shapes for rendering and handle post-backs from admin editors.
+Los drivers son similares a los controles MVC, pero actúan al nivel del content part en lugar de al nivel de toda la petición. Los drivers normalmente preparan shapes para renderizarlas y administran post-backs desde los editores del panel de administración.
 
 ## Record
 
-A record is a class that models the database representation of a content part. They are POCOs where each property must be virtual.
+Un record es una clase que modela la representación de una base de datos de un content part. Son objetos POCO en los que cada propiedad debe ser virtual.
 
 ## Model
 
-What plays the part of the model for a content part is the part class itself. Some parts also define view models, in the form of strongly-typed classes or of more flexible dynamic shapes.
+Un modelo es una clase de content part. Algunas parts también definen modelos de vista (view models), en la forma de clases fuertemente tipadas o shapes dinámicas más flexibles.
 
 ## Migration
 
-A migration is a description of the operations to execute when first installing a feature or when upgrading it from a version to the next. This enables smooth upgrades of individual features without data loss. Orchard includes a data migration framework.
+La migración es una descripción de operaciones para ejecutar en la primera instalación de una característica o al actualizar la característica de una versión a otra. Esto activa actualizaciones suaves (smooth upgrades) de características individuales sin perder la información. Orchard incluye una plataforma para migración de datos.
 
-## Injection
-Inversion of Control, or injection, is widely used in Orchard. When any piece of code requires a dependency, it will typically demand the injection of one or several instances of a specific interface. The framework will take care of selecting, instantiating and injecting the right implementations at runtime.
-
+## Injection (Inyección de dependencias)
+Inversion of Control (IoC), o inyeccion es ampliamente utilizado en Orchard. Cuando una porción de códico requiere una depenfencia, normalmente pedirá que le sea inyectada una o varias instancias de una interfaz eespecífica. La plataforma se preocupará de seleccionar, instanciar e inyectar las implementaciones correctas en tiempo de ejecución.
