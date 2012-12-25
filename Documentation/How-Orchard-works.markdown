@@ -45,39 +45,43 @@ Orchard CMS se basa en en Frameworks y librerías preexistentes. Estas son algun
 
 # Orchard Framework
 
-The Orchard framework is the deepest layer of Orchard. It contains the engine of the application or at least the parts that couldn't be isolated into modules. Those are typically things that even the most fundamental modules will have to rely on. You can think of it as the base class library for Orchard.
 
-## Booting Up Orchard
+El  Orchard framework es la capa más profunda de Orchard. Contiene el motor de la aplicación o al menos las partes que no se pudieron aislar en módulos. Estas partes son por lo general las cosas que hasta los módulos más fundamentales tendrán que confiar. Puede pensar en él como la biblioteca de clases base de Orchard.
 
-When an Orchard web application spins up, an Orchard Host gets created. A host is a singleton at the app domain level.
+## Arrancancdo Orchard
 
-Next, the host will get the Shell for the current tenant using the ShellContextFactory. Tenants are instances of the application that are isolated as far as users can tell but that are running within the same appdomain, improving the site density. The shell is a singleton at the tenant level and could actually be said to represent the tenant. It's the object that will effectively provide the tenant-level isolation while keeping the module programming model agnostic about multi-tenancy.
+Cuando una aplicación web Orchard empieza a funcionar, un host de Orchard se crea. Un host es un producto único en el nivel de dominio de aplicación.
 
-The shell, once created, will get the list of available extensions from the ExtensionManager. Extensions are modules and themes. The default implementation is scanning the modules and themes directories for extensions.
+A continuación, el host tendrá la Shell para el tenant (inquilino) actual mediante el ShellContextFactory. Los tenant son instancias de la aplicación que están aislados por lo que los usuarios pueden contar, pero que se están ejecutando en el dominio de aplicación misma, mejorando la densidad de sitios. La shell es un producto único en el nivel de tenant y en realidad podría decirse que representa el tenant. Es el objeto que efectivamente proporcionan el  aislamiento tenant-nivel, manteniendo el modelo de programación de módulo agnóstico acerca de múltiples clientes.
 
-At the same time, the shell will get the list of settings for the tenant from the ShellSettingsManager. The default implementation gets the settings from the appropriate subfolder of App_data but alternative implementations can get those from different places. For example, we have an Azure implementation that is using blob storage instead because App_data is not reliably writable in that environment.
+La shell, una vez creadoa, obtendrá la lista de extensiones disponibles en el ExtensionManager. Las extensiones son módulos y temas. La implementación por defecto escanea los módulos y directorios de temas para obtener las extensiones.
+
+Al mismo tiempo, la shell obtendrá la lista de configuraciones para los tenant de la ShellSettingsManager. La implementación predeterminada obtiene los valores de la subcarpeta apropiada de App_Data pero las implementaciones alternativas pueden obtener los distintos lugares. Por ejemplo, tenemos una aplicación que está utilizando en Azure con almacenamiento de blob en lugar App_Data porque no es fiable escribir en ese ambiente.
+
 
 The shell then gets the CompositionStrategy object and uses it to prepare the IoC container from the list of available extensions for the current host and from the settings for the current tenant. The result of this is not an IoC container for the shell, it is a ShellBlueprint, which is a list of dependency, controller and record blueprints.
 
-The list of ShellSettings (that are per tenant) and the ShellBluePrint are then thrown into ShellContainerFactory.CreateContainer to get an ILifetimeScope, which is basically enabling the IoC container to be scoped at the tenant level so that modules can get injected dependencies that are scoped for the current tenant without having to do anything specific.
+La shell obtiene el objeto CompositionStrategy y lo utiliza para preparar el contenedor IoC de la lista de extensiones disponibles para el host actual y las opciones para el inquilino actual. El resultado de esto no es un contenedor IoC para la carcasa, es un ShellBlueprint, que es una lista de los planos de dependencia, del controlador y de registro blueprint.
 
-## Dependency Injection
+La lista de ShellSettings (que son por tenant) y ShellBluePrint son entonces arrojados a ShellContainerFactory.CreateContainer para obtener una ILifetimeScope, que básicamente, permite al contenedor IoC limitar el ámbito a nivel de tenant para que los módulos se pueden inyectar las dependencias cuyo ámbito de el tenant actual sin tener que hacer nada específico.
 
-The standard way of creating injectable dependencies in Orchard is to create an interface that derives from IDependency or one of its derived interfaces and then to implement that interface. On the consuming side, you can take a parameter of the interface type in your constructor. The application framework will discover all dependencies and will take care of instantiating and injecting instances as needed.
+## Inyección de dependencias
 
-There are three different possible scopes for dependencies, and choosing one is done by deriving from the right interface:
+La manera estándar de crear dependencias inyectables en Orchard es crear una interfaz que se deriva de IDependency o una de sus interfaces derivadas y luego implementar dicha interfaz. En el lado del consumidor, se puede coger un parámetro del tipo de interfaz en su constructor. El framework de aplicación descubrirá todas las dependencias y se hará cargo de una instancia y la inyección de instancias según sea necesario.
 
-- Request: a dependency instance is created for each new HTTP request and is destroyed once the request has been processed. Use this by deriving your interface from IDependency. The object should be reasonably cheap to create.
-- Object: a new instance is created every single time an object takes a dependency on the interface. Instances are never shared. Use this by deriving from ITransientDependency. The objects must be extremely cheap to create.
-- Shell: only one instance is created per shell/tenant. Use this by deriving from ISingletonDependency. Only use this for objects that must maintain a common state for the lifetime of the shell.
+Hay tres diferentes ámbitos posibles para las dependencias, y la elección se lleva a cabo mediante la derivación desde la interfaz de la derecha:
 
-### Replacing Existing Dependencies
+- Solicitud: un ejemplo de dependencia se crea para cada nueva petición HTTP y se destruye una vez que la solicitud ha sido procesada. Utilice esta derivando su interfaz de IDependency. El objetivo debería ser razonablemente barato para crear.
+- Objeto: una nueva instancia es creada cada vez que un objeto toma una dependencia en la interfaz. Las instancias no son compartidas. Utilice esta derivando de ITransientDependency. Los objetos deben ser extremadamente barato de crear.
+- Shell: una sola instancia se crea por shell / tenant Utilice esta derivando de ISingletonDependency. Sólo la usamos para objetos que deben mantener un estado común para el tiempo de vida de la shell.
 
-It is possible to replace existing dependencies by decorating your class with the OrchardSuppressDependency attribute, that takes the fully-qualified type name to replace as an argument.
+### Reemplazando dependencias existentes
+
+Es posible reemplazar las dependencias existentes en la decoración de su clase con el atributo OrchardSuppressDependency, que lleva el nombre de tipo completo para reemplazar como argumento.
 
 ### Ordering Dependencies
 
-Some dependencies are not unique but rather are parts of a list. For example, handlers are all active at the same time. In some cases you will want to modify the order in which such dependencies get consumed. This can be done by modifying the manifest for the module, using the Priority property of the feature. Here is an example of this:
+Algunas dependencias no son únicas sino más bien partes de una lista. Por ejemplo, los controladores están activos al mismo tiempo. En algunos casos, tendrá que modificar el orden en que dichas dependencias se consumen. Esto puede hacerse modificando el manifiesto para el módulo, utilizando la propiedad de la característica de prioridad. Aquí hay un ejemplo de esto:
 
     
     Features:
@@ -92,177 +96,175 @@ Some dependencies are not unique but rather are parts of a list. For example, ha
 
 ## ASP.NET MVC
 
-Orchard is built on ASP.NET MVC but in order to add things like theming and tenant isolation, it needs to introduce an additional layer of indirection that will present on the ASP.NET MVC side the concepts that it expects and that will on the Orchard side split things on the level of Orchard concepts.
+Orchard se basa en ASP.NET MVC, pero con el fin de añadir cosas como el aislamiento theming y el tenant, tiene que introducir un nivel adicional de indirección que presentará en el lado de ASP.NET MVC los conceptos que se espera y la voluntad en el lado Orchard partiendo las cosas en el nivel de los conceptos Orchard.
 
-For example, when a specific view is requested, our LayoutAwareViewEngine kicks in. Strictly speaking, it's not a new view engine as it is not concerned with actual rendering, but it contains the logic to find the right view depending on the current theme and then it delegates the rendering work to actual view engines.
+Por ejemplo, cuando una vista específica se solicita, nuestro LayoutAwareViewEngine la lanza. En sentido estricto, no es un motor de vista nuevo, ya que no se refiere a la representación real, pero contiene la lógica para encontrar la vista adecuada en función del tema actual y luego delega la renderización de trabajo a los motores de vista activos
 
-Similarly, we have route providers, model binders and controller factories whose work is to act as a single entry point for ASP.NET MVC and to dispatch the calls to the properly scoped objects underneath.
+Del mismo modo, contamos con proveedores de rutas, carpetas modelo y las fábricas de controladores cuyo trabajo consiste en actuar como un punto de entrada único para ASP.NET MVC y enviar las llamadas a los objetos propiamente de ámbito inferior.
 
-In the case of routes, we can have n providers of routes (typically coming from modules) and one route publisher that will be what talks to ASP.NET MVC. The same thing goes for model binders and controller factories.
+En el caso de las rutas, podemos tener n proveedores de rutas (por lo general procedentes de módulos) y un editor ruta que será lo que habla con ASP.NET MVC. Lo mismo ocurre con binders del modelo y las fábricas de controlador.
 
-## Content Type System
+## Sistema de contenido
 
-Contents in Orchard are managed under an actual type system that is in some ways richer and more dynamic than the underlying .NET type system, in order to provide the flexibility that is necessary in a Web CMS: types must be composed on the fly at runtime and reflect the concerns of content management.
+Los contenidos en Orchard se manejan bajo un sistema de tipo real que _ es en algunos aspectos más ricos y más dinámico que el subyacente sistema de tipo NET, con el fin de proporcionar la flexibilidad necesaria en un CMS Web:. los tipos deben estar compuestos sobre la marcha en tiempo de ejecución y reflejar las preocupaciones de gestión de contenidos.
 
-### Types, Parts, and Fields
+### ContentTypes, ContentParts, y ContentFields
 
-Orchard can handle arbitrary content types, including some that are dynamically created by the site administrator in a code-free manner. Those content types are aggregations of content parts that each deal with a particular concern. The reason for that is that many concerns span more than one content type.
+Orchard puede manejar tipos arbitrarios de contenido, incluyendo algunos que se crean dinámicamente por el administrador del sitio de una manera libre de código. Los content type son agregaciones de piezas de contenido que ocupan de un problema particular. La razón de esto es que muchas problemas abarcan más de un content type.
 
-For example, a blog post, a product and a video clip might all have a routable address, comments and tags. For that reason, the routable address, comments and tags are each treated in Orchard as a separate content part. This way, the comment management module can be developed only once and apply to arbitrary content types, including those that the author of the commenting module did not know about.
+Por ejemplo, un blog, un producto y un clip de vídeo todos puedan tener una dirección enrutable, comentarios y etiquetas. Por esa razón, la dirección enrutable, comentarios y etiquetas son tratados en Orchard como una parte de contenido independiente. De esta manera, el módulo de gestión comentario puede ser desarrollado sólo una vez y se aplican a content type arbitrarios, incluidas los que el autor del módulo de comentarios no sabía nada.
 
-Parts themselves can have properties and content fields. Content fields are also reusable in the same way that parts are: a specific field type will be typically used by several part and content types. The difference between parts and fields resides in the scale at which they operate and in their semantics.
+Content Parts de ellos mismos pueden tener propiedades y content fileds . Content fileds también son reutilizables de la misma manera que los content parts son: un tipo de campo específico en que se usará por parte de varios content part y content type . La diferencia entre content parts y content fields reside en la escala a la que trabajan y en su semántica.
 
-Fields are a finer grain than parts. For example, a field type might describe a phone number or a coordinate, whereas a part would typically describe a whole concern such as commenting or tagging.
+ContentFields are a finer grain than ContentParts. For example, a field type might describe a phone number or a coordinate, whereas a ContentPart would typically describe a whole concern such as commenting or tagging.
 
-But the important difference here is semantics: you want to write a part if it implements an "is a" relationship, and you would write a field if it implements a "has a" relationship.
+Pero la diferencia importante aquí es semántica: si quieres escribir un ContentPart si implementa un "es" una relación, y usted podría escribir un ContentField si se implementa un "tiene una" relación.
 
-For example, a shirt **is a** product and it **has a** SKU and a price. You wouldn't say that a shirt has a product or that a shirt is a price or a SKU.
+Por ejemplo, una camisa ** es un producto ** y ** tiene una SKU ** y un precio. No diría que una camisa tiene un producto o una camisa _ es un precio o un SKU.
 
-From that you know that the Shirt content type will be made of a Product part, and that the Product part will be made from a Money field named "price" and a String field named SKU.
+A partir que usted sabe que el tipo de contenido camiseta se hace de un ProductPart, y que el ProductPart se hará a partir de un MoneyField llamado "precio" y un SKU Stringfield.
 
-Another difference is that you have only one part of a given type per content type, which makes sense in light of the "is a" relationship, whereas a part can have any number of fields of a given type. Another way of saying that is that fields on a part are a dictionary of strings to values of the field's type, whereas the content type is a list of part types (without names).
+Otra diferencia es que tiene sólo una parte de un tipo dado por ContentType, que tiene sentido a la luz del "es" una relación, mientras que un ContentPart puede tener cualquier número de campos de un tipo determinado. Otra forma de decir esto es que ContentFields en una parte es un diccionario de cadenas en valores de tipo de campo, mientras que el ContentType es una lista de ContentPart (sin nombres).
 
-This gives another way of choosing between part and field: if you think people would want more than one instance of your object per content type, it needs to be a field.
+Esto proporciona otra forma de elegir entre ContentPart ContentField: si crees que la gente quiere más de una instancia del objeto por ContentType, tiene que ser un campo.
 
-### Anatomy of a Content Type
+### Anatomía de un Content Type
 
-A content type, as we've seen, is built from content parts. Content parts, code-wise, are typically associated with:
+ ContentType, como hemos visto, está construido a partir de piezas . ContentParts, code-wise se asocian típicamente con::
 
-- a Record, which is a POCO representation of the part's data
-- a model class that is the actual part and that derives from `ContentPart<T>` where T is the record type
-- a repository. The repository does not need to be implemented by the module author as Orchard will be able to just use a generic one.
-- handlers. Handlers implement IContentHandler and are a set of event handlers such as OnCreated or OnSaved. Basically, they hook onto the content item's lifecycle to perform a number of tasks. They can also participate in the actual composition of the content items from their constructors. There is a Filters collection on the base ContentHandler that enable the handler to add common behavior to the content type.  
-For example, Orchard provides a StorageFilter that makes it very easy to declare how persistence of a content part should be handled: just do `Filters.Add(StorageFilter.For(myPartRepository));` and Orchard will take care of persisting to the database the data from myPartRepository.  
-Another example of a filter is the ActivatingFilter that is in charge of doing the actual welding of parts onto a type: calling `Filters.Add(new ActivatingFilter<BodyAspect>(BlogPostDriver.ContentType.Name));` adds the body content part to blog posts.
-- drivers. Drivers are friendlier, more specialized handlers (and as a consequence less flexible) and are associated with a specific content part type (they derive from `ContentItemDriver<T> where T is a content part type). Handlers on the other hand do not have to be specific to a content part type. Drivers can be seen as controllers for a specific part. They typically build shapes to be rendered by the theme engine.
+- a Record (registro), que es una representación POCO de datos de la ContentPart
+- una clase del modelo _ es la parte actual y que se deriva del `` ContentPart <T> donde T es el tipo de registro
+- un repositorio. El repositorio no necesita ser implementado por el autor del módulo ya que Orchard será capaz de utilizar sólo uno genérico.
+- handlers (manejadores). Handlers   implementan IContentHandler son un conjunto de controladores de eventos tales como OnCreated o OnSaved. Básicamente, estos se aferran ciclo de vida del ContentItem para llevar a cabo una serie de tareas. También pueden participar en la composición real de los elementos de contenido de sus constructores. Hay una colección de filtros de la ContentHandler base que habilita el controlador para agregar comportamiento común para el tipo de contenido. 
+Por ejemplo, Orchard ofrece un StorageFilter _ hace que sea muy fácil de declarar cómo la persistencia de un ContentPart debe ser manipulada: simplemente escribir `Filters.Add (StorageFilter.For (myPartRepository));` Orchard se hará cargo de la persistencia de la base de datos del datos de myPartRepository.
+Otro ejemplo de un filtro es el ActivatingFilter que se encarga de hacer del soldadura real de las piezas en un tipo: llamando a `Filters.Add (new ActivatingFilter <BodyAspect> (BlogPostDriver.ContentType.Name));` añade del ContentPart cuerpo al blog puestos.
+-los drivers. Los drivers son más amigables, manipuladores más especializados (y en consecuencia menos flexible) y están asociados con un tipo específico ContentPart (que derivan de `ContentItemDriver <T> donde T es un tipo ContentPart). Controladores en del otro lado no tiene que ser específica para un tipo ContentPart. Los drivers pueden verse como controladores de una parte específica. Suelen construir shapes para ser redenderizados por el motor del tema.
 
 ## Content Manager
-All contents are accessed in Orchard through the ContentManager object, which is how it becomes possible to use contents of a type you don't know in advance.
+Todos los contenidos son accesibles en Orchard a través del objeto de Content Manager, que es como se hace posible el uso de contenidos de un tipo que no se sabe de antemano.
 
-ContentManager has methods to query the content store, to version contents and to manage their publication status.
+ContentManager tiene métodos para consultar del almacén de contenido, a los contenidos de la versión y gestionar su estado de publicación.
 
-## Transactions
+## Transacciones
 
-Orchard is automatically creating a transaction for each HTTP request. That means that all operations that happen during a request are part of an "ambient" transaction. If code during that request aborts that transaction, all data operations will be rolled back. If the transaction is never explicitly cancelled on the other hand, all operations get committed at the end of the request without an explicit commit.
+Orchard crea automáticamente una transacción para cada solicitud HTTP. Eso significa que todas las operaciones que tienen lugar durante una petición son parte de un "ambiente" de la transacción. Si el código de solicitud durante la transacción se aborta , todas las operaciones de datos se deshace. Si la transacción no está explícitamente cancelado por el contrario, todas las operaciones se comprometan al final de la solicitud sin una confirmación explícita.
 
 
-## Request Lifecycle
+## Solicitud del ciclo de vida
 
-In this section, we'll take the example of a request for a specific blog post.
+En esta sección, vamos a tomar el ejemplo de una solicitud de un post específico.
 
-When a request comes in for a specific blog post, the application first looks at the available routes that have been contributed by the various modules and finds the blog module's matching route. The route can then resolve the request to the blog post controller's item action, which will look up the post from the content manager. The action then gets a Page Object Model from the content manager (by calling BuildDisplay) based on the main object for that request, the post that was retrieved from the content manager.
+Cuando llega una solicitud para un post específico, la primera aplicación analiza las rutas disponibles que han sido aportadas por los distintos módulos y encuentra la  ruta coincidente del módulo blog. La ruta se puede resolver solicitando la acción del elemento controlador de entrada del blog, que buscará el puesto de gestor de contenidos. La acción entonces consigue un modelo de objetos de página en el gestor de contenidos (por BuildDisplay ) basada en el objeto principal de esta solicitud, el mensaje que se ha recuperado desde el gestor de contenidos.
 
-A blog post has its own controller, but that is not the case for all content types. For example, dynamic content types will be served by the more generic ItemController from the Core Routable part. The Display action of the ItemController does almost the same thing that the blog post controller was doing: it gets the content item from the content manager by slug and then builds the POM from the results.
+Un blog tiene su propio controlador, pero ese no es el caso para todos los ContentTypes. Por ejemplo, los tipos de contenido dinámico será servido por la  ItemController más genérica de la parte Routable Core. La acción de visualización de la  ItemController hace casi lo mismo que el controlador de entrada en el blog estaba haciendo: se pone el elemento de contenido desde el gestor de contenidos de slug y luego construye la  POM de los resultados.
 
-The layout view engine will then resolve the right view depending on the current theme and using the model's type together with Orchard conventions on view naming.
+El motor de vista  entonces se resolverá el vista correcta en función del tema actual y usando el tipo de binders del modelo, junto con las convenciones sobre los nombres de Orchard vista.
 
-Within the view, more dynamic shape creation can happen, such as zone definitions.
+En la vista, la creación de una forma más dinámica que puede suceder, como las definiciones de zona.
 
-The actual rendering is done by the theme engine that is going to find the right template or shape method to render each of the shapes it encounters in the POM, in order of appearance and recursively.
+La representación real es realizado por el motor del tema _ se va a encontrar la plantilla adecuada o el método de la forma de hacer cada una de las Shapes que encuentra en la  POM, por orden de aparición de forma recursiva.
 
 ## Widgets
 
-Widgets are content types that have the Widget content part and the widget stereotype. Like any other content types, they are composed of parts and fields. That means that they can be edited using the same edition and rendering logic as other content types. They also share the same building blocks, which means that any existing content part can potentially be reused as part of a widget almost for free.
+Los widgets son ContentTypes que tienen el ContentPart Widget y el estereotipo widget. Como cualquier otro ContentTypes , que se componen de ContentParts y ContentFields. Eso significa que pueden ser editadas usando la misma edición y lógica de renderización como otro ContentTypes . También comparten la  mismos bloques de construcción, lo que significa que cualquier contentPart existente potencialmente pueden ser reutilizados como parte de un control casi sin esfuerzo.
 
-Widgets are added to pages through widget layers. Layers are sets of widgets. They have a name, a rule that determines what pages of the site they should appear on, and a list of widgets and associated zone placement and ordering, and settings.
+Los widgets se añaden a las páginas a través de las capas de widget. Las capas son conjuntos de widgets. Tienen un nombre, una regla que determina qué páginas del sitio deben aparecer en ella, y una lista de widgets y la colocación zona asociada, ordenarlas, y los ajustes.
 
-The rules attached to each of the layers are expressed with IronRuby expressions. Those expressions can use any of the IRuleProvider implementations in the application. Orchard ships with two out of the box implementations: url and authenticated.
+Las reglas unidos a cada una de las capas se expresan con expresiones IronRuby. Esas expresiones se pueden utilizar cualquiera de las implementaciones IRuleProvider en la aplicación. Orchard viene con dos de las implementaciones de serie: url y autenticado.
 
-## Site Settings
+## Ajustes del sitio
 
-A site in Orchard is a content item, which makes it possible for modules to weld additional parts. This is how modules can contribute site settings.
+Un sitio en Orchard es un ContentItem, que hace posible que los módulos para soldar piezas adicionales. Así es como módulos pueden contribuir configuración del sitio.
 
-Site settings are per tenant.
+Configuración del sitio son por tenant
 
 ## Event Bus
+Orchard y sus módulos de exponen puntos de extensibilidad mediante la creación de interfaces para las dependencias, las implementaciones de las cuales se puede obtener inyectado.
 
-Orchard and its modules expose extensibility points by creating interfaces for dependencies, implementations of which can then get injected.
+Enchufarlo a un punto de extensibilidad se realiza ya sea mediante la implementación de su interfaz, o mediante la implementación de una interfaz que tiene el mismo nombre y los mismos métodos. En otras palabras, Orchard no requiere correspondencia estrictamente inflexible de tipos de interfaz, que permite a los plug-ins para ampliar un punto de extensibilidad sin tener una dependencia en el ensamblado donde se define.
 
-Plugging into an extensibility point is done either by implementing its interface, or by implementing an interface that has the same name and the same methods. In other words, Orchard does not require strictly strongly typed interface correspondence, which enables plug-ins to extend an extensibility point without taking a dependency on the assembly where it's defined.
+Esta es sólo una implementación del bus evento Orchard. Cuando un punto de extensibilidad llama a implementaciones de inyección, un mensaje se publica en el bus de eventos. Uno de los objetos escucha para el evento se distribuirá bus de los mensajes a los métodos en clases derivadas de una interfaz nombre apropiado.
 
-This is just one implementation of the Orchard event bus. When an extensibility point calls into injected implementations, a message gets published on the event bus. One of the objects listening to the event bus dispatches the messages to the methods in classes that derive from an interface appropriately named.
+## Comandos
 
-## Commands
+Muchas de las acciones en un sitio Orchard se puede realizar desde la línea de comandos, así como de la interfaz de usuario admin. Estos comandos están expuestos por los métodos de aplicación de ICommandHandler clases que están decoradas con un atributo CommandName.
 
-Many actions on an Orchard site can be performed from the command line as well as from the admin UI. These commands are exposed by the methods of classes implementing ICommandHandler that are decorated with a CommandName attribute.
+La Consola de Orchard descubre comandos disponibles en tiempo de ejecución mediante la simulación del entorno del sitio web y la inspección de los ensamblados mediante la reflexión. El entorno en el que la ejecución de comandos sucede debe ser lo más cercano posible al sitio real de operación.
 
-The Orchard command line tool discovers available commands at runtime by simulating the web site environment and inspecting the assemblies using reflection. The environment in which the commands run is as close as possible to the actual running site.
+## Buscando e Indexando
 
-## Search and Indexing
-
-Search and indexing are implemented using Lucene by default, although that default implementation could be replaced with another indexing engine.
+La búsqueda e indexación se implementan utilizando Lucene por defecto, aunque la implantación por defecto podría ser reemplazado con otro motor de indexación.
 
 ## Caching
 
-The cache in Orchard relies on the ASP.NET cache, but we expose a helper API that can be used through a dependency of type ICache, by calling the Get method. Get takes a key and a function that can be used to generate the cache entry's value if the cache doesn't already contains the requested entry.
+El caché en Orchard se basa en la memoria caché de ASP.NET, pero se expone una API auxiliar que se puede utilizar a través de una dependencia del tipo iCache , mediante una llamada al método Get. Obtiene  una clave y una función que se puede utilizar para generar el valor de la entrada de la caché, si la memoria caché no contiene ya la entrada solicitada.
 
-The main advantage of using the Orchard API for caching is that it works per tenant transparently.
+La principal ventaja de la utilización de la API de Orchard para el almacenamiento en caché es que trabaja por tenant transparente.
 
-## File Systems
+## Sistema de ficheros
 
-The file system in Orchard is abstracted so that storage can be directed to the physical file system or to an alternate storage such as Azure blob storage, depending on the environment. The Media module is an example of a module that uses that abstracted file system.
+El sistema de archivos en Orchard se abstrae de modo que el almacenamiento puede ser dirigido al sistema de archivo físico o a un almacenamiento alternativo, como almacenamiento de blob Azure, en función del entorno. El módulo de Media es un ejemplo de un módulo que  que es abstraído sistema de archivos.
 
-## Users and Roles
+## Usuarios y Roles
 
-Users in Orchard are content items (albeit not routable ones) which makes it easy for a profile module for example to extend them with additional fields.
-Roles are a content part that gets welded onto users.
+Usuarios en Orchard son ContentItems (aunque no se les puedan establecerse rutas) que hace que sea fácil para un módulo de perfil, por ejemplo, extenderlos con campos adicionales.
+Los roles son un ContentPart que se adhiere a los usuarios.
 
-## Permissions
+## Permisos
 
-Every module can expose a set of permissions as well as how those permissions should be granted by default to Orchard's default roles.
+Cada módulo puede exponer un conjunto de permisos, así como la forma en dichos permisos deben concederse de forma predeterminada para funciones predeterminadas de Orchard.
 
-## Tasks
+## Tareas
 
-Modules can schedule tasks by calling CreateTask on a dependency of type IScheduledTaskManager. The task can then be executed by implementing IScheduledTaskHandler. The Process method can examine the task type name and decide whether to handle it.
+Los módulos pueden programar tareas llamando CreateTask en una dependencia del tipo IScheduledTaskManager tipo. La tarea puede ser ejecutado mediante la aplicación de IScheduledTaskHandler. El método de proceso puede examinar el nombre del tipo de tarea y decidir si se debe manejar la situación.
 
-Tasks are being run on a separate thread that comes from the ASP.NET thread pool.
+Las tareas se ejecutan en un subproceso independiente que proviene del grupo de subprocesos de ASP.NET.
 
-## Notifications
+## Notificaciones
 
-Modules can surface messages to the admin UI by getting a dependency on INotifier and calling one of its methods. Multiple notifications can be created as part of any request.
+Los módulos pueden emerger mensajes a la interfaz de usuario de administración obteniendo una dependencia de INotifier y llamando a uno de sus métodos. Varias notificaciones se pueden crear como parte de cualquier solicitud.
 
-## Localization
+## Localización
 
-Localization of the application and its modules is done by wrapping string resources in a call to the T method: `<%: T("This string can be localized") %>`. See [Using the localization helpers](Using-the-localization-helpers) for more details and guidelines. Orchard's resource manager can load localized resource strings from PO files located in specific places in the application.
-
+La localización de la aplicación y sus módulos se hace envolviendo recursos de cadena en una llamada al método T: `<%: T (" Esta cadena se puede localizar ")%>`. Ver [Using the localization helpers](Using-the-localization-helpers) para más detalles y directrices. El gestor de recursos de Orchard puede cargar las cadenas de recursos adaptados a partir de los ficheros PO ubicados en lugares específicos de la
 Content item localization is done through a different mechanism: localized versions of a content item are physically separate content items that are linked together by a special part.
 
-The current culture to use is determined by the culture manager. The default implementation returns the culture that has been configured in site settings, but an alternate implementation could get it from the user profile or from the browser's settings.
+La cultura actual a utilizar se determina por el gestor de cultura. La implementación predeterminada devuelve la referencia cultural que se ha configurado en la configuración del sitio, pero una implementación alternativa podría llegar desde el perfil de usuario o de la configuración del navegador.
 
 ## Logging
 
-Logging is done through a dependency of type ILogger. Different implementations can send the log entries to various storage types. Orchard comes with an implementation that uses [Castle.Core.Logging](http://api.castleproject.org/html/N_Castle_Core_Logging.htm) for logging.
+El registro se realiza a través de una dependencia del tipo ILogger . Diferentes implementaciones pueden enviar las entradas del registro para distintos tipos de almacenamiento. Orchard viene con una aplicación que utiliza [Castle.Core.Logging](http://api.castleproject.org/html/N_Castle_Core_Logging.htm) para el login.
 
 # Orchard Core
 
-The Orchard.Core assembly contains a set of modules that are necessary for Orchard to run. Other modules can safely take dependencies on these modules that will always be available.
+El ensamblado Orchard.Core contiene un conjunto de módulos que son necesarios para que Orchard funcione. Otros módulos pueden tomar con seguridad las dependencias de los módulos que estarán siempre disponibles.
 
-Examples of core modules are feeds, navigation or routable.
+Ejemplos de módulos básicos son los feeds, navegación o enrutable.
 
-# Modules
-The default distribution of Orchard comes with a number of built-in modules such as blogging or pages, but third party modules are being built as well.
+# Módulos
+La distribución por defector de Orchard viene con varios módulos preinstaldos como el de bloggin o el de páginas, pero también se pueden  incluir módulos de terceras partes.
 
-A module is just an ASP.NET MVC area with a manifest.txt file that is extending Orchard.
+Un módulo es un área ASP.NET MVC con un archivo  manifest.txt que extiende Orchard.
 
-A module typically contains event handlers, content types and their default rendering templates as well as some admin UI.
+Un módulo contiene normalmente los controladores de eventos, tipos de contenido y sus plantillas de representación por omisión, así como algunas de interfaz de usuario admin.
 
-Modules can be dynamically compiled from source code every time a change is made to their csproj file or to one of the files that the csproj file references. This enables a "notepad" style of development that does no require explicit compilation by the developer or even the use of an IDE such as Visual Studio.
+Los módulos pueden ser dinámicamente compilado desde el código fuente cada vez que se realiza un cambio en su csproj o uno de los archivos que hace referencia csproj. Esto permite una "libreta" estilo de desarrollo que no requiere compilación explícita por parte del desarrollador o incluso el uso de un IDE como Visual Studio.
 
-# Themes
+# Themes (temas)
 
-It is a basic design principle in Orchard that all the HTML that it produces can be replaced from themes, including markup produced by modules. Conventions define what files must go where in the theme's file hierarchy.
+Es un principio de diseño básico en que Orchard que todo el código HTML que se produce puede sustituible desde temas, incluido el marcado producida por los módulos. Los convenios definen qué archivos deben ir a donde en la jerarquía de archivos del tema.
 
-The whole rendering mechanism in Orchard is based on shapes. The theme engine's job is to find the current theme and given that theme determine what the best way to render each shape is. Each shape can have a default rendering that may be defined by a module as a template in the views folder or as a shape method in code. That default rendering may be overridden by the current theme. The theme does that by having its own version of a template for that shape or its own shape method for that shape.
+El mecanismo de representación en todo Orchard se basa en las Shapes. El trabajo del motor del tema es encontrar el tema actual y teniendo en cuenta que el tema, determinar cuál es la mejor manera de hacer que cada Shape lo redenderice. Cada shape puede tener un procesamiento predeterminado que puede estar definido por un módulo como una plantilla en la carpeta de vistas o como un método en forma de código. Esa representación predeterminada puede ser anulado por el tema actual. El tema que al tener su propia versión de una plantilla para ese shape o su método propio  de esa shape.
 
-Themes can have a parent, which enables child themes to be specializations or adaptations of a parent theme. Orchard comes with a base theme called the Theme Machine that has been designed to make it easy to use as a parent theme.
+Los temas pueden tener un padre, que permite a los hijos como especializaciones o adaptaciones de un tema principal. Orchard viene con un tema base llamada el Theme Machine que se ha diseñado para que sea fácil de usar como un tema principal.
 
-Themes can contain code in much the same way modules do: they can have their own csproj file and benefit from dynamic compilation. This enables themes to define shape methods, but also to expose admin UI for any settings they may have.
+Los temas pueden contener código en la mayor parte de los módulos de la misma manera hacer: pueden tener su propio csproj y beneficiarse de la compilación dinámica. Esto permite que los temas para definir los métodos de shape, pero también para exponer la interfaz de usuario de administración para la configuración que puedan tener.
 
-The selection of the current theme is done by classes implementing IThemeSelector, which return a theme name and a priority for any request. This allows many selectors to contribute to the choice of the theme. Orchard comes with four implementations of IThemeSelector:
+La selección del tema actual se lleva a cabo por las clases que implementan IThemeSelector, que devuelven el nombre del tema y una prioridad para cualquier solicitud. Esto permite que muchos selectores contribuir a la elección del tema. Orchard viene con cuatro implementaciones de IThemeSelector:
 
-- SiteThemeSelector selects the theme that is currently configured for the tenant or site with a low priority.
-- AdminThemeSelector takes over and returns the admin theme with a high priority whenever the current URL is an admin URL.
-- PreviewThemeSelector overrides the site's current theme with the theme being previewed if the current user is the one that initiated the theme preview.
-- SafeModeThemeSelector is the only selector available when the application is in "safe mode", which happens typically during setup. It has a very low priority.
+- SiteThemeSelector selecciona el tema que está actualmente configurado para el tenant o en el sitio con una prioridad más baja.
+- AdminThemeSelector toma el control y devuelve el tema de administración con una alta prioridad siempre que el URL es una URL de administración.
+- PreviewThemeSelector anula el tema actual del sitio con el tema de ser previamente si el usuario actual es el que inició la previsualización de tema.
+- SafeModeThemeSelector es el selector disponible sólo cuando la aplicación está en "modo seguro", lo que ocurre normalmente durante la instalación. Cuenta con una prioridad muy baja.
 
-An example of a theme selector might be one that promotes a mobile theme when the user agent is recognized to belong to a mobile device.
+Un ejemplo de un selector tema podría ser uno que promueve un tema móvil cuando el agente de usuario es reconocido a pertenecer a un dispositivo móvil.
