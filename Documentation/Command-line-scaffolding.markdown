@@ -1,19 +1,20 @@
-
-Code generation is an Orchard module that automates the task of creating additional files and extensions. This feature is useful for developers that want to create controllers, data migration classes, modules, and themes. However, the code generation feature is not installed by default when you install Orchard.
+La generación de código es un módulo Orchard que automatiza la tarea de creación de archivos y extensiones adicionales. Esta característica es útil para los desarrolladores que quieran crear controladores,  migraciónes , módulos y temas. Sin embargo, la función de generación de código no se instala de forma predeterminada al instalar Orchard.
 
 You can install the code generation feature using the Orchard Gallery. Open the admin panel, click **Modules** under the **Gallery** heading.
 
+Puede instalar la función de generación de código mediante la Orchard Gallery. Abra el panel de administración, haga clic en **Modules** bajo el **Gallery** epígrafe.
+
 ![](../Upload/screenshots_675/gallery_modules_675.PNG)
 
-Find the **Code Generation** module, and click **Install**.
+Busca el m´´odulo **Code Generation**, y haga click en **Install**.
 
 ![](../Upload/screenshots_675/gallery_code_generation_675.png)
 
-To enable code generation, click **Features** under **Configuration**, find the **Code Generation** feature, and click **Enable**.
+Para habilitar la generación de código haga click en **Features** debajo de **Configuration**, busca la característica (feature) **Code Generation**, y haga click en **Enable**.
 
 ![](../Upload/screenshots/enable_codegen.png)
 
-To enable the feature from the Orchard command-line, open the orchard command-line, and enter the following command. For more information about the Orchard command-line, see [Using the command-line interface](Using-the-command-line-interface).
+Para activar la función desde Orchard de línea de comandos, abra la línea de comandos de Orchard y escriba el siguiente comando. Para obtener más información acerca de la Huerta de línea de comandos, consulte [Using the command-line interface](Using-the-command-line-interface).
 
     
     orchard> feature enable Orchard.CodeGeneration
@@ -21,7 +22,7 @@ To enable the feature from the Orchard command-line, open the orchard command-li
     Orchard.CodeGeneration was enabled
 
 
-Once the code generation feature is enabled, new commmands are available for creating a module, theme, data migration, or controller. Currently, the code generation commands add files to the appropriate location.
+Una vez que la función de generación de código está activado, los nuevos comandos están disponibles para la creación de un módulo, temas, la migración de datos, o el controlador. En la actualidad, los comandos de generación de código añaden archivos a la localización adecuada
 
     
     codegen controller <module-name> <controller-name>
@@ -37,4 +38,4 @@ Once the code generation feature is enabled, new commmands are available for cre
             Create a new Orchard theme
 
 
-For a walkthrough of using the code generation feature to create a new module and data migration, see [Writing a content part](Writing-a-content-part).
+Para ver un tutorial de uso de la función de generación de código para crear un nuevo módulo y migraciónes de datos, consulte [Writing a content part](Writing-a-content-part).
