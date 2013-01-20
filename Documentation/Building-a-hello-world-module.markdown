@@ -148,13 +148,13 @@ Por último, es necesario activar el nuevo módulo. En la línea de comandos, es
 
 También podría haber hecho esto desde el panel "Features" en la pantalla de interfaz de usuario de administración del sitio.
 
-# Usar el modulo
+# Usar el módulo
 
 Ahora puede navegar hasta la URL /HelloWorld de su sitio Orchard en tu navegador web favorito y obtener un bonito mensaje Hello World:
 
 ![The UI for our completed module](../Attachments/Building-a-hello-world-module/HelloWorld.png)
 
-# Conclución
+# Conclusión
 
 En este tutorial, hemos construido un módulo  simple que maneja una ruta (/ HelloWorld) por acción index del controlador home y sirve una vista sencilla que se ajuste por el tema actual. Lo hemos hecho con sólo herramientas libres y de una manera que difiere muy poco de lo que se puede hacer en un área normal ASP.NET MVC. Algunas cosas nos la proporcionó el Framework de Orchard, como por ejemplo la activación/desactivación del módulo o maquetar la vista sin ningún esfuerzo por nuestra parte.
 
