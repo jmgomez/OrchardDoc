@@ -1,31 +1,30 @@
-This article describes how to build a very small module for Orchard that will just display a "hello world" page.
+En este artículo se describe cómo crear un prqueño módulo para Orchard que sólo mostrará un "hola mundo" de la página.
+Otro ejemplo de módulo puede encontrarse aquí: [Quick Start - Get module blueprint](http://orchardjumpstart.codeplex.com/)
 
-Another simple example of a module can be found here: [Quick Start - Get module blueprint](http://orchardjumpstart.codeplex.com/)
 
+# Introducción
 
-# Introduction
+Orchard está construido en la cima de ASP.NET MVC, lo que significa que si ya sabes ASP.NET MVC se debe sentir como en casa. Si no, no te preocupes que vamos a explicar todo lo que estamos haciendo.
 
-Orchard is built on top of ASP.NET MVC, which means that if you already know that framework you should feel right at home. If not, do not worry as we'll explain everything we're doing.
+MVC es un patrón en el que las preocupaciones están claramente separados: hay un modelo (M) para los datos, un controlador (C) que orquesta la interfaz de usuario y determina cómo funciona el modelo, y una vista (V), cuya única responsabilidad es la de mostrar lo que el controlador se lo da.
 
-MVC is a pattern where concerns are neatly separated: there is a model (M) for the data, a controller (C) that orchestrates the UI and determines how it operates on the model, and a view (V) whose only responsibility is to display what the controller hands it.
+En el caso de nuestro módulo Hello World, no vamos a tener todos los datos por lo que el modelo no será de interés para nosotros. Sólo se dispone de un controlador y una vista. Todos los demás será la infraestructura necesaria para declarar lo que estamos haciendo para Orchard. Volveremos a estos conceptos y recapitular una vez que hemos construido nuestro módulo.
 
-In the case of our Hello World module, we won't have any data so the model will be of no concern to us. We will just have a controller and a view. All the rest will be some necessary plumbing to declare what we're doing to Orchard. We will come back to these concepts and recapitulate once we've built our module.
+Los módulos en Orchard son conjuntos de extensiones que se pueden empaquetar con el fin de ser reutilizados en otros sitios Orchard. Los módulos se implementan como Áreas MVC. Las áreas en MVC son sub-sitios que contienen un conjunto de características que actúan de forma relativamente aislada de las otras partes del sitio. Un módulo de Orchard es simplemente un área con un archivo de manifiesto. Se pueden utilizar las API Orchard (pero no tiene por qué).
 
-Modules in Orchard are sets of extensions that can be packaged in order to be re-used on other Orchard sites. Modules are implemented as MVC Areas. Areas in MVC are sub-sites that contain a set of features that act in relative isolation from the other parts of the site. An Orchard module is simply an area with a manifest file. It may use Orchard APIs (but it doesn't necessarily have to).
+# Generando la estructura del módulo
 
-# Generating the Module Structure
+Antes de generar la estructura de archivos para el módulo, es necesario descargar, instalar y activar la función de **generación de código** para Orchard. Para más información, ver [Command-line Code Generation](Command-line-scaffolding).
 
-Before you can generate the file structure for your module, you need to download, install, and enable the **Code Generation** feature for Orchard. For more information, see [Command-line Code Generation](Command-line-scaffolding).
-
-Once you have code generation enabled, open the Orchard command-line, and create the `HelloWorld` module with the following command:
+Una vez que haya activado la generación de código, abra la línea de comandos de Orchard, y cree el módulo Hello World con el siguiente comando:
 
     
     codegen module HelloWorld
 
 
-# Modifying the Manifest
+# Modificando el manifiesto
 
-You should now have a new HelloWorld folder under the Modules folder of your Orchard web site. In this folder, you'll find a module.txt file. Open it and customize it as follows:
+Ahora debería tener una carpeta HelloWorld nueva en la carpeta Modules de tu sitio web Orchard. En esta carpeta, encontrará un archivo module.txt. Ábrelo y personalícelo de la siguiente manera:
 
     
     name: HelloWorld
@@ -41,13 +40,13 @@ You should now have a new HelloWorld folder under the Modules folder of your Orc
             Category: Sample
 
 
-This text file is describing your module to the system. The information contained in this file will be used for example in the features administration screen.
+Este archivo de texto describe el módulo al sistema. La información contenida en este archivo se utiliza por ejemplo, en la pantalla de administración
 
-> Note: be careful to use spaces and not tabs to indent this file
+> Nota: ten cuidado con las tabulaciones y los espacios en blanco en este fichero.
 
-# Adding the Route
+# Añadiendo la ruta
 
-Your module will have to handle the /HelloWorld relative URL under your Orchard web site. In order to declare what to do when that URL gets hit, create the following Routes.cs file in the HelloWorld folder:
+El módulo tendrá que manejar la URL / HelloWorld relativa en su sitio web Orchard. Para declarar qué hacer cuando esa URL es llamada, cree el archivo Routes.cs siguiente en la carpeta HelloWorld:
 
     
     using System.Collections.Generic;
@@ -85,11 +84,11 @@ Your module will have to handle the /HelloWorld relative URL under your Orchard 
     }
 
 
-A route is a description of the mapping between URLs and controller actions. This code maps the HelloWorld URL to the area HelloWorld with the Home controller and the Index action.
+Una ruta es una descripción de la asignación entre las direcciones URL y las acciones del controlador. Este código asigna el URL de HelloWorld al área HelloWorld con el controlador principal y la acción Index.
 
-# Creating the Controller
+# Creando el controlador
 
-The new module also has a Controllers folder ready to be filled. Create the following HomeController.cs file in that folder:
+El nuevo módulo también tiene una carpeta Controladores. Cree el archivo HomeController.cs siguiente en la carpeta Controladores:
 
     
     using System.Web.Mvc;
@@ -105,27 +104,28 @@ The new module also has a Controllers folder ready to be filled. Create the foll
     }
 
 
-This is the controller that will handle the requests for the HelloWorld URL. The default action, index, is requesting that the HelloWorld view gets rendered.
+Este es el controlador que se encargará de las solicitudes de URL HelloWorld. La acción por omisión, index, solicita que la vista se redenderice.
 
-Notice the Themed attribute on the controller class that will request that the view gets skinned with the currently active theme.
 
-# Creating the View
+Observe el atributo Themed sobre la clase del controlador que solicitará que la vista se acople con el tema actualmente activo.
 
-In the Views folder, create a folder named Home. In the Views\Home folder, create the following HelloWorld.cshtml file:
+# Creando la vista
+
+En la carpeta Vistas, cree una carpeta con el nombre Home. En la carpeta Home/Views, cree el archivo HelloWorld.cshtml siguiente:
 
     
     <h2>@T("Hello World!")</h2>
 
 
-This file is specifying the core contents of our view. All the chrome around it will get added by the current theme's default layout.
+El archivo especifica el contenido básicos de nuestra vista. El resto del maquetado se añadirá en función del tema por defecto.
 
-Notice that we used the T helper function that makes this view ready to be localized. This is not mandatory but it's a nice touch.
+Observe que hemos utilizado la función auxiliar T que prepara esta vista para ser localizada. Esto no es obligatorio, pero es un bonito detalle.
 
-# Adding the new files to the project
+# Añadiendo los nuevos ficheros al proyecto
 
-We're almost done. The only task remaining is to declare to the system the set of files in the module for dynamic compilation.
+Ya casi hemos terminado. La única tarea que queda es declarar al sistema el conjunto de archivos en el módulo para la compilación dinámica.
 
-Open the HelloWorld.csproj file in a text editor and add the following lines after one of the &lt;/ItemGroup&gt; tags:
+Abre el ficheo the HelloWorld.csproj y añade las siguientes línes dentro del &lt;/ItemGroup&gt; tags:
 
     
     <ItemGroup>
@@ -134,32 +134,30 @@ Open the HelloWorld.csproj file in a text editor and add the following lines aft
     </ItemGroup>
 
 
-Also add the following to the ItemGroup section that already has other Content tags:
-
+También agregue lo siguiente a la sección ItemGroup que ya cuenta con otras etiquetas de contenido:
     
     <Content Include="Views\Home\HelloWorld.cshtml" />
 
 
-# Activate the Module
+# Activando el módulo
 
-Finally, you need to activate your new module. In the command line, type:
-
+Por último, es necesario activar el nuevo módulo. En la línea de comandos, escriba:
     
     feature enable HelloWorld
 
 
-You could also have done this from the "Features" screen in the site's admin UI.
+También podría haber hecho esto desde el panel "Features" en la pantalla de interfaz de usuario de administración del sitio.
 
-# Use the Module
+# Usar el modulo
 
-You may now add /HelloWorld to the URL of your Orchard site in your favorite web browser and obtain a nice Hello World message:
+Ahora puede navegar hasta la URL /HelloWorld de su sitio Orchard en tu navegador web favorito y obtener un bonito mensaje Hello World:
 
 ![The UI for our completed module](../Attachments/Building-a-hello-world-module/HelloWorld.png)
 
-# Conclusion
+# Conclución
 
-In this tutorial, we have built a very simple module that handles a route (/HelloWorld) through the home controller's index action and serves a simple view that gets skinned by the current theme. We have done so with only free tools and in a way that differs very little from what you would do in a regular ASP.NET MVC area. We did get a few things for free by making this an Orchard module, such as activation/deactivation of the module, or theming of the view with no effort on our part.
+En este tutorial, hemos construido un módulo  simple que maneja una ruta (/ HelloWorld) por acción index del controlador home y sirve una vista sencilla que se ajuste por el tema actual. Lo hemos hecho con sólo herramientas libres y de una manera que difiere muy poco de lo que se puede hacer en un área normal ASP.NET MVC. Algunas cosas nos la proporcionó el Framework de Orchard, como por ejemplo la activación/desactivación del módulo o maquetar la vista sin ningún esfuerzo por nuestra parte.
 
 Hopefully this will get you started with Orchard and prepare you to build more elaborate modules.
 
-The code for this topic can be downloaded from here: [HelloWorld.zip](../Attachments/Building-a-hello-world-module/HelloWorld.zip)
+El código de este ejemplo se lo puede descargar desde: [HelloWorld.zip](../Attachments/Building-a-hello-world-module/HelloWorld.zip)
