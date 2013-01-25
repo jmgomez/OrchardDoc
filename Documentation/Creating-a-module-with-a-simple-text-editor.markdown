@@ -1,4 +1,4 @@
-En este tutorial, aprenderás cómo desarrollar un simple módulo de comercio simple utilizando sólo un editor de texto.
+En este tutorial, aprenderás cómo desarrollar un módulo de comercio simple utilizando sólo un editor de texto.
 
 Si no tienes [Web Platform Installer](http://www.microsoft.com/web/downloads/platform.aspx) en tu PC, descargalo antes de comenzar con este tutorial.
 
