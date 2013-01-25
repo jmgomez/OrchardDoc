@@ -1,65 +1,68 @@
-In this tutorial, you will learn how to develop a simple commerce module using only a text editor.
+En este tutorial, aprenderás cómo desarrollar un simple módulo de comercio simple utilizando sólo un editor de texto.
 
-If you do not have the [Web Platform Installer](http://www.microsoft.com/web/downloads/platform.aspx) on your computer, download it before beginning this tutorial.
+Si no tienes [Web Platform Installer](http://www.microsoft.com/web/downloads/platform.aspx) en tu PC, descargalo antes de comenzar con este tutorial.
 
 
-# Setting Up the Orchard Site
+# Configurando el sitio Orchard
 
-First, you will set up a new Orchard website. If you already have a site set up, you can skip this section and jump directly to [the code generation section](#codegen). To start the setup, open **IIS Manager**, right-click **Sites**, and click **Add Web Site**.
+En primer lugar, crea un sitio web nuevo Orchard. Si ya tiene un sitio configurado, puede omitir esta sección y pasar directamente a [la sección de generación de código](#codegen). Para iniciar la instalación, abra el **Administrador de IIS**, haga clic en **Sitios** y haga clic en **Add Web Site**. 
+
 
 ![Figure 1. Creating the Orchard site](../Attachments/Creating-a-module-with-a-simple-text-editor/01_NewWebSite.PNG)
 
-In the **Add Web Site** dialog box, fill in the fields to point the new website to a folder, such as _\inetpub\wwwroot\Orchard_. Name the new site **Orchard** and give it an unused port, such as 90. Use the default application pool (.NET 4.0 integrated pipeline). Click **OK**.
+En el formulario **Agregar nuevo sitio** , rellene los campos para que la nueva página web apunte a una carpeta, por ejemplo _ \ inetpub \ wwwroot \ Orchard_. Asigne un nombre al nuevo sitio **Orchard** y asígnale un puerto no utilizado, por ejemplo el 90. Utilice el grupo de aplicaciones predeterminado (. NET 4.0 canalización integrada). Haga clic en **Aceptar**.
 
 ![Figure 2. Configuring the site](../Attachments/Creating-a-module-with-a-simple-text-editor/s_02_NewSiteSettings.png)
 
-From the Windows **Start** menu, launch **Web Platform Installer**, select **Orchard CMS**, click **Add**, and then click **Install**.
+Desde el menú de **Inicio**, inicie **Web Platform Installer**, seleccione **Orchard CMS**, haga clic en **Agregar**, y después haga clic en **Instalar**.
 
 ![](../Upload/screenshots/orchard_install.png)
 
-After you accept the license terms, Orchard is installed.
+Después de que acepte los términos de la licencia, Orchard será instalado.
 
-Open a command window and change the current directory to point to the root of the site. Then run `bin\orchard.exe`.
+Abra una ventana de comandos y cambie el directorio actual para apuntar a la raíz del sitio. A continuación, ejecute `bin \ orchard.exe`.
+
 
 [![Figure 6. The Orchard command line](../Attachments/Creating-a-module-with-a-simple-text-editor/s_07_OrchardCLI.png)](../Attachments/Creating-a-module-with-a-simple-text-editor/07_OrchardCLI.png)
 
-Type `help commands` to get the list of available commands. For now, only the `help` and `setup` commands are available. However, as Orchard is developed and modules are activated, new commands will become available. (The Orchard command-line executable actually discovers the commands from the modules inside of the application.)
+Escriba `help` comandos para obtener la lista de comandos disponibles. Por ahora, sólo los comandos 'help' y 'setup' están disponibles. Sin embargo, gracias a la forma en la Orchard está desarrollado y los módulos se activan, habrán nuevos comandos a medida que añada característivas. (La líne de comandos de Orchard descubre los comandos de los módulos dentro de la aplicación.).
 
-To set up the site, enter the following command: 
+Para levantar el sitio, teclee el siguiente comando
 
     
     setup /SiteName:Orchard /AdminUsername:admin /AdminPassword:123456
           /DatabaseProvider:SqlCe
 
 
-This is equivalent to setting up the site from the web interface.
+Esto es equivalente a levantarlo desde la interfaz web.
 
-Leave the command window open. (In fact, don't close it until you have finished this tutorial.)
+Deje abierta la ventana de comandos. (De hecho, no la cierre hasta que haya terminado este tutorial.)
 
 
-# Generating Code for the Module
+# Generando el código para el módulo
 
-Now you are ready to start developing the commerce module.
-Orchard provides a code generation feature that sets up the structure of an empty module to help you get started.
-By default, code generation is disabled. So you must first install and enable the feature.
-The easiest way to do this is to go to Modules in the admin UI and then click the "Gallery" tab.
-Do a search for "code generation" and then install the module.
+Ahora ya está listo para comenzar a desarrollar el módulo de comercio.
+Orchard ofrece una función de generación de código que configura la estructura de un módulo vacío para ayudarle a empezar.
+De forma predeterminada, la generación de código está desactivada. Así que primero debe instalar y activar la función.
+La forma más sencilla de hacerlo es ir a los módulos de la interfaz de usuario de administrador y haga clic en la "Gallery".
+Haga una búsqueda para "la generación de código" y luego instale el módulo.
 
-To enable code generation, if you didn't do so right after install, you may enter the following command in the command window:
+Para habilitar la generación de código, si no lo hizo justo después de la instalación, puede introducir el siguiente comando en la ventana de comandos:
 
     
     feature enable Orchard.CodeGeneration
 
 
-You will use a code-generation command to create a commerce module. Enter the following command:
+Vas a utilizar la utilidad de generación de código para crear un módulo de comercio. Introduce el siguiente comando:
 
     
     codegen module SimpleCommerce
 
+Abre una ventana del explorador de windows y navega hacia la recién creada carpeta: \inetpub\wwwroot\Orchard\Modules\SimpleCommerce_ . Abre el fichero _module.txt_ usando un editor de texto.
 
-Open a Windows Explorer window and browse to the newly created _\inetpub\wwwroot\Orchard\Modules\SimpleCommerce_ folder. Open the _module.txt_ file using a text editor.
 
-Change the description to "A simple commerce module". Change the description of the feature to be "A simple product part". Save the file and close it. The following example shows the complete _module.txt_ file after the changes.
+Cambie la descripción a "A simple commerce module". También cambie la descripción del grupo Feature a " A simple product part". Guarde el archivo y ciérrelo. El siguiente ejemplo muestra el archivo _module.txt_ completo después de los cambios.
+
 
     
     Name: SimpleCommerce
@@ -76,11 +79,10 @@ Change the description to "A simple commerce module". Change the description of 
             Category: Commerce
 
 
-# Creating the Model for the Part
+# Creando el modelo para el content part
 
-Next, you will create a data model that is a repesentation of what will be stored in the database.
-
-In _Modules/SimpleCommerce/Models_, create a _Product.cs_ file and add the following content:
+A continuación, va a crear un modelo de datos que es una repesentation de lo que se almacenará en la base de datos.
+En _Modules/SimpleCommerce/Models_, crea un fichero _Product.cs_ con el siguiente contenido:
 
     
     using System.ComponentModel.DataAnnotations;
@@ -109,36 +111,40 @@ In _Modules/SimpleCommerce/Models_, create a _Product.cs_ file and add the follo
     }
 
 
-This code has two properties, `Sku` and `Price`, that are virtual in order to enable the creation of a dynamic proxy that will handle persistence transparently.
+El código tiene dos propiedades, 'Sku' y 'Price', son propiedades virtuales necesarias para habilitar la creación de un proxy dinámico que manejará la capa de persistencia de forma transparente.
 
-The code also defines a content part that derives from `ContentPart&lt;ProductPartRecord&gt;` and that exposes the SKU and price from the record as public properties. The properties have attributes that will surface in the UI as validation tests.
 
-In order for the application to pick up the new file, you need to add it to the module's project file. Open the _SimpleCommerce.csproj_ file and look for "assemblyinfo.cs". After that line, add the following:
+El código también define una parte de contenido que se deriva de `ContentPart&lt;ProductPartRecord&gt;` y  que expone el SKU y el precio del registro como propiedades públicas. Las propiedades tienen atributos que saldrán a la superficie en la interfaz de usuario como pruebas de validación.
+
+Para que la aplicación pueda coger el fichero que acabamos de crear, debes añadir la referencia en el fichero del proyecto. Abre _SimpleCommerce.csproj_ y busca "assemblyinfo.cs". Después de esa línea añade la siguiente:
 
     
     <Compile Include="Models\Product.cs" />
 
 
-Save the file, but leave it open, because you will make additional changes to it throughout the tutorial.
+Guarde el archivo, pero se dejalo abierto, se harán cambios adicionales a lo largo del tutorial.
 
-Navigate to the site in your browser to make sure the application's dynamic compilation feature picks up the new part and record. You will know that everything is working if you go to the **Features** administration screen and see the new **SimpleCommerce** feature.
 
-In the command window, enable the new feature using the following command: 
+Navega hasta el sitio en tu navegador para estar seguro de que la aplicación vía compilación dinámica coge el nuevo part y record. Sabrás que todo ha funcionado cuando vayas a **Features** en el panel de administración y veas el nuevo **SimpleCommerce** como una nueva funcionalidad.
+
+En la línea de comandos habilita la nueva funcionalidad usando el siguiente comando: 
 
     
     feature enable SimpleCommerce
 
 
-# Creating the Initial Data Migration File
+# Creando la migración de datos inicial
 
-Data migration is a pattern that enables an application or component to handle new versions gracefully, without any data loss. The main idea is that the system keeps track of the current version installed and each data migration describes the changes to go from one version to the next. If the system detects that there is a new version installed and the current data is from a previous version, the administrator of the site is prompted to upgrade. The system then runs all necessary migration methods until the data version and the code version are in sync.
+La migración de datos es un patrón que permite a una aplicación o componente añadir nuevas versiones sin pérdida de datos. La idea principal es que el sistema hace un seguimiento de la versión actual instalada y cada una migración de datos se especifican los cambios para pasar de una versión a la siguiente. Si el sistema detecta que hay una nueva versión instalada y los datos actuales son de una versión anterior, el administrador del sitio se le pedirá que actualice. Entonces, el sistema ejecuta todos los métodos de migración necesarias hasta que la versión de los datos y la versión del código queden sincronizados.
 
-Start by creating the initial migration for the new module, which will just create the data tables that are needed. In the command window, enter the following command:
+
+
+Comience por crear la migración inicial para el nuevo módulo, que acaba de crear las tablas de datos que se necesitan. En la ventana de comandos, escriba el siguiente comando:
 
     codegen datamigration SimpleCommerce
 
 
-This creates the following _Migrations.cs_ file:
+Esto creará el fichero _Migrations.cs_, con el siguiente contenido:
 
     using System;
     using System.Collections.Generic;
@@ -168,11 +174,12 @@ This creates the following _Migrations.cs_ file:
     }
 
 
-The method name `Create` is the convention for the initial data migration. It calls the `SchemaBuilder.CreateTable` method that creates a _ProductPartRecord_ table that has _Sku_ and _Price_ columns in addition to the columns from the basic _ContentPartRecord_ table.
+El nombre del método `create` es la convención para la migración de datos inicial. Se llama al método `SchemaBuilder.CreateTable`  que crea una tabla que tiene columnas _ProductPartRecord_ _Sku_ y _Price_ además de las columnas de la tabla _ContentPartRecord_ básica.
 
-Notice that the method returns 1, which is the version number for the migration.
+Note que el método devuelve 1, que es la versión inicial.
 
-Add another migration step to this in order to illustrate how you can later alter the existing schema and type metadata as the module evolves. In this case, you will take this opportunity to add a feature that will enable the part to be attached to any content type. Add the following method to the data migration class:
+Agregue otro paso de migración a la anterior con el fin de ilustrar la forma que más adelante puede alterar el esquema existente de metadatos. En este caso, añadiremos una característica que permitirá a la parte que debe asignarse a cualquier tipo de contenido. Agregue el método siguiente a la clase de migración de datos:
+
 
     
     public int UpdateFrom1() {
@@ -182,22 +189,23 @@ Add another migration step to this in order to illustrate how you can later alte
     }
 
 
-This new migration is named `UpdateFrom1`, which is the convention for upgrading from version 1. Your next migration should be called `UpdateFrom2` and return 3, and so on.
+Esta nueva migración se denomina `UpdateFrom1`, que es la convención para la actualización desde la versión 1. Su migración siguiente debería llamarse `UpdateFrom2` y devolver 3 y así sucesivamente.
 
-Make sure the following line is present in the _.csproj_ file. (It should already have been added by the code generation command.)
+Asegúrese de que la siguiente línea se encuentra presente en el archivo _.csproj_. (Ya debería haber sido añadido por la herramienta de generación de código.)
 
     <Compile Include="Migrations.cs" />
 
 
-Navigate to the **Features** screen in the dashboard. You see a warning that indicates that one of the features needs to be updated, and the **Simple Commerce** module is displayed in red. Click **Update** to ensure that the migrations are run and that the module is up to date.
+Vaya a la pantalla ** Features ** en el dashboard. Verá una advertencia que indica que una de las características necesita ser actualizada, y el módulo **Simple Commerce** se muestra en rojo. Haga click en ** Update ** para asegurarse de que las migraciones se ejecutan y que el módulo está al día.
 
-# Adding a Handler
 
-A handler in Orchard is analogous to a filter in ASP.NET MVC. It's a piece of code that is meant to run when specific events happen in the application, but that are not specific to a given content type. For example, you could build an analytics module that listens to the `Loaded` event in order to log usage statistics. To see what event handlers you can override in your own handlers, examine the source code for `ContentHandlerBase`. 
+# Añadiendo un Handler
 
-The handler you need in the module is not going to be very complex, but it will implement some plumbing that is necessary to set up the persistence of the part. We hope that this kind of plumbing will disappear in a future version of Orchard, possibly in favor of a more declarative approach such as using attributes.
+Un handler en Orchard es análogo a un filtro en ASP.NET MVC. Es un trozo de código que está destinado a ejecutarse cuando suceden eventos específicos en la aplicación, pero que no son específicos de un tipo de contenido determinado. Por ejemplo, podría construir un módulo de análisis que escucha el evento'Loaded' con el fin de registrar las estadísticas de uso del sistio. Para ver qué eventos de handlers pueden ser sobreescritos, exámine el código fuente de `ContentHandlerBase`.
 
-Create a _Handlers_ folder and add a _ProductHandler.cs_ file to it that contains the following code:
+El handler que necesita en el módulo no va a ser muy complicado, pero sí incorpora algunas tuberías que son necesarias para establecer la persistencia del part. Esperamos que este tipo de tuberías desaparezca en una versión futura de Orchard, posiblemente en favor de un enfoque más declarativo como el uso de atributos.
+
+Crea una carpeta _Handlers_ y añade un fichero _ProductHandler.cs_ que contenga el siguiente código:
 
     
     using Orchard.ContentManagement.Handlers;
@@ -213,17 +221,16 @@ Create a _Handlers_ folder and add a _ProductHandler.cs_ file to it that contain
     }
 
 
-Add the file to the _.csproj_ file so that dynamic compilation can pick it up, using the following line:
+Añade la referencia del fichero en el archivo del proyecto _.csproj_ file, para que la compilación dinámica pueda cogerlo, escribiendo la siguiente línea:
 
     <Compile Include="Handlers\ProductHandler.cs" />
 
 
-# Adding a Driver
+# Añadiendo un Driver
 
-A driver in Orchard is analogous to a controller in ASP.NET MVC, but is well adapted to the composition aspect that is necessary in web content management systems. It is specialized for a specific content part and can specify custom behavior for well-known actions such as displaying an item in the front end or editing it in the administration UI.
+Un Driver en Orchard es análogo a un controlador en ASP.NET MVC, bien adaptado al aspecto de composición que es necesario en los sistemas de gestión de contenido. Está especializada en una parte de contenido específico y puede especificar un comportamiento personalizado para acciones conocidas como mostrar un elemento en el front-end o editarlo en el panel de administración.
 
-A driver typically has overrides for the display and editor actions. For the product part, create a new _Drivers_ folder and in that folder create a _ProductDriver.cs_ file that contains the following code:
-
+Un driver sobreescribe las acciones de mostrar y editar. Para nuestro ProductPart, crea una carpeta nueva _Drivers_ en esa carpeta, crea un archivo _ProductDriver.cs_ que contendrá el siguiente código:
     
     using SimpleCommerce.Models;
     using Orchard.ContentManagement.Drivers;
@@ -261,16 +268,16 @@ A driver typically has overrides for the display and editor actions. For the pro
     }
 
 
-The code in the `Display` method creates a shape to use when rendering the item in the front end. That shape has `Sku` and `Price` properties copied from the part.
+El código en el método `display` crea un shape para utilizar al renderizar el elemento en el front-end. Esa shape tiene propiedades Sku `` y `price` copiadas del part.
 
-Update the _.csproj_ file to include the following line:
+Actualiza el archivo _.csproj_ con la siguiente línea:
 
     <Compile Include="Drivers\ProductDriver.cs" />
 
 
-The `Editor` method also creates a shape named `EditorTemplate`. The shape has a `TemplateName` property that instructs Orchard where to look for the rendering template. The code also specifies that the model for that template will be the part, not the shape (which would be the default).
+El método `Editor`  también crea un shape llamado `EditorTemplate`. La shape tiene una propiedad `TemplateName' que indica a Orchard dónde buscar la plantilla de redenderizado. El código también es`pecifica que el modelo de plantilla será del part, no de la shape (que sería el valor por defecto).
 
-The placement of those parts within the larger front end or dashboard must be specified using a _placement.info_ file that is located at the root of the module. That file, like a view, can be overridden from a theme. Create the _placement.info_ file with the following contents:
+La colocación de las parts dentro del front-end o dashboard debe especificarse utilizando un archivo _placement.info_ que se encuentra en la raíz del módulo. Ese archivo, como una vista, se puede reemplazar en un tema. Cree el archivo _placement.info_ con el siguiente contenido:
 
     
     <Placement>
@@ -279,28 +286,26 @@ The placement of those parts within the larger front end or dashboard must be sp
     </Placement>
 
 
-Add the _placement.info_ file to the _.csproj_ file using the following line:
+Añade el fichero _placement.info_ al proyecto _.csproj_ file usando la siguiente línea:
 
     
     <Content Include="placement.info" />
 
 
-# Building the Templates
+# Creando el template
 
-The last thing to do in order for the new content part to work is to write the two templates (front end and admin) that are configured in the driver.
+La última cosa por hacer para que la content part nueva pueda funcionar es escribir las dos plantillas (frontend y administración) que se configuran en el driver.
 
-Create the front-end template first. Create a _Parts_ folder under _Views_ and add a _Product.cshtml_ file that contains the following code:
-
+Cree la plantilla frontal en primer lugar. Cree una carpeta bajo _Parts_ _Views_ y añada un archivo _Product.cshtml_ que contiene el siguiente código:
     
     <br/>
     @T("Price"): <b>$@Model.Price</b><br />
     @Model.Sku<br/>
 
 
-This is very plain rendering of the shape. Notice the use of the `T` method call to wrap the "Price" string literal. This enables [localization](Creating-global-ready-applications) of that text.
+Esta es una manera muy simple de redenderizar una shape. Note que el método `T` contiene un literal "Price". Esto activa la [localización](Creating-global-ready-applications) en este texto.
 
-The administration view is a little heavier on HTML helper calls. Create an _EditorTemplates_ folder under _Views_ and a _Parts_ folder under that. Add a _Product.cshtml_ to the _Parts_ folder that contains the following code:
-
+La vista de la administración es un poco más pesada por las llamadas de helpers HTML. Crea una carpeta _EditorTemplates_ bajo _Views_ y una carpeta dentro, _Parts_ . Agregue un _Product.cshtml_ a la carpeta _Parts_ que contenga el código siguiente:
     
     @model SimpleCommerce.Models.ProductPart
     <fieldset>
@@ -311,21 +316,20 @@ The administration view is a little heavier on HTML helper calls. Create an _Edi
     </fieldset>
 
 
-Add those two templates to the _.csproj_ file using the following lines:
+Agregue las dos plantillas en el archivo _.csproj_ con las siguientes líneas:
 
     
     <Content Include="Views\Parts\Product.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Product.cshtml" />
 
 
-# Putting it All Together into a Content Type
+# Uniendo todas las piezas en un Content Type
 
-The content part that you've put together could already be composed from the administration UI into a content type (see [Creating Custom Content Types](Creating-custom-content-types)), but per the goal of this topic, you will continue by writing code using a text editor.
+La content part que hemos preparado ya podría ser compuesto en la interfaz de usuario de administración en un content type (ver [Creando Content Types personalizados](Creating-custom-content-types)), pero la meta de este tutorial es que continues escribiendo el módulo desde un editor de texto.
 
-You will now build a new `Product` content type that will include the `Product` part and a number of parts that you can get from Orchard. So far, you have been focused on your specific domain. This will now change and you will start integrating into Orchard.
+Ahora se va a construir un nuevo `producto` content type que incluirá parte del 'Producto' y una serie de parts que se pueden obtener a partir de Orchard. Hasta ahora, este tutorial se ha centrado en el dominio específico de un módulo e-commerce. Ahora esto va a cambiar y se va a empezar a integrar en Orchard.
 
-To build the content type from a new migration, open the _Migrations.cs_ file and add the following method to the class:
-
+Para construir el tipo de contenido a partir de una nueva migración, abra el archivo _Migrations.cs_ y agregue el método siguiente a la clase:
     
     public int UpdateFrom2() {
       ContentDefinitionManager.AlterTypeDefinition("Product", cfg => cfg
@@ -342,18 +346,18 @@ To build the content type from a new migration, open the _Migrations.cs_ file an
     }
 
 
-Also add `using Orchard.Indexing;` to the top of the file.
+También añade `using Orchard.Indexing;` al principio del fichero.
 
-What you are doing is creating (or updating) the `Product` content type and adding to it the ability to have its own URL and title (`RoutePart`), to have a rich text description (`BodyPart`), to be a product, to be commented on (`CommentsPart`), to be tagged (`TagsPart`) and to be localizable (`LocalizationPart`). It can also be created, which will add a **Create Product** menu entry, and it will also enter the search index (`Indexed`).
+Lo que estás haciendo es crear (o actualizar) el `producto` content type y añadiéndole la posibilidad de tener su propia URL y  título ('RoutePart'), tener una descripción de texto enriquecido (`BodyPart`), para ser un producto que se puede comentar (`CommentsPart`), para ser poder usar tags (`TagsParts') y estar localizable (`LocalizationPart`). También se ha añadido que pueda ser creado, lo que añadirá una entrada desde el menú **Create Product**, y también entrará en el índice de búsqueda (`Indexed').
 
-To enable your new module, open the Orchard dashboard and click **Modules**. Select the **Features** tab, find the **SimpleCommerce** module, and click **Enable**.
+Para activar su nuevo módulo, abra el Orchard dashboard y haga click en **Modules**. Selecciona la pestaña **Features**, busca el módulo **SimpleCommerce**, y haga click en **Enable**.
 
 ![](../Upload/screenshots/simpleCommerce_enable.png)
 
-To add a new **Product** content type, click **Content** on the dashboard, select the **Content Types** tab, find **Product**, and click **Create New Product**. 
+Para añadir un nuevo content type **Producto**, haga click en **Content** en el dashboard, seleccione la pestaña Content Type, busque **Product** y  haga click en **Create New Product**.
 
 ![](../Upload/screenshots_675/simpleCommerce_product_675.png)
 
-You now have a product editor that features your `Sku` and `Price` fields.
+Ahora tienes un editor que cuenta con los campos de producto 'Sku' y 'price'.
 
-The code for this module can be downloaded from the following page: [Orchard.Module.SimpleCommerce.0.5.0.zip](../Attachments/Creating-a-module-with-a-simple-text-editor/Orchard.Module.SimpleCommerce.0.5.0.zip)
+El código de este módulo puede ser descargado de: [Orchard.Module.SimpleCommerce.0.5.0.zip](../Attachments/Creating-a-module-with-a-simple-text-editor/Orchard.Module.SimpleCommerce.0.5.0.zip)
