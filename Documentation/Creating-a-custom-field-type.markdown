@@ -484,7 +484,6 @@ Crea un directorio **Styles** y crea el siguiente fichero **datetime.css**
 
 # Usando el Field
 
-In order to be able to use the new field, you must first make sure that the **Orchard.ContentTypes** feature is enabled. Also enable our new **DateTimeField** feature under **Fields**. Once it is, you can click on **Manage content types** in the admin menu. Click **Create new type** and give it the name "Event". Click **Add** next to fields and type in "When" as the name of the field. Select our new **DateTime** field type as the type of the field.
 
 Con el fin de poder utilizar el nuevo campo, primero debe asegurarse de que la función **Orchard.ContentTypes**está habilitada. También activa  nuestra nueva función **DateTimeField** debajo de **Fields**. Una vez que esté activada, puede hacer click en **Manage content types** en el menú de administración. Haga clic en **Create new type** nuevo tipo y dele el nombre de "Event". Haga clic en **Add** al lado de los campos y escriba "When" como el nombre del campo. Seleccione el nuevo ContentType **DateTime** como el tipo de campo.
 
@@ -494,13 +493,10 @@ Ahora en el editor de texto, debes de ver nuestro nuevo campo **When**, y deber�
 
 Hemos elegido para mantener la fecha y la hora que se muestra. Los valores para el campo tienen también la oportunidad de determinar dónde está el campo o si aparecerá en el front-end si desea anular los valores predeterminados. Vamos a pasar eso por ahora. Agregue la part **Route** para que nuestros eventos puedan tener un título y guarde.
 
-Ahora podremos añadir un nuevo evento haciendo click en **Create Event** en el menú de administración. El editor 
-
-
-We can now add a new event by clicking **Create Event** in the admin menu. El editor que se crea para nosotros tiene un campo "When" con bonitos selectores:
+Ahora podremos añadir un nuevo evento haciendo click en **Create Event** en el menú de administración. El editor  que se crea para nosotros tiene un campo "When" con bonitos selectores:
 
 ![The date time field in the event editor](../Attachments/Creating-a-custom-field-type/EventEditor.PNG)
-Create an event and save it. You can now view it on the site:
+Crea un evento y guardalo. Podrás verlo en el sitio.
 
 ![The event as displayed on the front end](../Attachments/Creating-a-custom-field-type/Dinner.PNG)
 
