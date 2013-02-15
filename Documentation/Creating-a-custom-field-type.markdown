@@ -1,29 +1,28 @@
-Fields can be used in Orchard to [build new content types](Creating-custom-content-types). Orchard currently comes with only one type of field, text fields, but it is possible to build your own field types that can then be used to build new content types.
+Los Fields (campos) pueden ser usados en Orchard para [construir nuevos Contents Types](Creating-custom-content-types). Orchard actualmente viene con un solo tipo de fields, el campo de texto, pero es posible construir tus propios content fields que luego pueden ser utilizados para construir nuevos content types.
 
-This topic will teach you how to add such a new field type. You can find the source code for this tutorial here: [http://orcharddatetimefield.codeplex.com/](http://orcharddatetimefield.codeplex.com/).
+Este tema le enseñará cómo agregar un nuevo tipo de campo. Puede encontrar el código fuente de este tutorial aquí: [http://orcharddatetimefield.codeplex.com/](http://orcharddatetimefield.codeplex.com/).
 
-We will assume Visual Studio and a full source code enlistment are being used in this topic. It is possible to build this module without it by simply manipulating the csproj file and adding the relevant files in there. Please consult [Creating a module with a simple text editor](Creating-a-module-with-a-simple-text-editor) for an example of module building without Visual Studio.
+Vamos a asumir que usa Visual Studio y tiene el código fuente aislado para este tema. Es posible construir este módulo sin Visual Studio, simplemente manipulando el arhivo csproj y añadiendo las referencias a los archivos pertinentes. Por favor consulta [Creando un módulo con un simple editor de texto](Creating-a-module-with-a-simple-text-editor) para obtener un ejemplo de cómo crear un editor sin visual studio.
 
 
-# Objectives
+# Objetivos
 
-Learn the steps to add a new field type to Orchard. The goal is to have a Date and Time editor so that any existing or new Content Type can let the user select a Date or a Time very easily.
+Conozca los pasos para agregar un nuevo FieldType a Orchard. El propósito es tener un content field Date y otro de Time para que cualquier ContentType existente o nuevo puede permitir al usuario seleccionar una fecha o una hora muy fácilmente.
 
 ![The date time field in the event editor](../Attachments/Creating-a-custom-field-type/EventEditor.PNG)
 
-# Creating a Module
+# Creando un módulo
 
-We will create the new field type inside a new Orchard module so that it can be easily distributed. We will use Code Generation feature for that. 
+Vamos a crear el FieldType nuevo dentro de un módulo Orchard nuevo para que pueda ser fácilmente distribuido. Vamos a utilizar la función de CodeGeneration para ello.
 
-> **Important:** Before you can generate the file structure for your module, you need to download, install, and enable the **Code Generation** feature for Orchard. For more information, see [Command-line Code Generation](Command-line-scaffolding).
+> **Importante:** Antes de que puedas generar la estructura de ficheros para tu módulo, necesitas descargar, instalar y activar la función de **Code Generation** de Orchard. Para más información ver  [Command-line Code Generation](Command-line-scaffolding).
 
-Once the **Code Generation** feature has been enabled, you can type the following `codegen` command on the Orchard command-line.
+Una vez que la función **Code Generation** ha sido activada, puedes escribir el siguiente comando 'codegen' en la línea de comandos de Orchard.
 
     
     codegen module CustomFields /IncludeInSolution:true
 
-
-This should create a new **CustomFields** folder under Modules, pre-populated with a few folders and files. For example, you may open the **module.txt** manifest file and modify it:
+Esto debería cerar una nueva carpeta **CustomFields** dentro de Modules, escribiendo algunas carpetas y ficheros. Por ejemplo, deberías abrir el fichero de manifiesto **module.txt** y modificarlo:
 
     
     Name: CustomFields
@@ -43,11 +42,11 @@ This should create a new **CustomFields** folder under Modules, pre-populated wi
             Dependencies: CustomFields, Orchard.jQuery, Common, Settings
 
 
-We are defining two features here because this module will eventually contain more fields and we want to distinguish between the default feature of the module (which has the same name as the module itself and has to exist in any module) and the date field feature. This also demonstrates categories and dependencies.
+Estamos definiendo dos características aquí porque este módulo eventualmente contienen más campos y queremos distinguir entre la función predeterminada del módulo (que tiene el mismo nombre que el mismo módulo y tiene que existir en cualquier módulo) y la función de campo de fecha. Que demuestra también categorías y dependencias.
 
-# Modeling the Field
+# Modelando el campo
 
-Let's now create a **Fields** folder inside of our **CustomFields** folder and create the following **DateTimeField.cs** file in there:
+Creamos ahora una carpeta **Fields** dentro de nuestra carpeta **CustomsFields** y crear también fichero **DateTimeField.cs** dentro:
 
     
     using System;
@@ -84,9 +83,9 @@ Let's now create a **Fields** folder inside of our **CustomFields** folder and c
     }
 
 
-The field is defined as a class that derives from `ContentField`, which gives us a few services for free, such as the storage of the value of the field. The fields will be stored as strings. The conversion of dates to and from strings could be handled automatically, but we are doing it explicitly here to give a good idea of how you would do things for more complex field types.
+El campo es definido como una clase que deriva de 'ContentField', lo que nos proporciona algunas características como el poder almacenar el valor del campo. El campo se almacenará como un string. Las conversiones se manajerán automáticamente, pero lo estamos haciendo explicitamente aquí para darte una buena idea de cómo deberían ser las cosas con ContentFields más complejos.
 
-# Creating a View Model
+# Creando el View Model
 
 It is good practice (although not mandatory) to create one or several view models that will be used as the model in the admin template that we will use to render instances of our field. Let's create the following **DateTimeFieldViewModel.cs** file in a new **ViewModels** folder:
 
@@ -105,14 +104,14 @@ It is good practice (although not mandatory) to create one or several view model
         }
     }
 
+Esto no sólo expone la fecha y el tiempo como propiedades separadas, también tiene algunos parámetros que pueden ser pasados a la vista para personalizar el redenderizado.
 
-This not only exposes the date and time as separate properties, it also has some parameters that can be passed into the view to customize the rendering.
 
-# Creating Settings for the Field
+# Creando las opciones de configuración para nuestro ContentField
 
-This flexibility in rendering that we just introduced in the view model can be exposed as settings for the field. This way, administrators can configure fields on the content types they create in order to adapt them to their exact needs.
+Esta flexibilidad en la representación que nos acaba de introducir en el ViewModel puede exponer como son los ajustes para el campo. De esta manera, los administradores pueden configurar los campos en los content type que crean con el fin de adaptarlos a sus necesidades específicas.
 
-Create a **Settings** folder and add the following **DateTimeFieldSettings.cs** file to it:
+Crea una carpeta **Settings** y añade el siguiente fichero **DateTimeFieldSetting.cs** con esto:
 
     
     namespace CustomFields.DateTimeField.Settings {
@@ -129,13 +128,13 @@ Create a **Settings** folder and add the following **DateTimeFieldSettings.cs** 
     }
 
 
-We have defined here an enumeration describing the possible values of our display setting, which is the only setting for the field. The settings class itself is just an ordinary class with one property typed with that enumeration.
+Hemos definido aquí una enumeración que describe los posibles valores de nuestra configuración de la pantalla, que es el único parámetro para el campo. La clase de configuración en sí es simplemente una clase ordinaria con una propiedad escrita con esa enumeración.
 
-# Writing the Driver
+# Escribiendo el Driver
 
-Exactly like a part, a field has a driver that will be responsible for handling display and editing actions on the field when it's been added to a content type.
+Exactamente igual que con un part, un campo tiene un controlador que será responsable de manejar la visualización y edición  en este campo, al que será añadido a un ContentType.
 
-Create a **Drivers** folder and add the following **DateTimeFieldDriver.cs**:
+Crear una carpeta **Drivers** y añade el siguiente fichero **DateTimeFieldDriver.cs**
 
     
     using System;
@@ -286,38 +285,38 @@ Create a **Drivers** folder and add the following **DateTimeFieldDriver.cs**:
     }
 
 
-Let's enumerate a few things we're doing in this code in order to explain how it works.
+Enumeremos unas pocas de las cosas que estamos haciendo en el código para explicar cómo funciona.
 
-The driver derives from `ContentFieldDriver<DateTimeField>` in order to be recognized by Orchard and to give strongly-typed access to the field value from the driver's code.
+El driver deriva de 'ContentFieldDriver<DateTimeField>' para que sea reconocido por Orchard y tenga un tipado fuerte cuando sea accedido desde el código del driver.
 
-We start by injecting the localizer dependency (the `T` property) so that we can create localizable strings throughout the code.
+Empezamos por inyectar una dependencia del localizador (la propiedad 'T') de manera que podamos usar cadenas localizables en todo el código.
 
-The static `GetPrefix` method is a conventionally defined method that is used to create unique column names in the database for instances of the field type.
+El método estático 'GetPrefix' es una convención definida que se utiliza para crear nombres de columnas en la base de datos para las instancias del ContentType.
 
-We then have two actions, `Display` and `Editor`, which start by fetching the `settings` and `value` for the field and build shapes out of them.
+Después tenemos dos acciones, 'Display' y 'Editor', cada una de ellas empieza por coger las 'settings' y 'value' para cada campo y construye un shape para mostrarlo.
 
-> Note: The `UsedImplicitly` attribute is only here to suppress a warning from Resharper. It could be removed without much harm.
+> Nota: El atributo `UsedImplicitly' está aquí sólo para suprimir una advertencia de ReSharper. Podría ser retirado.
 
-The `shapeHelper` object provides some helper methods to create shapes, two of which can be seen in action here.
+El objeto 'shapeHelper' prove algunos métodos helper para crear shapes, dos de ellos pueden ser vistos en acción.
 
-The second `Editor` method is the one that is called when the admin form is submitted. Its job is to map the submitted data back into the field and then to call the first `Editor` method to render the editor on the screen again.
+El segundo método de 'Editor' es uno de los que es llamado cuando el form es enviado. 
 
-# Writing the Templates
+The second `Editor` method is the one that is called when the admin form is submitted. Su trabajo consiste en asignar los datos presentados de nuevo en el campo y después de llamar al primer método Editor` para hacer que el editor en la pantalla de nuevo.
 
-We need to write the views that will determine how our field is represented in admin and front-end UI.
+# Escribiendo plantillas
 
-Create a **Fields** and an **EditorTemplates** directory under **Views**. Then create another **Fields** directory under EditorTemplates. In **Views/Fields**, create the following **Custom.DateTime.cshtml**:
+Tenemos que escribir las vistas que determinarán como nuestros campos van a ser representados en el panel de administración y en el front-end.
 
+Crear el directorio **Fields** y otro **EditorTemplates** dentro de **Views**. Después crea otro directorio **Fields** dentro de EditorTemplates. En **Views/Fields**, crea el siguiente archivo, **Custom.DateTime.cshtml**:
     
     <p class="text-field"><span class="name">@Model.Name:</span> 
         @if(Model.ShowDate) { <text>@Model.Date</text> } 
         @if(Model.ShowTime) { <text>@Model.Time</text> }
     </p>
 
+Este código redenderiza el nombre del campo, seguido de dos puntos y el valor de la fecha y el tiempo acorde con la configuración del campo.
 
-This code renders the name of the field, a colon and then the date and time according to the field's configuration.
-
-Now create a file of the same name under **Views/EditorTemplates/Fields** with the following contents:
+Ahora crea un fichero con el mismo nombre dentro de **Views/EditorTemplates/Fields** con el siguiente contenido:
 
     
     @model CustomFields.DateTimeField.ViewModels.DateTimeFieldViewModel
@@ -364,9 +363,10 @@ Now create a file of the same name under **Views/EditorTemplates/Fields** with t
     }
 
 
-This template is registering a few styles and scripts (note that if other parts register the same files, they will still be rendered only once). Then, it defines the editor as a date picker and a time picker according to the field's configuration. The fields are regular text boxes that are unobtrusively enriched by date and time pickers using jQuery UI plug-ins.
 
-To specify the order and location where these templates will be rendered within the composed page, we need to add a placement.info file into the root of the module's directory:
+Esta plantilla está registrando algunos estilos y scripts (tenga en cuenta que si otras parts registran los mismos archivos, sólo se redenderizan una vez). A continuación, define el editor como un selector de fechas y un selector de tiempo de acuerdo a la configuración del campo. Los campos son cuadros de texto normales que están discretamente enriquecidos por selectores de fecha y hora utilizando jQuery UI.
+
+Para especificar el orden y la ubicación en la que estas plantillas se representará en el página compuesta, tenemos que añadir un archivo placement.info en la raíz del directorio del módulo:
     
     <Placement>
         <Place Fields_Custom_DateTime_Edit="Content:2.5"/>
@@ -375,11 +375,11 @@ To specify the order and location where these templates will be rendered within 
 
 
 
-# Managing the Field Settings
+# Gestionando las opciones de configuración del campo.
 
-We are not quite done yet. We still need to take care of managing and persisting the settings for the field.
+No hemos terminado completamente aún. Todavía tenemos que gestionar y  persistir los valores para el campo.
 
-Add the following **DateTimeFieldEditorEvents.cs** file to the **Settings** folder:
+Añade el siguiente fichero **DateTimeFieldEditorEvents.cs** en el directorio **Settings**:
 
     
     using System.Collections.Generic;
@@ -419,9 +419,9 @@ Add the following **DateTimeFieldEditorEvents.cs** file to the **Settings** fold
     }
 
 
-This is the equivalent of a driver, but for field settings. The first method gets the settings and determines the template to render, and the second updates the model with the values from the submitted form and then calls the first.
+Es equivalente a un  driver, pero para la configuración del campo. El primer método obtiene los valores y determina qué plantilla utilizará, y el segundo actualiza el modelo con los valores del formulario presentado y a continuación, llama al primero.
 
-The editor template for the field is defined by the following **DateTimeFieldSettings.cshtml** that you should create in a new **DefinitionTemplates** folder under **Views**:
+La plantilla editor para el campo es definiada por el siguiente fichero **DateTimeFieldSettings.cshtml** que debes crear en un nuevo directorio **DefinitionTemplates** dentro de **Views**:
 
     
     @model CustomFields.DateTimeField.Settings.DateTimeFieldSettings
@@ -447,12 +447,12 @@ The editor template for the field is defined by the following **DateTimeFieldSet
             
     </fieldset>
 
+Esta plantilla crea una etiqueta para la configuración y luego un selector que permite activar al administrador del sitio una opción para la configuración del campo.
 
-This template creates a label for the setting and then a drop-down that enables the site administrator to pick one of the options for the setting.
+# Actualizando el fichero del proyecto
 
-# Updating the Project File
+Si utiliza Visual Studio, usted puede saltar esta sección ya que el archivo de proyecto ya ha sido actualizado, simplemente guarde todo con (CTRL + SHIFT + S). De lo contrario, para que el motor de compilación dinámica de Orchard pueda recoger los archivos cs de nuestro nuevo módulo, necesitamos añadirlos al fichero **CustomFields.csproj**. Busca la línea `<compile Include="Properties\AssemblyInfo.cs"/>` en el fichero **CustomFields.csproj** y añade lo siguiente justo después:
 
-If you are using Visual Studio, you should skip this section as your project file has already been updated, provided you saved all (CTRL+SHIFT+S). Otherwise, in order for the Orchard dynamic compilation engine to be able to pick up our new module's cs files, we need to add them to the **CustomFields.csproj** file. Find the `<compile Include="Properties\AssemblyInfo.cs"/>` line in **CustomFields.csproj** and add the following right after it:
 
     
     <Compile Include="Drivers\DateTimeFieldDriver.cs" />
@@ -462,10 +462,9 @@ If you are using Visual Studio, you should skip this section as your project fil
     <Compile Include="ViewModels\DateTimeFieldViewModel.cs" />
 
 
-# Adding the Style Sheet
+# Añadiendo la hoja de estilos
 
-Create a **Styles** directory and create the following **datetime.css**:
-
+Crea un directorio **Styles** y crea el siguiente fichero **datetime.css**
     
     html.dyn label.forpicker {
         display:none;
@@ -483,22 +482,27 @@ Create a **Styles** directory and create the following **datetime.css**:
     }
 
 
-# Using the Field
+# Usando el Field
 
 In order to be able to use the new field, you must first make sure that the **Orchard.ContentTypes** feature is enabled. Also enable our new **DateTimeField** feature under **Fields**. Once it is, you can click on **Manage content types** in the admin menu. Click **Create new type** and give it the name "Event". Click **Add** next to fields and type in "When" as the name of the field. Select our new **DateTime** field type as the type of the field.
 
-Now in the type editor, you should see our new **When** field, and you should be able to deploy its settings section by clicking the "**&gt;**" on its left:
+Con el fin de poder utilizar el nuevo campo, primero debe asegurarse de que la función **Orchard.ContentTypes**está habilitada. También activa  nuestra nueva función **DateTimeField** debajo de **Fields**. Una vez que esté activada, puede hacer click en **Manage content types** en el menú de administración. Haga clic en **Create new type** nuevo tipo y dele el nombre de "Event". Haga clic en **Add** al lado de los campos y escriba "When" como el nombre del campo. Seleccione el nuevo ContentType **DateTime** como el tipo de campo.
+
+Ahora en el editor de texto, debes de ver nuestro nuevo campo **When**, y deberás poder desplegar la sección de configuración  haciendo click en la izquierda de "**&gt;**":
 
 ![Configuring the field](../Attachments/Creating-a-custom-field-type/ConfiguringTheField.PNG)
-We chose to keep both date and time displayed. The settings for the field are also the opportunity to determine where the field will appear on the front end if you want to override the defaults. Let's skip that for now. Add the **Route** part so that our events can have a title, then hit Save.
 
-We can now add a new event by clicking **Create Event** in the admin menu. The editor that gets created for us has a when field with nice date and time pickers:
+Hemos elegido para mantener la fecha y la hora que se muestra. Los valores para el campo tienen también la oportunidad de determinar dónde está el campo o si aparecerá en el front-end si desea anular los valores predeterminados. Vamos a pasar eso por ahora. Agregue la part **Route** para que nuestros eventos puedan tener un título y guarde.
+
+Ahora podremos añadir un nuevo evento haciendo click en **Create Event** en el menú de administración. El editor 
+
+
+We can now add a new event by clicking **Create Event** in the admin menu. El editor que se crea para nosotros tiene un campo "When" con bonitos selectores:
 
 ![The date time field in the event editor](../Attachments/Creating-a-custom-field-type/EventEditor.PNG)
 Create an event and save it. You can now view it on the site:
 
 ![The event as displayed on the front end](../Attachments/Creating-a-custom-field-type/Dinner.PNG)
 
-# Getting the Code
-
-Download the code here: [CustomFields.zip](../Attachments/Creating-a-custom-field-type/CustomFields.zip). The code is also hosted on [http://orcharddatetimefield.codeplex.com/](http://orcharddatetimefield.codeplex.com/).
+# Obteniendo el código
+Descarga el código de aquí: [CustomFields.zip](../Attachments/Creating-a-custom-field-type/CustomFields.zip). El código también está en [http://orcharddatetimefield.codeplex.com/](http://orcharddatetimefield.codeplex.com/).
