@@ -1,17 +1,14 @@
 
-After developing a module extension to Orchard, you probably want to share it with others.  Orchard provides a module packaging feature that can be used to create a package file containing your module.  To enable this feature, visit the "Features" section of the Orchard admin panel and enable the "Orchard.Packaging" feature.
+Después de desarrollar un módulo de extensión de Orchard es probable que desee compartirlo con los demás. Orchard proporciona una característica de empaquetado del módulo que se puede utilizar para crear un archivo de paquete que contiene el módulo. Para activar esta función, visite la sección "Features" del panel de administración de Orchard y active la opción "Orchard.Packaging".
 
 ![](../Upload/screenshots_675/enable_packaging.png)
 
-Alternatively, you can enable the Orchard.Packaging feature from the Orchard command-line. To do this, run bin\orchard.exe from the root of your Orchard installation, or the root of the Orchard.Web project if you are running against a [source enlistment](Setting-up-a-source-enlistment).
-
+Como alternativa, puede activar la función de Orchard.Packaging desde la línea de comandos de Orchard de línea de comandos. Para ello, ejecute bin\orchard.exe desde la raíz de la instalación de Orchard o la raíz del proyecto Orchard.Web si se ejecuta contra un [repositorio](Setting-up-a-source-enlistment). 
     
     orchard> feature enable Orchard.Packaging
 
 
-
-When the Orchard.Packaging feature is enabled, the Orchard command-line tool supports additional commands that can be used to create a package ([.nupkg file](http://nuget.org)) from any module in your Orchard installation, and to install a new module from a packaged .nupkg file.
-
+Cuando la función Orchard.Packaging está activada, la línea de comandos de Orchard es compatible con comandos adicionales que se pueden utilizar para crear un paquete ([archivo .nupkg](http://nuget.org)) de cualquier módulo de su instalación Orchard y para instalar un nuevo módulo desde un paquete o fichero con extensión .nupkg.
     
     package create <extensionName> <path>
         Create a package for the extension <extensionName>
@@ -34,20 +31,18 @@ When the Orchard.Packaging feature is enabled, the Orchard command-line tool sup
             Creates a new User
     
 
-
-By running the "package create" command, you can create a zip file of a module.
-
+Ejecutando el comando "package create", puedes crear un archivo zip del un módulo.
     
     orchard> package create Lucene C:\Temp
     Package "C:\Temp\Orchard.Module.Lucene.1.0.0.nupkg" successfully created
 
 
-Orchard uses the [NuGet](http://nuget.org) packaging format to create module packages (basically .zip files with extra metadata information about your package).  NuGet is based on the OPC packaging format, which you can learn more about at [http://en.wikipedia.org/wiki/Open_Packaging_Conventions](http://en.wikipedia.org/wiki/Open_Packaging_Conventions).
+Orchard usa el formato de paquetes de [NuGet](http://nuget.org) para crear los paquetes de módulos (básicamente archivos .zip con meta información sobre el paquete). NuGet esta basado en el formato de paquetes OPC, puedes aprender más al respecto en http://en.wikipedia.org/wiki/Open_Packaging_Conventions](http://en.wikipedia.org/wiki/Open_Packaging_Conventions).
 
-Once you've created a module package, you can share it easily with others.  Orchard provides the ability to browse and install a module from the "Modules" section of the Orchard admin panel.  Refer to the [Installing and upgrading modules](Installing-and-upgrading-modules) topic for more details.
+Una vez que haya creado un paquete de módulos, usted lo puede compartir fácilmente con otros. Orchard ofrece la posibilidad de navegar e instalar un módulo de la sección "Modules" del panel de administración de Orchard. Consulte el tema [Instalación y actualización de módulos](Installing-and-upgrading-modules) para más detalles.
 
-Additionally, Orchard provides a Gallery feature that can register one or more gallery feeds of module extensions (OData format).  Users can easily install modules from any registered feed.  A default gallery feed is exposed from this website, at [http://orchardproject.net/gallery/server/FeedService.svc](http://orchardproject.net/gallery/server/FeedService.svc/Packages).  For more information, refer to the [Module gallery feeds](Module gallery feeds) topic.
+Adicionalmente, Orchard provee una Galería de funcionalidades que te permite registrar una o más feeds de extensiones de módulo (con formato OData). Los usuarios pueden instalar fácilmente módulos gracias a los feeds registrados. Por defecto los feeds de la galería se exponen desde esta web, en [http://orchardproject.net/gallery/server/FeedService.svc](http://orchardproject.net/gallery/server/FeedService.svc/Packages). Para más información, dirigite al tema [Module gallery feeds](Module gallery feeds). 
 
-You can visit the Gallery admin panel menu to browse and install available modules and themes online.  The [http://orchardproject.net/gallery](http://orchardproject.net/gallery) website provides a browseable front-end for finding and downloading available modules and themes too.
+Puedes visitar la galería desde el panel de administración y instalar los módulos y temas disponibles online. El sitio web [http://orchardproject.net/gallery](http://orchardproject.net/gallery) también provee un front-end para buscar y descargar módulos y temas.
 
-You can easily upload your custom module package to our Galllery website to share it with other Orchard users. [Register an account](http://orchardproject.net/gallery/Users/Account/Register) and [contribute your module here](http://orchardproject.net/gallery/Contribute/Index).
+Puedes fácilmente subir tu módulo personalizado a nuestra Galería y compartirlo con otros usuarios de Orchard. [Crea una cuenta](http://orchardproject.net/gallery/Users/Account/Register) y [contribuye con tu módulo aquí](http://orchardproject.net/gallery/Contribute/Index).
