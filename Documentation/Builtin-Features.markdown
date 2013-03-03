@@ -1,226 +1,207 @@
-There are lots of features available in Orchard out of the box, and many times more from
-the [gallery][1]. This topic gives a brief description of each of Orchard's first-party
-features.
+Hay un montón de características disponibles para Orchard que están listas para usarse.
+Y en muchas ocasiones más características todavía desde la [gallery][1].
+Este artículo proporciona una breve descripción de cada característica desarrollada por Orchard.
 
-The list is organized alphabetically by module name, within two main sections separating
-core modules from non core modules. Core features cannot be disabled and are all enabled
-at all times, but there are features that are implemented in core modules that can be
-enabled and disabled. Those features are simply not in the "Core" category.
+Esta es una lista organizada alfabéticamente por el nombre de los módulos, en la que dos secciones
+principales separan los módulos que forman parte del núcleo y los que no.
+Las características principales no pueden ser desabilitadas y todas están siempre activadas,
+pero hay características que están implementadas en módulos del núcleo que pueden activarse y desactivarse.
+Estas características simplemente no están en la categoría "Core".
 
-Each module details its features, and whether it's available from the WebPI package or
-only from the gallery or the source code releases.
+Cada módulo detalla sus características, y siempre del mismo modo si está disponible desde el paquete de WebPI, o solo desde la galería o a través de las release del código fuente.
 
-# Core modules
+# Módulos principales (Core modules)
 
 ## Common
 
-The three core content parts Body, Common, and Identity, as well as the Text field, are
-implemented by this core module.
+Las tres partes principales del contenido Body,Common e Identity, así como también el campo de texto Text field, está implementadas en el módulo Common.
 
-The Body part represents a block of rich text. It is
-configured by default to use HTML through TinyMCE, but can be adjusted to use plain text,
-Markdown or any custom flavor.
+La parte Body representa un bloque de texto enriquecido. Este está configurado por defecto para usar HTML
+a través de TinyMCE, pero puede ajustarse para usar texto plano, Markdown o cualquier otro tipo de texto personalizado.
 
-The Common part captures the creation, modification and publication dates, as well as the
-owner of the content item. The container item can also be found on this part, in order
-to implement parent / child metaphors of hierarchies such as blog / post or folder / file.
+La parte Common captura las fechas de creación, modificación y publicación, así como también el propietario del content item.
+El contenedor del item (container item) también puede encontrarse en este part, de manera que en este part,
+también podemos implementar las relaciones de jerarquía del tipo padre / hijo como pueden ser blog / entrada o carpeta / archivo.
 
-The Identity part is useful to provide a unique identity to a content item that doesn't
-have a natural one. For example, pages are naturally identified by their relative URL
-within the site, or users by their user name, but widgets have no such natural identity.
-In order to enable importing and exporting of those items, the identity part can be added.
-It creates GUIDs that are used as a unique identity that can reliably be exchanged between
-instances of Orchard.
+La parte identidad también es útil para proporcionar una identidad única a un content item que no tiene
+una de forma natural. Por ejemplo, las páginas son identificadas de forma natural por su ruta relativa dentro del sitio web, o por ejemplo
+los usuarios son identificados por el nombre de usuario, sin embargo, los widgets no tienen una identidad natural como éstas.
+Con el objetivo de permitir la importación y exportación de estos items, la part Identity puede ser añadida.
+Ésta part crea GUIDs (números de identificación) que son usados como una identidad única que puede relacionar los intercambios de contenidos entre distintas instancias de Orchard.
 
-The Text field is very similar to the Body part, except that it is a field rather than a part,
-enabling the use of multiple instances on a single item. It also has some shorter flavors
-such as a single-line box of unformatted text.
+El campo de texto (Text field) es muy similar a la part Body, excepto que es un campo en lugar de una part.
+El Text field activa el uso de múltiples instancias de un mismo item individual. Tiene otros pequeños beneficios
+como la caja de una línea individual o de texto sin formato.
 
 ## Containers
 
-This module introduces four parts that are useful to create simple hierarchies of contents.
-It is the basis for the Orchard.Lists module and has become somewhat obsolete as Lists got
-deprecated in favor of better content classification models such as taxonomies and better
-querying mechanisms such as projections.
+Este módulo introduce cuatro partes que son útiles para crear jerarquías de contenido sencillas.
+Esto es la base para el módulo Orchard.Lists que ha llegado a ser algo así como las Listas obsoletas que han sido
+desestimadas en favor de una clasificación de modelos en el contenido como las taxonomías o unos mejores
+mecanismos de búsqueda como por ejemplo las proyecciones.
 
-The Container part can be added to a type to mark its ability to contain certain types of
-content items. It also has properties specifying sort order and pagination.
+La part Container puede ser agregada al tipo para marcar su habilidad de contener ciertos tipos de content items.
+Éste también tiene propiedades que especifican el concepto por el que pueden ordenarse y la paginación.
 
-The Containable part specifies that a type can be contained. It works hand-in-hand with the
-Container part and enables the content editor to choose a container for the item.
+La part Containable especifica que un tipo puede ser contenido. Esta trabaja mano a mano con la part Container
+y permiten que el editor de contenido pueda escoger un contenedor para el item que se quiere editar.
 
-The Container Widget part is similar to the Container part, except that it is made to be used
-in the container widget, and it has additional filtering capabilities in order to be able to
-display only a selected subset of the contained items. It is also not a container in itself,
-but rather references and re-uses an existing container item.
+El Container Widget part es similar al Container part, excepto que está hecho para ser usado dentro del Container Widget,
+además posee habilidades especiales para filtrar para ser capaz de mostrar sólo un subconjunto de items presentes en el Container.
+No es solo un contenedor en sí mismo, sino que además referencia y re-usa un container item existente.
 
-The custom properties part exposes three custom text properties that were useful to implement custom
-filtering and ordering. This part is deprecated as projections now enable filtering and sorting
-on fields.
+La part de propiedades personalizadas ofrece tres propiedades personalizadas de texto que son útiles para implementar el filtrar y ordenar.
+Esta part está desfasada ya que las proyecciones ahora permiten filtrar y ordenar en campos (fields).
 
 ## Contents
 
-This core module creates the infrastructure for custom content types.
+Este módulo principal crea la infraestructura para content types personalizados (tipos de contenido personalizados).
 
 ### Features
 
-* Contents (Core): the infrastructure for custom types.
-* Content Control Wrapper (off by default): adds en edit button on the front-end.
+* Contents (Core): la infraestructura para tipos personalizados (custom types).
+* Content Control Wrapper (desactivado por defecto): añade un botón de editar en el front-end.
 
 ## Dashboard
 
-Implements the administration dashboard as an extensible shell.
+Implementa el panel de administración como un caparazón extensible.
 
 ## Feeds
 
-The Feeds core module provides the infrastructure that modules can use to expose RSS,
-Atom or other types of feeds.
+El módulo principal Feeds proporciona la infraestructura que otros módulos pueden usar para distribuir a través de enlaces RSS, Atom o cualuier otro tipo de feeds.
 
 ## Navigation
 
-Since Orchard 1.5, the application ships with a hierarchical and extensible navigation menu.
-More than one named menu can be built using this core module. Menu items can be provided
-by any number of providers. The module ships with custom items that can point to any URL,
-and content menu items that point to a specific content item.
-Other modules, such as taxonomies or projections, can provide their own dynamic menu item providers.
-Menus can be rendered as full hierarchical menu widgets, or as breadcrumb or local menus.
-A content item can be added to menus using the Navigation part. The Menu part, that was
-fulfilling this role before Orchard 1.5, is deprecated but still provided for back-compatibility
-with the data from previous versions of Orchard.
-This core module also provides the administration menu.
+Desde Orchard 1.5, la aplicación se distribuye con un menú de navegación jerárquico y extensible.
+
+Pueden llamarse más de una instancia de menú, que pueden construirse con este módulo. Los items del menú pueden ser proporcionados por cualquier número de proveedores. El módulo ofrece items personalizados que pueden apuntar a cualquier URL, y items de contenido de menú que apuntan a un item de contenido específico.
+
+Otros módulos, como son los taxonomies o los projections, pueden proporcionar sus propios proveedores de items de menú dinámicos.
+
+Los menús pueden pueden ser renderizados como unos widgets menú, o como unos breadcrum o menús locales.
+
+
+Un content item puede ser añadido a los menús suando el Navigation part. El Menu part, que cubría satisfactoriamente esta función antes de Orchard 1.5, está desfasado pero todavía proporciona compatibilidad con versiones anteriores (back-compatibility) de los datos de Orchard.
+
+Este módulo principal también proporciona el menú de administración.
 
 ## Reports
 
-The Reports core module sets-up the infrastructure to generate and display basic reports.
-It is used during setup to log the various setup operations, including datbase operations.
+El módulo principal Reports (reportes) establece la infraestructura para generar y mostrar reportes básicos.
+Es usado durante la primera configuración para hacer un log de varias operaciones de inicio, incluidas las operaciones de base de datos. 
 
 ## Scheduling
 
-The APIs from this core module can be used by other modules such as Publish Later to schedule
-operations to be executed in the future.
+Las APIs para este módulo principal pueden ser usadas por otros módulos como el Publish Later (publica después) para planificar operaciones que serán ejecutadas en el futuro.
 
 ## Settings
 
-Site-wide settings in Orchard are stored in a content item. The Site content type is what is used
-for this, and as any content type in Orchard, it can be extended. This enables modules to contribute
-their own settings. This module is what enables that scenario.
+La mayoría de las configuraciones del sitio en Orchar se almacenan en un content item.
+El content type Site (tipo de contenido sitio) es el que es usado para esto, y como cualquier otro content type en Orchard, puede extenderse. Esto permite que los módulos puedan contribuir a su propia configuración. El módulo Settings es el que permite este escenario. 
 
 ## Shapes
 
-Shapes in Orchard are the basic units of UI from which all HTML is built. New shapes can of course
-be added by modules dynamically, but this module provides some basic and standard shapes.
+Shapes en Orchard son unidades básicas de interfaz de usuario (UI) a partir de las cuales es construido todo el HTML. Es posible añadir nuevos shapes a través de módulos dinámicamente, pero el módulo Shapes ya proporciona algunas shapes básicas y estándard.
 
-Core shapes are defined in code in CoreShapes.cs. Other shapes are defined in Views as cshtml files.
-Any shape, core or otherwise, can be overridden by templates in a theme.
+Las shapes principales (Core Shapes) están definidas a través de código en CoreShapes.cs. Otras shapes están definidas en vistas como archivos ".cshtml".
+Cualquier shape, tranto principal como no, pueden ser sobreescritas por plantillas (templates) en un tema (theme).
 
-### Core shapes
+### Core shapes (shapes principales)
 
-* ActionLink: uses route values to construct a HTML link.
-* DisplayTemplate, EditorTemplate: internally used to build the display and editor views of content items.
-* Layout: this is the outermost shape, that together with its wrapper, Document, defines the basic HTML structure to be rendered. It also defines top-level zones.
-* List: a standard shape to render lists of shapes.
-* Menu, MenuItem, LocalMenu, LocalMenuItem and MenuItemLink: the shapes that navigation renders.
-* Pager and associated shapes and alternates: the shapes used to render pagination.
-* Partial: a shape that can be used to render a template as a partial view, using the specified model. Creating a dynamic shape is often a preferrable technique.
-* Resource, HeadScripts, FootScripts, Metas, HeadLinks, StyleSheetLinks, Style: shapes used to render resources such as script tags or stylesheets.
-* Zone: a special shape that is made to contain other shapes, typically but not limited to widgets.
+* **ActionLink:** usa valores por ruta (route values) para construir un link HTML.
+* **DisplayTemplate, EditorTemplate:** son usando internamente para constrir las vistas públicas (display view) y de edición de los content items.
+* **Layout**: es el shape más exterior, que junto con su Wrapper y su Document, define la estructura básica de HTML para ser renderizada. También define las zonas de nivel superior.
+* **List**: es un shape estandard para renderizar listas de shapes.
+* **Menu, MenuItem, LocalMenu, LocalMenuItem y MenuItemLink:** son las sapes que renderiza la navegación.
+* **Pager (paginador) y shapes asociados y alternates:** los shapes usados para renderizar la paginación.
+* **Partial:** un shape que permite renderizar una plantilla como una vista parcial, usando un modelo específico. Crear un shape dinámico es normalmente la técnica más adecuada.
+* **Resource, HeadScripts, FootScripts, Metas, HeadLinks, StyleSheetLinks, Style:** shapes usados para renderizar recursos como etiquetas de scripts u hojas de estilo.
+* **Zone:** un shape especial que está hecho para contener otros shapes, normalmente contienen widgets pero no están limitados a ellos.
 
 ### Templated shapes
 
-* Breadcrumb: a breadcrumb representation of a list of menu item links.
-* ErrorPage and NotFound: the pages that are rendered in case of server error or 404 not found resource. These are fun ones to override in a theme.
-* Header: the header of the page (not the head tag).
-* Message: this shape is used to render information, warning or error messages.
-* User: displays login, logout, dashboard and change password links.
+* **Breadcrumb**: una representación jerárquica de una lista de enlaces de items de menú.
+* **ErrorPage and NotFound:** las páginas que son renderizadas en el caso de que ocurra un error de servidor o un error 404 de recurso no encontrado.
+* **Header:** la cabecera visual de la página (no la etiqueta head del documento).
+* **Message:** este shape es usado para rendereizar información, alertas o mensajes de error.
+* **User:** muestra los enlaces de login, logout, panel de usuario y cambio de contraseña.
 
-## Title
+## Title (título)
 
-This simple module introduces the Title part that is used by most content types.
+Este módulo sencillo inserta el part Title que es usado por la mayoría de tipos de contenido (content types).
 
 ## XmlRpc
 
-The APIs necessary to create content such as pages and blog posts from applications such as
-Windows Live Writer are implemented in this core module. The Orchard.Blogs module builds
-on this module to enable specifically blog post creation.
+Este módulo implementa las APIs necesarias para crear contenido como páginas y entradas de blog para aplicaciones como Windows Live Writer.
+El módulo Orchard.Blogs se construye sobre el módulo XmlRpc para permitir específicamente la creación de entradas de blog.
 
-# Non-core modules
+# Módulos secundarios
 
-## Markdown (WebPI, off by default)
+## Markdown (WebPI, desactivado por defecto)
 
-[Markdown][2] is a human-readable text format used to describe rich text without the
-complexity of HTML. Some people prefer to write in Markdown rather than in a WYSYWYG
-text editor such as the default TinyMCE editor that comes with Orchard.
+[Markdown][2] es un formato de texto con una sintaxis fácil de leer por las personas (human-readable) usado para describir texto enriquecido sin la complejidad del HTML. Algunas personas prefieren escribir Markdown en lugar de utilizar un editor de texto WYSYWYG, como el editor de texto por defecto que viene con Orchard, TinyMCE.
 
-Once you've enabled the Markdown feature, you can create new content types or edit
-the existing ones to use the Markdown format instead of HTML by opening the settings
-for the Body part and changing the flavor setting from "html" to "markdown". The
-Markdown editor will then be shown instead of TinyMCE in the content item editor.
+Una vez has activado la característica Markdown, puedes crear nuevos content types o editar los existentes para usar el formato Markdown en lugar de HTML abriendo la configuración del part Body y en la configuración flavor cambiando de "html" a "markdown". El editor de Markdown se mostrará en lugar del TinyMCE en el editor del content item.
 
 ## Orchard.Alias (WebPI)
 
-The Alias module sets up the infrastructure to map friendly URLs to content items
-and custom routes. It is the foundation on which Autoroute is built.
+El módulo Alias establece la infraestructura para mapear direcciones amigables a content items y rutas personalizadas. Este módulo es la base sobre la que está construido Autoroute.
 
-### Features
+### Características
 
-* Alias: this is the core infrastructure piece for aliases to work.
-* Alias UI (off by default): provides admin UI to modify, create or remove aliases.
+* **Alias:** esta es la pieza principal de la infraestructura para que aliases (pseudónimos) funcione.
+* **Alias UI (desactivado por defecto):** proporciona la interfaz de usuario para modificar, crear y eliminar aliases.
 
-## Orchard.AntiSpam (WebPI, off by default)
+## Orchard.AntiSpam (WebPI, desactivado por defecto)
 
-The AntiSpam module provides various spam-fighting features and infrastructure
-pieces. It makes it possible to prevent spam on arbitrary contents (previous
-versions of Orchard only had anti-spam services on comments). With this module,
-you can add captcha, external spam-filtering or submission limits simply by adding
-a few parts to your types, including custom forms.
+El módulo AntiSpam proporciona varias funcionalidades para la cucha contra la publicidad, correo y mensajes no deseados (spam) y las piezas de la infraestructura. Hace posible prevenir el spam en contenido arbitrario ( las versiones previas de Orchard sólo ofrecían servicios anti-spam en los comentarios).
 
-### Features
+Con el módulo AntiSpam, puedes añadir un captcha, filtros anti-spam externos o establecer límites de aceptación de contenido añadiendo algunos part a tus tipos, incluyendo formularios personalizados.
 
-* Anti-Spam: the core infrastructure pieces for anti-spam. Also provides the [ReCaptcha][3] part that can be added to content types to add CAPTCHA to its edit form.
-* Akismet Anti-Spam Filter: enables the use of the third-party [Akismet][4] service with Orchard content types.
-* TypePad Anti-Spam Filter: enables the use of the third-party [TypePad][5] service with Orchard content types.
+### Características
 
-## Orchard.ArchiveLater
+* **Anti-Spam:** las piezas principales de la infraestructura anti-spam. También proporciona la parte [ReCaptcha][3] que puede ser añadida a content types (tipos de contenido) para añadir CAPTCHA a su formulario de edición.
+* **Akismet Anti-Spam Filter:** permite usar el servicio de terceros [Akismet][4] con los content types de Orchard.
+* **TypePad Anti-Spam Filter:** permite usar el servicio de terceros [TypePad][5] con los content types de Orchard.
 
-Using the part provided by this module, you can schedule a content item to be archived.
+## Orchard.ArchiveLater (Archiva después)
 
-This module is available from source code packages or [from the gallery][28].
+Usando el part proporcionado por este módulo, puedes programar que un content item sea archivado.
+
+Este módulo está disponible desde los paquetes de código fuente o [desde la galería][28].
 
 ## Orchard.Autoroute (WebPI)
 
-This very powerful feature makes it possible for content type creators to specify a
-token-based URL blueprint. For example, if you want the URL of your blog posts
-to be of the form posts/2012/7/the-best-post-you-ll-ever-read, you can go to the
-content type editor for blog posts, deploy the settings for the Autoroute part and
-set the pattern to "posts/{Content.Date.Format:yyyy}/{Content.Date.Format:MM}/{Content.Slug}".
-
 Autoroute is built on top of the Alias feature.
+
+Esta poderosa funcionalidad hace posible que los creadores de tipos de contenido (content type) puedan especificar una arquitectura de enlaces basada en tokens.
+
+Por ejemplo, si quieres que una URL de tu entrada de blog sea de la forma posts/2012/7/el-mejor-post-que-has-leido-nunca puedes ir al editor del content type para entradas de blog, desarrollar la configuración para el part Autorute y establecer el patrón a "posts/{Content.Date.Format:yyyy}/{Content.Date.Format:MM}/{Content.Slug}".
+
+Autoroute está construido sobre la característica Alias.
 
 ## Orchard.Blogs (WebPI)
 
-The blogs module provides Orchard's blogging features. It relies heavily on Orchard's
-content type composition and other features such as comments.
+El módulo Blogs proporciona las características y funciones de blog para Orchard. Este módulo está fuertemente relacionado con la composición de content type y otras características como los Comments.
 
-### See Also
+### Ver también
 
-* [Adding a blog to your site][6]
-* [Blogging with Live Writer][7]
+* [Añade un blog a tu sitio web][6]
+* [Crea entradas de blog con Windows Live Writer][7]
 
 ## Orchard.CodeGeneration
 
-This module provides developers with scaffolding commands that help with the creation
-of new modules and themes.
+Este módulo proporciona a los desarrolladores comandos de scaffolding que ayudan a la creación de nuevos módulos y temas.
 
-This module is available from source code packages or [from the gallery][29].
+El módulo CodeGeneration está disponible desde los paquetes de código fuente o [desde la galería][29].
 
 ## Orchard.Comments (WebPI)
 
-You can use the Comments part provided by this module on any content type, in order
-to enable users of your site to provide feedback.
+Puedes usar el part Comments proporcionado por este módulo o cualquier otro content type para permitir a los usuarios de tu sitio web opinar y comentar el contenido.
 
 ### See Also
 
-* [Moderating comments][8]
+* [Moderar comentarios][8]
 
 ## Orchard.ContentPermissions (WebPI, off by default)
 
