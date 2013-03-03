@@ -1,17 +1,17 @@
-A content part is a piece of reusable functionality or UI (or both) that can be appended to any content type in Orchard.  Examples of parts include the Route part (for alowing a content item to be addressable with a URL from the front-end), the Tags part (for applying keywords/tags to a content item), and the Menu part (for allowing a content item to be added to the main menu).  
+Un ContentPart (parte o Trozo de Contenido) es una pieza de funcionalidad reutilizable o interfaz de usuario (o ambos) que se puede añadir a cualquier ContentType (tipo de Contenido) en Orchard. Algunos ejemplos de ContentParts son, el RoutePart (para permitir que un ContentItem a sea direccionable con una URL desde el front-end), el TagsPart (para aplicación de palabras clave / etiquetas a un elemento de contenido), y la MenuPart (para permitir que un ContentItem que se pueda añadir en el menú principal).
 
-This tutorial walks through the process of creating a new content part from scratch, using the scaffolding feature in Orchard as a productivity tool.  Although this tutorial assumes development in Visual Studio, it is not strictly necessary to have Visual Studio to develop a content part - feel free to use your editor of choice.  
+En este tutorial se explica el proceso de creación de un ContentPart nuevo desde cero, utilizando la función SScaffolding en Orchard como una herramienta de productividad. Aunque este tutorial supone un desarrollo en Visual Studio, no es estrictamente necesario disponer de Visual Studio para desarrollar una ContentPart - siéntase libre de utilizar su editor preferido.
 
-In this tutorial, we are going to build a custom Map part, that can be configured with latitude and longitude values in order to display a map image for a content item.
+En este tutorial, vamos a construir un MapPart personalizado, que puede ser configurado con los valores de latitud y longitud con el fin de mostrar un mapa de un ContentItem en particular.
 
 
-> **Important:** Before you can generate the file structure for your module, you need to download, install, and enable the **Code Generation** feature for Orchard. For more information, see [Command-line Code Generation](Command-line-scaffolding).
+> **Importante:** Antes de que generes la estructura de ficheros para tu modulo, necesitarás descargar, instalar y activar la función de **Code Generation**. Para más información, vea [Command-line Code Generation](Command-line-scaffolding).
 
-We are going to add a new "Maps" module to contain our Map part implementation, as a new project in the Orchard solution.  Assuming you have enlisted in the Orchard source tree, launch Visual Studio 2010 and open the Orchard.sln file under the "src" folder of your enlistment.
+Vamos a añadir un nuevo módulo "Maps" que contiene nuestra aplicación MapPart, como un nuevo proyecto en la solución de Orchard. Suponiendo que usted ha alistado el árbol de fuentes Orchard, inicie Visual Studio 2010 y abra el archivo Orchard.sln que se encuentra bajo el "src" de la carpeta raíz.
 
 ![](../Upload/screenshots/vs_soln_explorer.png)
 
-Type "codegen module Maps /IncludeInSolution:true" at the Orchard command-prompt.  The "IncludeInSolution" switch tells Orchard to wire up a new Maps module project to the Orchard.sln file.
+Escriba en la línea de comandos de Orchard "codegen module Maps /IncludeInSolution:true".  El parámetro "IncludeInSolution" dice a Orchard que debe referenciarlo en el archivo Orchard.sln.
 
     
     orchard> codegen module Maps /IncludeInSolution:true
@@ -19,15 +19,16 @@ Type "codegen module Maps /IncludeInSolution:true" at the Orchard command-prompt
     Module Maps created successfully
 
 
-After running this command, Visual Studio prompts to re-load the solution file.  Accept this prompt.
+
+Después de ejecutar este comando, Visual Studio preguntará para volver a cargar el archivo de la solución, dígale que sí.
 
 ![](../Upload/screenshots_85/vs_soln_reload.png)
 
-The Maps module project appears added to the solution, along with some default files and folder to get you started.
+El módulo de Maps aparecerá añadido a la solución, junto con algunos archivos y carpetas predeterminadas para poder iniciar la escritura del módulo.
 
 ![](../Upload/screenshots/vs_soln_maps_module.png)
 
-Open the Module.txt file at the root of the Maps module project.  This file defines the information about your module, such as a name, description, version, author, and a categorized of features exposed by the module.  The Module.txt file can also contain additional information such as dependencies, which we will not cover here.  Our module is pretty simple, and only contains a single "Maps" feature with no additional dependencies.  Edit the Module.txt file as indicated below.
+Abra el archivo Module.txt en la raíz del proyecto Maps. Este archivo define la información acerca de su módulo, como un nombre, descripción, versión, autor, y una categoría de características expuestas por el módulo. El archivo Module.txt también puede contener información adicional, como las dependencias, que no vamos a cubrir aquí. Nuestro módulo es muy simple, y sólo contiene una única funcionalidad "Maps" que no tiene dependencias adicionales. Edite el archivo Module.txt como se indica a continuación.
 
     
     Name: Maps
@@ -43,11 +44,12 @@ Open the Module.txt file at the root of the Maps module project.  This file defi
             Category: Geolocation
 
 
-Now let's begin to write the Map part.  To begin with, we need a class to contain the data for the part. Data classes are conventionally added to the "Models" folder of the project.  Right-click the Models folder in Visual Studio and choose "Add > Class" from the context menu and name the new file Map.cs:
+Ahora vamos a empezar a escribir la parte del mapa. Para empezar, necesitamos una clase para contener los datos para el ContentPart. Las clases de datos convencionalmente se añaden a los "modelos" de la carpeta del proyecto. Haga clic en la carpeta Models en Visual Studio y seleccione "Agregar clase>" en el menú contextual y de nombre a su nuevo archivo,  Map.cs:
 
 ![](../Upload/screenshots_675/vs_add_model_class.png)
 
-In Orchard, content part data is represented by a Record class, which represents the fields that are stored to a database table, and a ContentPart class that uses the Record for storage.  Add the MapRecord (ContentPartRecord) and MapPart (ContentPart) classes as follows:
+
+En Orchard, los datos de un ContentPart son representados por una Record class, que representa que campos son almacenados en una tabla de una base da datos, y una clase ContentPart que usa el Record para alamacenarlo. Añade el MapRecord (ContentPartRecord) a la clase MapPart (ContentPart) como sigue:
 
     
     using System.ComponentModel.DataAnnotations;
@@ -77,14 +79,13 @@ In Orchard, content part data is represented by a Record class, which represents
         }
     }
 
-
-Now build the Maps project to ensure your Record class compiles successfully.
+Ahora construye el proyecto para asegurarte de que tu clase Record compila sin errores.
 
 ![](../Upload/screenshots/vs_build_maps.png)
 
-Next, we are going to create a data migration for our Maps module.  Why do we need a migration class?  The reason is that defining a Record and Part class to store the data doesn't actually impact the database in any way.  A data migration is what tells Orchard how to update the database schema when the Maps feature is enabled (the migration runs when the feature is activated).  A migration can also upgrade the database schema from prior versions of a module to the schema required by a newer version of a module - this is an advanced topic that won't be covered in this tutorial.
+A continuación, vamos a crear una migración de datos para nuestro módulo Maps. ¿Por qué necesitamos una clase de migración? La razón es que la definición de un registro y clase de elementos para almacenar los datos en realidad no afectar a la base de datos de ninguna manera. La migración de datos es lo que dice Orchard cómo actualizar el esquema de base de datos cuando la función de mapas está activada (la migración se ejecuta cuando la función está activada). La migración también puede actualizar el esquema de base de datos de versiones anteriores de un módulo para el esquema que requiere una versión más reciente de un módulo - este es un tema avanzado que no se tratará en este tutorial.
 
-To create a new data migration class, you can use the Code Generation feature of Orchard.  Run "codegen datamigration Maps" from the Orchard command-line.
+Para crear una clase de migración de datos nueva, puede utilizar la función de generación de código de Orchard.  Ejecute  "codegen datamigration Maps" desde la línea de comandos de Orchard.
 
     
     orchard> codegen datamigration Maps
@@ -92,11 +93,12 @@ To create a new data migration class, you can use the Code Generation feature of
     Data migration created successfully in Module Maps
 
 
-Visual Studio prompts to re-load the solution again.  After accepting this prompt, the new data migration classes appears in the project.
+Visual Studio le solicitará cargar la solución de nuevo. Después de aceptar la solicitud, la nueva clase de migración de datos aparecerá en el proyecto.
 
 ![](../Attachments/Writing-a-content-part/vs_sol_migration.PNG)
 
-The migration class added by the codegen command contains a single Create() method that defines a database table structure based on the Record classes in project.  Because we only have a single MapRecord class with latitude and longitude properties, the migration class is fairly simple.  Note that the Create method is called at the time the feature is activated, and the database will be updated accordingly.
+La clase de migración añadida vía la consola de generación de código contiene un solo método Create(), que define una tabla de la estructura de la base de datos, basada en las clases Record del proyecto. Debido a que sólo tenemos una clase MapRecord con dos propiedades, latitud y longitud, la clase de migración es bastante simple. Note que el método Create es llamado cuando la característica es activida, y la base de datos se actulizará en consecuencia.
+
 
     
     using System;
@@ -113,7 +115,7 @@ The migration class added by the codegen command contains a single Create() meth
         public class Migrations : DataMigrationImpl {
     
             public int Create() {
-    			// Creating table MapRecord
+        		// Creating table MapRecord
     			SchemaBuilder.CreateTable("MapRecord", table => table
     				.ContentPartRecord()
     				.Column("Latitude", DbType.Double)
@@ -129,9 +131,9 @@ The migration class added by the codegen command contains a single Create() meth
     }
 
 
-Add the AlterPartDefinition lines to the migration in order to make the part attachable to any content type. Also add `using Maps.Models;` to the top of the file.
+Añade la línea de AlterPartDefinition para que la migración sea acoplable a cualquier ContentType. También debemos escribir 'using Maps.Models;' al principio del fichero.
 
-Now let's add the handler for the Map part.  A handler in Orchard is a class that defines the behavior of the part, handling events or manipulating data model prior to rendering the part.  The Map part is very simple, and in this case, our handler class will only specify that an IRepository of MapRecord should be used as the storage for this part. Add the following Handlers\MapHandler.cs:
+Ahora añadiremos el Handler al MapPart. Un handler en Orchard es una clase que define un compartamiento para una parte, manejando los eventos o manipulando el modelo de datos antes de redenderizar el ContentPart. El MapPart es muy simple, en este caso, nuestra clase handler sólo especifica un IRepository para el MapRecord que debe usarse para el almacenamiento. Añade el siguiente código a Handlers/MapHandelr.cs
 
     
     using Maps.Models;
@@ -147,7 +149,9 @@ Now let's add the handler for the Map part.  A handler in Orchard is a class tha
     }
 
 
-We will also add a driver for our Map part.  A driver in Orchard is a class that can define associations of shapes to display for each context in which the Map part can render.  For example, when displaying a Map on the front-end, a "Display" method defines the name of the template to use for different displayTypes (for example, "details" or summary").  Similarly, an "Editor" method of the driver defines the template to use for displaying the editor of the Map part (for entering values of the latitude and longitude fields).  We are going to keep this part simple and just use "Map" as the name of the shape to use for both Display and Editor contexts (and all displayTypes).  Add the MapDriver class as follows.
+También añadadiremos un driver para nuesto MapPart. Un driver en Orchard es una clase que define cómo se mostrar un shape para los distintos contextos en los que actua nuestro part. Por ejemplo, cuando estamos mostrando el Map en el front-end, el método "Display" define el nombre de la plantilla a usar para los diferentes displayTypes (por ejemplo, "detalles" o "resumen"). Similarmente, el método "Editor" del driver define la plantilla a usar para mostrar el editor del MapPart (para introducir valores en la latidud o longitud). Vamos a mantener esta parte simple y sólo usar "Map" para el nombre del shape que vamos a usar en los contextos de mostrar y editar (y en todos los displayTypes). Añade la clase MapDriver como sigue:
+
+
 
     
     using Maps.Models;
@@ -185,7 +189,7 @@ We will also add a driver for our Map part.  A driver in Orchard is a class that
     }
 
 
-We can now add the display and editor views in Visual Studio. First add "Parts" and "EditorTemplates/Parts" folders to the "Views" folder in the Maps project, and then add Map.cshtml files into the Views/EditorTemplates/Parts and the Views/Parts folders as follows.
+Ahora podemos añadir las vistas para mostrar y editar. Primero añadimos una carpeta "Parts" y otra "EditorTemplates/Parts" a la carpeta "Views" en el proyecto Maps, luego añadimos un fichero Masp.cshtml a ambas carpetas,  Views/EditorTemplates/Parts y Views/Parts y escrimos el siguiente código:
 
     
     @model Maps.Models.MapPart
@@ -221,7 +225,7 @@ And:
          &sensor=false" />
 
 
-Both of these templates will be rendered as parts of a larger, composite page. Because the system needs to know the order and location where they will render within the composed page, we need to add a placement.info file into the root of the module's directory:
+Ambas plantillas se representan como parte de una más grande, la página compuesta. Debido a que el sistema necesita saber el orden y el lugar donde se hará dentro de la página compuesta, tenemos que añadir un archivo placement.info en la raíz del directorio del módulo:
 
     
     <Placement>
@@ -230,34 +234,36 @@ Both of these templates will be rendered as parts of a larger, composite page. B
     </Placement>
 
 
-This is saying that the Parts_Map shape (which is rendered by Views/Parts/Maps.cshtml unless overridden in the current theme) should render in the "Content" zone if available, in tenth position. It also positions the editor shape/template in the "Primary" zone in second position.
 
-To activate the Map part, go to the "Features" section of the Orchard admin panel and enable it.
+Es decir que la shape Parts_Map (que es redenderizada en Views/Parts/Maps.cshtml a menos que se sobreescriba en el tema actual) debe ser redenderizada en la "Content" zone si está disponible, en la décima posición. También situa la plantilla del editor shape/template en la zona principal en la segunda posición.
+
+Para activar el Map part, ve a la sección "Features" del panel de administración y activala.
 
 ![](../Upload/screenshots/enable_maps.png)
 
-You can try out the Map part by attaching it to any content type in the system, using the "Content Types" section of the Orchard admin panel.  Let's add it to an existing content type, namely, the custom "Event" content type that we built in the [Creating custom content types](Creating-custom-content-types) topic.  If you haven't read that topic yet or don't have the "Event" type, go ahead and add the Map to the Page content type instead (following the same steps below).
 
-On the "Manage Content Types" admin screen, click on "Edit" to edit the definition of this type (you may need to enable the Orchard.ContentTypes feature first).
+Usted puede probar la MapPart conectándolo a cualquier tipo de contenido en el sistema, a través del "ContentTypes" del panel de administración de Orchard. Vamos a añadir un ContentType existente, es decir, el personalizado "Evento" ContentType que hemos construido en [Creación de tipos de contenido personalizados](Creating-custom-content-types). Si usted no ha leído ese documento todavía o no tienen el tipo "Event" , siga adelante y añada el Mapa para el ContentType de Page en su lugar (siguiendo los mismos pasos a continuación).
+
+
+En la pantlla "Mange Content Types" del panel de administración, haga click en "Edit" para editar la definición de este tipo (debes tener activada la funcionalidad Orchard.ContentTypes).
 
 ![](../Upload/screenshots_675/edit_content_type_event.png)
 
-In the list of parts for the "Event" type, click on "Add" to add a part.
+En la lista de parts para el "Event", haga clic en "Add" para añadir una part.
 
 ![](../Upload/screenshots_675/add_parts_event.png)
 
-The Map part displays in the list of available parts to add.  Select it, and click "Save".
+El map  es mostrado en una la lista de parts disponibles para agregar. Selecciónelo y haga clic en "Save"
 
 ![](../Upload/screenshots_85/add_parts_event_map.png)
 
-Now go the "Manage Content" and edit an event content item.  Notice that the Map part adds Latitude and Longitude fields to this item.  Type some valid coordinates and re-publish the content item.
+Ahora vaya a "Manage Content" y edite un EventContentItem. Note que puede añadir la latitud y la longitud para el content part.
 
 ![](../Upload/screenshots_675/edit_event_map_fields.png)
 
-On the front-end of your site, you can see the effect of the Map part rendering on the event content item.
+En el front-end de tu sitio, puedes ver el efecto que tiene el Map part redenderizando el EventContentItem.
 
 ![](../Upload/screenshots_675/view_event_map.png)
 
-# Getting the Code
-
-The Map part described in this topic is available from here: [Orchard.Module.Maps.1.0.0.zip](/Attachments/Writing-a-content-part/Orchard.Module.Maps.1.0.0.zip), ready to install and use, with full source code.
+# Obteniendo el código
+El MapPart descrito en este documento está disponible desde aquí: [Orchard.Module.Maps.1.0.0.zip](/Attachments/Writing-a-content-part/Orchard.Module.Maps.1.0.0.zip), listo para instalar y usar con el código fuente.
